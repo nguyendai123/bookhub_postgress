@@ -24,7 +24,7 @@ public class Book {
     @Column(name = "Title", length = 255, nullable = false)
     private String title;
 
-    @Column(name = "Image",columnDefinition = "LONGTEXT")
+    @Column(name = "Image",columnDefinition = "TEXT")
     private String image;
 
     @Column(name = "Author", length = 50, nullable = false)

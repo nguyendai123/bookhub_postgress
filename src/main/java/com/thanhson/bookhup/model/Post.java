@@ -31,7 +31,7 @@ public class Post {
     private int likeCount;
     @Column(name = "Rating")
     private double rating;
-    @Column(name = "ImageData",columnDefinition = "LONGTEXT")
+    @Column(name = "ImageData",columnDefinition = "TEXT")
     private String imageData;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userID")
