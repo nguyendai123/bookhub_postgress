@@ -1,14 +1,11 @@
 package com.thanhson.bookhup.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import com.thanhson.bookhup.model.User;
 import com.thanhson.bookhup.response.ResponseSuccess;
 import com.thanhson.bookhup.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")

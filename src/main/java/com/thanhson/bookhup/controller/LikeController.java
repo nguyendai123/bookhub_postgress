@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/likes")
@@ -35,4 +35,10 @@ public class LikeController {
         likeService.delete(like);
         return ResponseEntity.ok("Like deleted successfully.");
     }
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<List<Like>> getLikesForPost(@PathVariable Long postId) {
+        List<Like> likes = likeService.findAllByPostId(postId);
+        return ResponseEntity.ok(likes);
+    }
+
 }

@@ -1,15 +1,11 @@
 package com.thanhson.bookhup.controller;
 
-import com.thanhson.bookhup.Upload.FileUploadUtil;
 import com.thanhson.bookhup.model.Book;
 import com.thanhson.bookhup.service.BookService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,16 +53,15 @@ public class BookController {
         return bookService.getAllAuthors();
     }
 
-    @PostMapping(value = "/books/add", consumes = "multipart/form-data")
-    public ResponseEntity<Book> saveBook(@ModelAttribute Book book, @RequestParam("imageFile") MultipartFile imageFile)
+    @PostMapping(value = "/books/add")
+    public ResponseEntity<Book> saveBook(@RequestBody  Book book)
             throws IOException {
-        Book savedBook = bookService.saveBookwithMultiFile(book, imageFile);
+        Book savedBook = bookService.saveBook(book );
         return ResponseEntity.ok(savedBook);
     }
 
     @PutMapping("/books/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable("id") Long id, @ModelAttribute Book updatedBook,
-            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) {
+    public ResponseEntity<Book> updateBook(@PathVariable("id") Long id, @RequestBody Book updatedBook) {
         Optional<Book> existingBookOptional = bookService.getBookById(id);
 
         if (existingBookOptional.isEmpty()) {
@@ -75,26 +70,16 @@ public class BookController {
 
         Book existingBook = existingBookOptional.get();
         existingBook.setTitle(updatedBook.getTitle());
+        existingBook.setImage(updatedBook.getImage());
         existingBook.setAuthor(updatedBook.getAuthor());
         existingBook.setIsbn(updatedBook.getIsbn());
         existingBook.setPage(updatedBook.getPage());
         existingBook.setSummary(updatedBook.getSummary());
 
-        if (imageFile != null && !imageFile.isEmpty()) {
-            try {
-                Book updatedBookResult = bookService.saveBookwithMultiFile(existingBook, imageFile);
-                return ResponseEntity.ok(updatedBookResult);
-            } catch (IOException e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
-        } else {
-            // Nếu imageFile không được cung cấp, truy xuất tên file hình ảnh từ cơ sở dữ
-            // liệu
-            String existingFileName = existingBook.getImage();
-            existingBook.setImage(existingFileName);
-            Book updatedBookResult = bookService.saveBook(existingBook);
-            return ResponseEntity.ok(updatedBookResult);
-        }
+        Book updatedBookResult = bookService.saveBook(existingBook);
+        return ResponseEntity.ok(updatedBookResult);
+
+
     }
 
     @DeleteMapping("/books/{bookId}")
