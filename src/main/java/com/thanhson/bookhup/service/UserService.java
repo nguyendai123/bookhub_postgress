@@ -1,7 +1,6 @@
 package com.thanhson.bookhup.service;
 
 import com.thanhson.bookhup.exception.ResourceNotFoundException;
-import com.thanhson.bookhup.model.Group;
 import com.thanhson.bookhup.model.User;
 import com.thanhson.bookhup.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

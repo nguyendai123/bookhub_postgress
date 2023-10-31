@@ -1,12 +1,13 @@
 package com.thanhson.bookhup.service;
 
 import com.thanhson.bookhup.model.Like;
+import com.thanhson.bookhup.model.Post;
+import com.thanhson.bookhup.model.User;
 import com.thanhson.bookhup.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LikeService {
@@ -27,5 +28,14 @@ public class LikeService {
 
     public Like getLikeById(Long likeId) {
         return likeRepository.findById(likeId).orElse(null);
+    }
+
+
+    public Like getLikeByUserIdAndPostId(Post post, User user) {
+        return likeRepository.findByUserAndPost(user, post);
+    }
+
+    public void deleteLike(Long likeID) {
+        likeRepository.deleteById(likeID);
     }
 }
