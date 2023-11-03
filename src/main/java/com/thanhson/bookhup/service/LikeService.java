@@ -6,6 +6,7 @@ import com.thanhson.bookhup.model.User;
 import com.thanhson.bookhup.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,5 +38,15 @@ public class LikeService {
 
     public void deleteLike(Long likeID) {
         likeRepository.deleteById(likeID);
+    }
+
+
+
+
+
+
+    @Transactional
+    public void deleteLikesByPostId(Long postId) {
+        likeRepository.deleteByPostId(postId);
     }
 }

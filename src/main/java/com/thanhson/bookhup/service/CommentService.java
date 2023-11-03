@@ -36,4 +36,9 @@ public class CommentService {
         comment.setCreateAt(LocalDateTime.now());
         return commentRepository.save(comment);
     }
+
+
+    public void deleteCommentsByPost(Post post) {
+        commentRepository.deleteByPost(post);
+    }
 }

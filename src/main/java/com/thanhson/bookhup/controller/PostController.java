@@ -37,6 +37,8 @@ public class PostController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ProgressService progressService;
 
     @GetMapping("/posts")
     public ResponseEntity<List<Post>> getAllPosts() {
@@ -129,8 +131,13 @@ public class PostController {
         }
 
         // You can add additional checks here if needed, such as checking user
-        // authorization
+        // Delete likes associated with the post
+        likeService.deleteLikesByPostId(postID);
 
+        // Delete comments associated with the post
+        //commentService.deleteCommentsByPostId(postID);
+        // authorization
+        //progressService.delete();
         postService.delete(post);
 
         return ResponseEntity.ok("Post deleted successfully.");
