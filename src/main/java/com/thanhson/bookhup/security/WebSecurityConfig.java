@@ -24,6 +24,8 @@ public class WebSecurityConfig  {
 
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
+    @Autowired
+    private HttpSecurity httpSecurity;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -67,6 +69,7 @@ public class WebSecurityConfig  {
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
+        httpSecurity.cors();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
