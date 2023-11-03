@@ -69,7 +69,7 @@ public class WebSecurityConfig  {
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
-        httpSecurity.cors();
+        http.cors();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
