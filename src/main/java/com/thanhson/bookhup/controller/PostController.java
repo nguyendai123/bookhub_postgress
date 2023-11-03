@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "https://taupe-licorice-bae4fb.netlify.app")
 @AllArgsConstructor
 @RequestMapping("/api")
 public class PostController {
