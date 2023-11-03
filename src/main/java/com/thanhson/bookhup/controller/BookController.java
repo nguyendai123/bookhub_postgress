@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin(origins = "https://taupe-licorice-bae4fb.netlify.app")
+@CrossOrigin(origins = "*")
 @AllArgsConstructor
 @RequestMapping("/api")
 public class BookController {
