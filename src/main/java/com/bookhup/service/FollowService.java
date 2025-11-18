@@ -1,9 +1,18 @@
 package com.bookhup.service;
 
-import com.bookhup.repository.FollowRepository;
-import org.springframework.stereotype.Service;
+import com.bookhup.model.Follow;
+import java.util.List;
 
-@Service
-public class FollowService {
-    private FollowRepository followRepository;
+public interface FollowService {
+
+    Follow followUser(Long followerId, Long followingId);
+
+    void unfollowUser(Long followerId, Long followingId);
+
+    List<Follow> getFollowers(Long userId);
+
+    List<Follow> getFollowing(Long userId);
+
+    boolean isFollowing(Long followerId, Long followingId);
 }
+

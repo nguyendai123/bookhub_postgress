@@ -1,0 +1,115 @@
+package com.bookhup.service.auth.impl;
+
+import com.bookhup.jwts.JwtProvider;
+import com.bookhup.model.Permission;
+import com.bookhup.model.Role;
+import com.bookhup.model.RoleType;
+import com.bookhup.model.User;
+import com.bookhup.repository.PermissionRepository;
+import com.bookhup.repository.RoleRepository;
+import com.bookhup.repository.UserRepository;
+import com.bookhup.request.auth.LoginRequest;
+import com.bookhup.request.auth.RegisterRequest;
+import com.bookhup.request.auth.ResetPasswordRequest;
+import com.bookhup.response.MessageResponse;
+import com.bookhup.response.auth.AuthResponse;
+import com.bookhup.service.EmailService;
+import com.bookhup.service.auth.AuthService;
+import com.bookhup.service.auth.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class AuthServiceImpl implements AuthService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+    private final UserService userService;
+    private final JwtProvider jwtProvider;
+
+    @Override
+    public AuthResponse register(RegisterRequest request) {
+
+        if (userRepository.existsByUsernameOrEmail(request.getUsername(),request.getEmail())) {
+            throw new RuntimeException("Username or Email already in use");
+        }
+
+        Role roleUser = roleRepository.findByRoleName(RoleType.USER)
+                .orElseThrow(() -> new RuntimeException("Default USER role not found"));
+
+        User user = new User(
+                request.getUsername(),
+                request.getEmail(),
+                passwordEncoder.encode(request.getPassword())
+        );
+
+        user.setCreatedAt(LocalDateTime.now());
+        user.getRoles().add(roleUser);
+
+        userRepository.save(user);
+
+        return new AuthResponse("Register success", null);
+    }
+
+    @Override
+    public AuthResponse login(LoginRequest request) {
+        User user = userRepository.findByUsernameWithRoles(request.getUsername())
+                .orElseThrow(() -> new RuntimeException("Invalid Username or password"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        // Lấy roles từ repo riêng
+        Set<String> roles = roleRepository.findRolesByUserId(user.getUserID())
+                .stream()
+                .map(r -> r.getRoleName().name())
+                .collect(Collectors.toSet());
+
+        // Lấy permissions từ repo riêng
+        Set<String> permissions = permissionRepository.findPermissionsByUserId(user.getUserID())
+                .stream()
+                .map(Permission::getPermissionName)
+                .collect(Collectors.toSet());
+
+        String jwt = jwtProvider.generateToken(user.getUserID(), roles, permissions);
+
+        return new AuthResponse("Login success", jwt);
+    }
+
+    @Override
+    public String logout() {
+        return "Logout success (JWT handled on client side)";
+    }
+
+    @Override
+    public MessageResponse resetPassword(ResetPasswordRequest request) {
+
+        User user = userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Username or Email not found"));
+
+        String email = user.getEmail();
+        String newPassword = userService.generateRandomPassword();
+
+        userService.changePassword(email, newPassword);
+        // Gửi mail bất đồng bộ
+        emailService.sendMailResetPassword(newPassword, email);
+
+        MessageResponse response = new MessageResponse();
+        response.setMessage("Reset password instruction sent to email. Email sending runs in background.");
+        return response;
+    }
+
+}
+

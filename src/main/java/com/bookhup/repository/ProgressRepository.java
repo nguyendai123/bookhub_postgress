@@ -10,8 +10,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProgressRepository extends JpaRepository<Progress, Long> {
-
-
-
     Progress findByUserProgressAndBook(User userProgress, Book book);
 }

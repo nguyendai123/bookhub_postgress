@@ -1,14 +1,12 @@
 package com.bookhup.config;
 
-import com.bookhup.jwts.AuthTokenFilter;
+import com.bookhup.jwts.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,25 +14,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import java.util.Arrays;
 
 @Configuration
 @AllArgsConstructor
-public class SpringSecurityConfig  {
-    private UserDetailsService userDetailsService;
-
-    private AuthTokenFilter authTokenFilter;
-
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-
-        return authProvider;
-    }
+public class SecurityConfig {
 
     @Bean
     public static PasswordEncoder passwordEncoder() {
@@ -45,20 +30,23 @@ public class SpringSecurityConfig  {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.cors().and().csrf().disable()
-                .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/api/auth/**").permitAll();
-                    authorize.requestMatchers("/api/books/**").permitAll();
-                    authorize.requestMatchers("/api/genres/**").permitAll();
-                    authorize.requestMatchers("/api/posts/**").permitAll();
-                    authorize.requestMatchers("/api/comment/**").permitAll();
-                    authorize.requestMatchers("/api/**").permitAll();
+                .authorizeHttpRequests(auth ->
+//                    authorize.requestMatchers("/api/auth/**").permitAll();
+//                    authorize.requestMatchers("/api/books/**").permitAll();
+//                    authorize.requestMatchers("/api/genres/**").permitAll();
+//                    authorize.requestMatchers("/api/posts/**").permitAll();
+//                    authorize.requestMatchers("/api/comment/**").permitAll();
+//                    authorize.requestMatchers("/api/**").permitAll();
+//
+//                    authorize.anyRequest().authenticated();
+                                auth.requestMatchers("/api/auth/register").permitAll()
+                                        .requestMatchers("/api/auth/login").permitAll()
+                                        .requestMatchers("/api/auth/reset-password").permitAll()
+                                        .requestMatchers("/api/**").authenticated()
+                                        .anyRequest().permitAll()
+                );
 
-                    authorize.anyRequest().authenticated();
-                });
-
-        http.authenticationProvider(authenticationProvider());
-
-        http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -77,5 +65,10 @@ public class SpringSecurityConfig  {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtFilter() {
+        return new JwtAuthenticationFilter();
     }
 }

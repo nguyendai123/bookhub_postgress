@@ -1,86 +1,38 @@
 package com.bookhup.service;
 
-import com.bookhup.repository.BookRepository;
-import com.bookhup.Upload.FileUploadUtil;
 import com.bookhup.model.Book;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class BookService {
-    @Autowired
-    private BookRepository bookRepository;
+public interface BookService {
 
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
-    }
+    List<Book> getAllBooks();
 
-    public Optional<Book> getBookById(long bookId) {
-        return bookRepository.findById(bookId);
-    }
+    Optional<Book> getBookById(long bookId);
 
-    public List<Book> findByTitle(String title) {
-        return bookRepository.findByTitle(title);
-    }
+    List<Book> findByTitle(String title);
 
-    public Book saveBookwithMultiFile(Book book, MultipartFile imageFile) throws IOException {
-        String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
-        book.setImage(fileName);
+    Book saveBook(Book book);
 
-        Book savedBook = bookRepository.save(book);
+    Book saveBookwithMultiFile(Book book, MultipartFile imageFile) throws IOException;
 
-        String uploadDir = "image/" + savedBook.getBookID();
+    void deleteBook(long bookId) throws IOException;
 
-        FileUploadUtil.saveFile(uploadDir, fileName, imageFile);
+    List<Book> findByAuthor(String author);
 
-        // Save the book to your data store
+    List<String> getAllAuthors();
 
-        return savedBook;
-    }
+    List<Book> findBooksWithDesiredStatus();
 
-    public Book saveBook(Book book) {
-        return bookRepository.save(book);
-    }
+    List<Book> findBooksWithReadingStatus();
 
-    public void deleteBook(long bookId) throws IOException {
+    List<Book> findBooksWithReadedStatus();
 
-        String uploadDir = "image\\" + bookId;
+    List<Book> findBooksWithStatus();
 
-        FileUploadUtil.deleteFile(uploadDir);
-        bookRepository.deleteById(bookId);
-    }
-
-    public List<Book> findByAuthor(String author) {
-        return bookRepository.findByAuthor(author);
-    }
-
-    public List<String> getAllAuthors() {
-        return bookRepository.findAllAuthors();
-    }
-
-    public List<Book> findBooksWithDesiredStatus() {
-        return bookRepository.findBooksWithDesiredStatus();
-    }
-
-    public List<Book> findBooksWithReadingStatus() {
-        return bookRepository.findBooksWithReadingStatus();
-    }
-
-    public List<Book> findBooksWithReadedStatus() {
-        return bookRepository.findBooksWithReadedStatus();
-    }
-
-    public List<Book> findBooksWithStatus() {
-        return bookRepository.findBooksWithStatus();
-    }
-
-    public Book findById(Long bookId) {
-        return bookRepository.findById(bookId).orElse(null);
-    }
+    Book findById(Long bookId);
 }
+

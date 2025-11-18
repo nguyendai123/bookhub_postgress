@@ -1,52 +1,24 @@
 package com.bookhup.service;
 
-import com.bookhup.repository.LikeRepository;
 import com.bookhup.model.Like;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-public class LikeService {
-    @Autowired
-    private LikeRepository likeRepository;
+public interface LikeService {
 
-    public List<Like> findAllByPostId(Long postID) {
-        return likeRepository.findAllByPost_PostID(postID);
-    }
+    List<Like> findAllByPostId(Long postId);
 
-    public Like save(Like like) {
-        return likeRepository.save(like);
-    }
+    Like save(Like like);
 
-    public void delete(Like like) {
-        likeRepository.delete(like);
-    }
+    void delete(Like like);
 
-    public Like getLikeById(Long likeId) {
-        return likeRepository.findById(likeId).orElse(null);
-    }
+    Like getLikeById(Long likeId);
 
+    Like getLikeByUserIdAndPostId(Post post, User user);
 
-    public Like getLikeByUserIdAndPostId(Post post, User user) {
-        return likeRepository.findByUserAndPost(user, post);
-    }
+    void deleteLike(Long likeId);
 
-    public void deleteLike(Long likeID) {
-        likeRepository.deleteById(likeID);
-    }
-
-
-
-
-
-
-    @Transactional
-    public void deleteLikesByPostId(Long postId) {
-        likeRepository.deleteByPostId(postId);
-    }
+    void deleteLikesByPostId(Long postId);
 }
