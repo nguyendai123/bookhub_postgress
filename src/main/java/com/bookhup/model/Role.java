@@ -1,45 +1,46 @@
 package com.bookhup.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
 @Table(name = "roles")
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RoleID")
-    private Long roleId;
+    private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(name="role_name", unique = true, nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleType roleName;
 
     private String description;
+
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_permission",
-            joinColumns = @JoinColumn(name = "RoleID"),
-            inverseJoinColumns = @JoinColumn(name = "PermissionID"))
-    @JsonManagedReference
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Permission> permissions = new HashSet<>();
 }

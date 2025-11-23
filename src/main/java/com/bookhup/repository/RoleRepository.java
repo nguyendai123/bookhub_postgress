@@ -16,7 +16,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Query("""
                 SELECT r FROM Role r
                 JOIN r.users u
-                WHERE u.userID = :userId
+                WHERE u.userId = :userId
             """)
     Set<Role> findRolesByUserId(Long userId);
 

@@ -1,6 +1,7 @@
 package com.bookhup.service.auth;
 
 import com.bookhup.model.User;
+import com.bookhup.request.ProfileUpdateRequest;
 
 import java.util.List;
 
@@ -15,11 +16,11 @@ public interface UserService {
 
     void changePassword(String email, String newPassword);
 
-    User updateUser(Long id, User request);
-
     List<User> getAllUsers();
 
-    void deleteUser(Long id);
+    void deleteUser(Long userId, String token);
+
+    User updateProfile(ProfileUpdateRequest request, String token);
 }
 
 

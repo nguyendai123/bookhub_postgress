@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -48,15 +49,16 @@ public class AuthServiceImpl implements AuthService {
         Role roleUser = roleRepository.findByRoleName(RoleType.USER)
                 .orElseThrow(() -> new RuntimeException("Default USER role not found"));
 
-        User user = new User(
-                request.getUsername(),
-                request.getEmail(),
-                passwordEncoder.encode(request.getPassword())
-        );
+        User user = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .createdAt(LocalDateTime.now())
+                .isAdmin(false)
+                .roles(new HashSet<>())
+                .build();
 
-        user.setCreatedAt(LocalDateTime.now());
         user.getRoles().add(roleUser);
-
         userRepository.save(user);
 
         return new AuthResponse("Register success", null);
@@ -72,18 +74,18 @@ public class AuthServiceImpl implements AuthService {
         }
 
         // Lấy roles từ repo riêng
-        Set<String> roles = roleRepository.findRolesByUserId(user.getUserID())
+        Set<String> roles = roleRepository.findRolesByUserId(user.getUserId())
                 .stream()
                 .map(r -> r.getRoleName().name())
                 .collect(Collectors.toSet());
 
         // Lấy permissions từ repo riêng
-        Set<String> permissions = permissionRepository.findPermissionsByUserId(user.getUserID())
+        Set<String> permissions = permissionRepository.findPermissionsByUserId(user.getUserId())
                 .stream()
                 .map(Permission::getPermissionName)
                 .collect(Collectors.toSet());
 
-        String jwt = jwtProvider.generateToken(user.getUserID(), roles, permissions);
+        String jwt = jwtProvider.generateToken(user.getUserId(), roles, permissions);
 
         return new AuthResponse("Login success", jwt);
     }

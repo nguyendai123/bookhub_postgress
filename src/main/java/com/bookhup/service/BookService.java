@@ -1,5 +1,6 @@
 package com.bookhup.service;
 
+import com.bookhup.model.Author;
 import com.bookhup.model.Book;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,17 +22,9 @@ public interface BookService {
 
     void deleteBook(long bookId) throws IOException;
 
-    List<Book> findByAuthor(String author);
+    List<Book> findByAuthor(Author author);
 
     List<String> getAllAuthors();
-
-    List<Book> findBooksWithDesiredStatus();
-
-    List<Book> findBooksWithReadingStatus();
-
-    List<Book> findBooksWithReadedStatus();
-
-    List<Book> findBooksWithStatus();
 
     Book findById(Long bookId);
 }

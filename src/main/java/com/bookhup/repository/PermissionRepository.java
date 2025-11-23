@@ -4,11 +4,13 @@ import com.bookhup.model.Permission;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
+@Transactional
 public interface PermissionRepository extends JpaRepository<Permission, Long> {
     Optional<Permission> findByPermissionName(String permissionName);
 
@@ -16,7 +18,7 @@ public interface PermissionRepository extends JpaRepository<Permission, Long> {
                 SELECT p FROM Permission p
                 JOIN p.roles r
                 JOIN r.users u
-                WHERE u.userID = :userId
+                WHERE u.userId = :userId
             """)
     Set<Permission> findPermissionsByUserId(Long userId);
 

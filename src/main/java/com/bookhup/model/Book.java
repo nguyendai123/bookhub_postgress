@@ -2,66 +2,67 @@ package com.bookhup.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "books")
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Book {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id")
+    private Long bookId;
 
-    @Column(name = "BookID", nullable = false)
-    private long bookID;
-
-    @Column(name = "Title", length = 255, nullable = false)
-    private String title;
-
-    @Column(name = "Image",columnDefinition = "TEXT")
-    private String image;
-
-    @Column(name = "Author", length = 50, nullable = false)
-    private String author;
-
-    @Column(name = "ISBN", length = 50, nullable = false)
     private String isbn;
 
-    @Column(name = "Summary", nullable = false)
-    private String summary;
+    @Column(nullable = false)
+    private String title;
 
-    @Column(name = "Page")
-    private int page;
-    @Column(name = "Rate")
-    private double rate;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "book_genre", joinColumns = { @JoinColumn(name = "BookID") }, inverseJoinColumns = {
-            @JoinColumn(name = "GenreID") })
+    private String genre;
+
+    private String language;
+
+    @Lob
+    private String description;
+
+    private String coverUrl;
+
+    private Float avgRating;
+
+    private Integer totalReviews;
+
+    private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookChapter> chapters = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookMediaAsset> mediaAssets = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookHighlight> highlights = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<BookQuote> quotes = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
-
-    @OneToMany(mappedBy = "book")
-    Set<Progress> progresses;
-
-    public void addGenre(Genre genre) {
-        this.genres.add(genre);
-        genre.getBooks().add(this);
-    }
-
-    public void removeGenre(long genreID) {
-        Genre genre = this.genres.stream().filter(t -> t.getGenreID() == genreID).findFirst().orElse(null);
-        if (genre != null) {
-            this.genres.remove(genre);
-            genre.getBooks().remove(this);
-        }
-    }
 }
+

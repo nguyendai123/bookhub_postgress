@@ -13,28 +13,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "likes")
-public class Like {
+@Table(name = "shares")
+public class Share {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_id")
-    private Long likeId;
+    @Column(name = "share_id")
+    private Long shareId;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="post_id", nullable=true)
+    @JoinColumn(name="post_id", nullable=false)
     private Post post;
 
-    @Column(name = "target_type", length = 20)
-    private String targetType; // POST, COMMENT, REVIEW
-
-    @Column(name = "target_id")
-    private Long targetId;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "shared_at")
+    private LocalDateTime sharedAt;
 }

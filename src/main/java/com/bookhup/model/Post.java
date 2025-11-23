@@ -2,56 +2,73 @@ package com.bookhup.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "posts")
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PostID")
-    private Long postID;
-    @Column(name = "Content")
-    private String content;
+    @Column(name = "post_id")
+    private Long postId;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime createDate;
-    @Column(name = "LikeCount")
-    private int likeCount;
-    @Column(name = "Rating")
-    private double rating;
-    @Column(name = "ImageData",columnDefinition = "TEXT")
-    private String imageData;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userID")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bookID")
+    @Lob
+    private String content;
+
+    @Lob
+    @Column(name = "translated_text")
+    private String translatedText;
+
+    @Column(name = "image_url", length = 255)
+    private String imageUrl;
+
+    @Lob
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "json")
+    private List<String> hashtags; // JSON array of tags
+
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = true)
     private Book book;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private Set<Like> likes;
+    @Column(name = "share_of")
+    private Long shareOf;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private Set<Comment> comments;
+    private Integer likesCount;
+    private Integer commentsCount;
+    private Integer sharesCount;
+    private Integer views;
 
-    public List<User> getLikedUsers() {
-        List<User> likedUsers = new ArrayList<>();
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-        for (Like like : likes) {
-            likedUsers.add(like.getUser());
-        }
+    // Comments on this Post
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
 
-        return likedUsers;
-    }
+    // Likes on this Post
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Like> likes = new HashSet<>();
+
+    // Shares of this Post
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Share> shares = new HashSet<>();
 }

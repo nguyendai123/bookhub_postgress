@@ -13,26 +13,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "notifications")
-public class Notification {
+@Table(name = "hashtags")
+public class Hashtag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notification_id")
-    private Long notificationId;
+    @Column(name = "hashtag_id")
+    private Long hashtagId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @Column(length = 255)
-    private String message;
-
-    @Column(length = 50)
-    private String type;
-
-    @Column(name = "is_read")
-    private Boolean isRead;
+    @Column(name = "tag_name", length = 50, unique = true)
+    private String tagName;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

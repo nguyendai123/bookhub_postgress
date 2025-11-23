@@ -1,8 +1,12 @@
 package com.bookhup.service.auth.impl;
 
+import com.bookhup.exception.AppException;
+import com.bookhup.exception.ErrorCode;
 import com.bookhup.exception.ResourceNotFoundException;
+import com.bookhup.jwts.JwtProvider;
 import com.bookhup.model.User;
 import com.bookhup.repository.UserRepository;
+import com.bookhup.request.ProfileUpdateRequest;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -20,6 +25,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     private static final String RANDOM_CHAR_POOL =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -35,8 +41,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found with id: " + userId));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
     }
 
     @Override
@@ -68,38 +73,47 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(Long id, User request) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found with id: " + id));
-
-        // Update các field cho phép
-        Optional.ofNullable(request.getUsername()).ifPresent(user::setUsername);
-        Optional.ofNullable(request.getEmail()).ifPresent(user::setEmail);
-        Optional.ofNullable(request.getBio()).ifPresent(user::setBio);
-        Optional.ofNullable(request.getFavoriteGenres()).ifPresent(user::setFavoriteGenres);
-
-        if (request.getAvatarUrl() != null) {
-            user.setAvatarUrl(request.getAvatarUrl());
-        }
-
-        if (request.getPasswordHash() != null) {
-            user.setPasswordHash(passwordEncoder.encode(request.getPasswordHash()));
-        }
-
-        userRepository.save(user);
-
-        // Có thể trả về DTO tùy theo yêu cầu
-        return user;
-    }
-
-    @Override
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+    public void deleteUser(Long userId, String token) {
+
+        Long currentUserId = jwtProvider.extractUserId(token);
+        Set<String> roles = jwtProvider.extractRoles(token); // ADMIN, USER...
+
+        boolean isAdmin = roles.contains("ADMIN");
+
+        if (!isAdmin && !currentUserId.equals(userId)) {
+            throw new AppException(ErrorCode.UNAUTHORIZED);
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        user.setStatus("DELETED");  // soft delete
+        userRepository.save(user);
+    }
+
+
+    public User updateProfile(ProfileUpdateRequest request, String token) {
+
+        Long userId = jwtProvider.extractUserId(token);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        user.setAvatarUrl(request.getAvatarUrl());
+        user.setBio(request.getBio());
+        user.setFavoriteGenres(request.getFavoriteGenres());
+        user.setReadingPattern(request.getReadingPattern());
+        user.setPreferredLanguage(request.getPreferredLanguage());
+        user.setAvgReadTimePerDay(request.getAvgReadTimePerDay());
+        user.setSocialLinks(request.getSocialLinks());
+
+        userRepository.save(user);
+
+        return user;
     }
 }

@@ -13,37 +13,36 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "comments")
-public class Comment {
+@Table(name = "ai_interaction")
+public class AIInteraction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long commentId;
-
-    @ManyToOne
-    @JoinColumn(name = "review_id", nullable = true)
-    private BookReview review;
-
-    @ManyToOne
-    @JoinColumn(name = "post_id", nullable = true)
-    private Post post;
+    @Column(name = "interaction_id")
+    private Long interactionId;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Lob
-    private String content;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
 
     @Lob
-    @Column(name = "translated_text")
-    private String translatedText;
+    private String question;
 
-    @Column(name = "parent_id")
-    private Long parentId;
+    @Lob
+    private String answer;
 
-    private Integer likes;
+    @Column(name = "context_book_id")
+    private Long contextBookId;
+
+    @Column(name = "confidence_score")
+    private Float confidenceScore;
+
+    @Column(name = "model_version")
+    private String modelVersion;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

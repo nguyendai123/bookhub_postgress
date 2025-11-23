@@ -14,17 +14,24 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "genres")
-public class Genre {
+@Table(name = "authors")
+public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "genre_id")
-    private Long genreId;
+    @Column(name = "author_id")
+    private Long authorId;
 
     @Column(length = 100, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "genres")
+    @Lob
+    private String bio;
+
+    @Column(length = 50)
+    private String country;
+
+    @OneToMany(mappedBy = "author")
     private Set<Book> books = new HashSet<>();
 }
+
