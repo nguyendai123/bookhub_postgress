@@ -1,5 +1,7 @@
 package com.bookhup.jwts;
 
+import com.bookhup.model.User;
+import com.bookhup.service.auth.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -25,6 +27,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtProvider jwtProvider;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${bookhub.app.jwtSecret}")
     private String jwtSecret;
 
@@ -39,6 +44,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Long userId = jwtProvider.extractUserId(token);
             Set<String> roles = jwtProvider.extractRoles(token);
             Set<String> permissions = jwtProvider.extractPermissions(token);
+            User currentUser = userService.getUserById(userId);
+            request.setAttribute("currentUser", currentUser);
 
             // Convert roles + permissions → GrantedAuthority
             Set<GrantedAuthority> authorities = new HashSet<>();
@@ -51,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
-                            userId,
+                            currentUser,
                             null,
                             authorities
                     );

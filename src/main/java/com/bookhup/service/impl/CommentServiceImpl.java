@@ -1,18 +1,18 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.model.BookReview;
 import com.bookhup.model.Comment;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
+import com.bookhup.repository.BookReviewRepository;
 import com.bookhup.repository.CommentRepository;
 import com.bookhup.repository.PostRepository;
 import com.bookhup.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -20,40 +20,83 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final BookReviewRepository reviewRepository;
 
-    public Comment createComment(Comment comment, User currentUser, Long postId, Long parentId) {
+    // ------------------ CREATE COMMENT ------------------
+    public Comment addCommentToPost(Long postId, User user, String content, Long parentId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        comment.setPost(post);
-        comment.setUser(currentUser);
-        comment.setParentId(parentId);
-        comment.setCreatedAt(LocalDateTime.now());
+        Comment comment = Comment.builder()
+                .post(post)
+                .user(user)
+                .content(content)
+                .parentId(parentId)
+                .likes(0)
+                .createdAt(LocalDateTime.now())
+                .build();
+
         return commentRepository.save(comment);
     }
 
-    public List<Comment> getCommentsByPost(Long postId) {
-        return commentRepository.findByPostPostIdOrderByCreatedAtAsc(postId);
+    public Comment addCommentToReview(Long reviewId, User user, String content, Long parentId) {
+        BookReview review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+
+        Comment comment = Comment.builder()
+                .review(review)
+                .user(user)
+                .content(content)
+                .parentId(parentId)
+                .likes(0)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        return commentRepository.save(comment);
     }
 
-    public Comment updateComment(Long commentId, Comment updatedComment, User currentUser) {
+    // ------------------ GET COMMENTS ------------------
+    public List<Comment> getCommentsByPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        return commentRepository.findByPost(post);
+    }
+
+    public List<Comment> getCommentsByReview(Long reviewId) {
+        BookReview review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+
+        return commentRepository.findByReview(review);
+    }
+
+    public List<Comment> getReplies(Long parentId) {
+        return commentRepository.findByParentId(parentId);
+    }
+
+    // ------------------ UPDATE COMMENT ------------------
+    public Comment updateComment(Long commentId, User user, String newContent) {
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
-        if (!comment.getUser().getUserId().equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
-            throw new AccessDeniedException("You don't have permission to edit this comment");
+
+        // chỉ chủ comment hoặc admin được update
+        if (!comment.getUser().getUserId().equals(user.getUserId()) && !user.isAdmin()) {
+            throw new RuntimeException("No permission to update comment");
         }
 
-        comment.setContent(updatedComment.getContent());
-        comment.setTranslatedText(updatedComment.getTranslatedText());
+        comment.setContent(newContent);
         return commentRepository.save(comment);
     }
 
-    public void deleteComment(Long commentId, User currentUser) {
+    // ------------------ DELETE COMMENT ------------------
+    public void deleteComment(Long commentId, User user) {
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
-        if (!comment.getUser().getUserId().equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
-            throw new AccessDeniedException("You don't have permission to delete this comment");
+        if (!comment.getUser().getUserId().equals(user.getUserId()) && !user.isAdmin()) {
+            throw new RuntimeException("No permission to delete comment");
         }
 
         commentRepository.delete(comment);

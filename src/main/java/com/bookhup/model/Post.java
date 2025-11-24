@@ -49,13 +49,14 @@ public class Post {
     @JoinColumn(name = "book_id", nullable = true)
     private Book book;
 
+    //ID bài viết gốc được chia sẻ
     @Column(name = "share_of")
     private Long shareOf;
 
-    private Integer likesCount;
-    private Integer commentsCount;
-    private Integer sharesCount;
-    private Integer views;
+    private Integer likesCount = 0;
+    private Integer commentsCount = 0;
+    private Integer sharesCount = 0;
+    private Integer views = 0;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

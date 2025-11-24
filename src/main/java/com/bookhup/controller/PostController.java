@@ -28,6 +28,11 @@ public class PostController {
         return ResponseEntity.ok(postService.getAllPosts());
     }
 
+    @GetMapping("/{postId}")
+    public Post getPost(@PathVariable Long postId) {
+        return postService.getPost(postId);
+    }
+
     @PreAuthorize("hasAuthority('POST_UPDATE')")
     @PutMapping("/{postId}")
     public ResponseEntity<Post> updatePost(@PathVariable Long postId,
