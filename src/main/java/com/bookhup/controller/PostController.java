@@ -2,6 +2,7 @@ package com.bookhup.controller;
 
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
+import com.bookhup.request.post.PostRequest;
 import com.bookhup.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class PostController {
 
     @PreAuthorize("hasAuthority('POST_CREATE')")
     @PostMapping
-    public ResponseEntity<Post> createPost(@RequestBody Post post, @RequestAttribute("currentUser") User user) {
-        return ResponseEntity.ok(postService.createPost(post, user));
+    public ResponseEntity<Post> createPost(@RequestBody PostRequest request, @RequestAttribute("currentUser") User user) {
+        return ResponseEntity.ok(postService.createPost(request, user));
     }
 
     @GetMapping

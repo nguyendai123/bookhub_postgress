@@ -1,8 +1,11 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.model.Book;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
+import com.bookhup.repository.BookRepository;
 import com.bookhup.repository.PostRepository;
+import com.bookhup.request.post.PostRequest;
 import com.bookhup.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -16,16 +19,25 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final BookRepository bookRepository;
 
     @Override
-    public Post createPost(Post request, User currentUser) {
+    public Post createPost(PostRequest request, User currentUser) {
+
+        Book book = null;
+
+        if (request.getBookId() != null) {
+            book = bookRepository.findById(request.getBookId())
+                    .orElseThrow(() -> new RuntimeException("Book not found"));
+        }
+
         Post post = Post.builder()
                 .user(currentUser)
                 .content(request.getContent())
                 .translatedText(request.getTranslatedText())
                 .imageUrl(request.getImageUrl())
                 .hashtags(request.getHashtags())
-                .book(request.getBook())
+                .book(book)
                 .shareOf(request.getShareOf())
                 .createdAt(LocalDateTime.now())
                 .likesCount(0)
@@ -33,8 +45,10 @@ public class PostServiceImpl implements PostService {
                 .sharesCount(0)
                 .views(0)
                 .build();
+
         return postRepository.save(post);
     }
+
 
     @Override
     public List<Post> getAllPosts() {

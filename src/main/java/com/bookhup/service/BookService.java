@@ -9,23 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BookService {
+    List<Book> search(String keyword);
 
-    List<Book> getAllBooks();
+    Book getDetail(Long id);
 
-    Optional<Book> getBookById(long bookId);
-
-    List<Book> findByTitle(String title);
-
-    Book saveBook(Book book);
-
-    Book saveBookwithMultiFile(Book book, MultipartFile imageFile) throws IOException;
-
-    void deleteBook(long bookId) throws IOException;
-
-    List<Book> findByAuthor(Author author);
-
-    List<String> getAllAuthors();
-
-    Book findById(Long bookId);
+    Book createBook(Book book);
 }
 

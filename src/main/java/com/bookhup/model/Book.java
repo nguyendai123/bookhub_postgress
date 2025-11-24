@@ -32,8 +32,6 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
-    private String genre;
-
     private String language;
 
     @Lob
