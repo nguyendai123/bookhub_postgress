@@ -1,7 +1,7 @@
 package com.bookhup.service.auth;
 
 import com.bookhup.model.User;
-import com.bookhup.request.ProfileUpdateRequest;
+import com.bookhup.dto.request.ProfileUpdateRequest;
 
 import java.util.List;
 

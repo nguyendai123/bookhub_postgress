@@ -1,10 +1,7 @@
 package com.bookhup.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -27,6 +24,8 @@ public class Post {
     private Long postId;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -46,6 +45,8 @@ public class Post {
     private List<String> hashtags; // JSON array of tags
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "book_id", nullable = true)
     private Book book;
 
@@ -63,13 +64,19 @@ public class Post {
 
     // Comments on this Post
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Comment> comments = new HashSet<>();
 
     // Likes on this Post
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Like> likes = new HashSet<>();
 
     // Shares of this Post
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Share> shares = new HashSet<>();
 }

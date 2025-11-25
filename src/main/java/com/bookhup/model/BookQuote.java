@@ -1,10 +1,7 @@
 package com.bookhup.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +17,8 @@ public class BookQuote {
     private Long quoteId;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "book_id")
     private Book book;
 
@@ -28,6 +27,8 @@ public class BookQuote {
     private String quoteText;
 
     @ManyToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "added_by")
     private User addedBy;
 

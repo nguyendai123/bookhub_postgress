@@ -1,7 +1,7 @@
 package com.bookhup.controller;
 
 import com.bookhup.model.User;
-import com.bookhup.request.ProfileUpdateRequest;
+import com.bookhup.dto.request.ProfileUpdateRequest;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

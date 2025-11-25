@@ -21,7 +21,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
         SELECT b FROM Book b
         WHERE (:keyword IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
             OR LOWER(b.isbn) LIKE LOWER(CONCAT('%', :keyword, '%'))
-            OR LOWER(b.genre) LIKE LOWER(CONCAT('%', :keyword, '%'))
+            OR LOWER(b.genres) LIKE LOWER(CONCAT('%', :keyword, '%'))
             OR LOWER(b.author.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
     """)
     List<Book> searchBooks(String keyword);

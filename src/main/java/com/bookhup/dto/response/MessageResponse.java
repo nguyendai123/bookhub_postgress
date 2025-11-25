@@ -1,4 +1,4 @@
-package com.bookhup.response;
+package com.bookhup.dto.response;
 
 import lombok.NoArgsConstructor;
 

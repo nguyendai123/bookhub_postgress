@@ -2,7 +2,7 @@ package com.bookhup.service;
 
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
-import com.bookhup.request.post.PostRequest;
+import com.bookhup.dto.request.post.PostRequest;
 
 import java.util.List;
 

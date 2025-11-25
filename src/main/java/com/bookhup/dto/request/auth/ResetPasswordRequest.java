@@ -1,4 +1,4 @@
-package com.bookhup.request.auth;
+package com.bookhup.dto.request.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

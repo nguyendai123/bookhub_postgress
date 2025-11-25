@@ -1,4 +1,4 @@
-package com.bookhup.request.post;
+package com.bookhup.dto.request.post;
 
 import lombok.Data;
 

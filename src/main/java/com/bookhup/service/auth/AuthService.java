@@ -1,10 +1,10 @@
 package com.bookhup.service.auth;
 
-import com.bookhup.request.auth.LoginRequest;
-import com.bookhup.request.auth.RegisterRequest;
-import com.bookhup.request.auth.ResetPasswordRequest;
-import com.bookhup.response.MessageResponse;
-import com.bookhup.response.auth.AuthResponse;
+import com.bookhup.dto.request.auth.LoginRequest;
+import com.bookhup.dto.request.auth.RegisterRequest;
+import com.bookhup.dto.request.auth.ResetPasswordRequest;
+import com.bookhup.dto.response.MessageResponse;
+import com.bookhup.dto.response.auth.AuthResponse;
 
 public interface AuthService {
     AuthResponse register(RegisterRequest request);

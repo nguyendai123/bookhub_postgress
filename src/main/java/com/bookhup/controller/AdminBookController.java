@@ -1,5 +1,6 @@
 package com.bookhup.controller;
 
+import com.bookhup.dto.request.book.BookCreateRequest;
 import com.bookhup.model.Book;
 import com.bookhup.service.BookService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,8 @@ public class AdminBookController {
 
     @PreAuthorize("hasAuthority('ADMIN_BOOK_CREATE')")
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.createBook(book));
+    public ResponseEntity<Book> createBook(@RequestBody BookCreateRequest request) {
+        return ResponseEntity.ok(bookService.createBook(request));
     }
 }
 

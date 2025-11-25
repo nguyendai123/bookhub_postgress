@@ -1,5 +1,6 @@
 package com.bookhup.service;
 
+import com.bookhup.dto.request.book.BookCreateRequest;
 import com.bookhup.model.Author;
 import com.bookhup.model.Book;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,8 @@ public interface BookService {
 
     Book getDetail(Long id);
 
-    Book createBook(Book book);
+    Book getBook(Long id);
+
+    Book createBook(BookCreateRequest request);
 }
 

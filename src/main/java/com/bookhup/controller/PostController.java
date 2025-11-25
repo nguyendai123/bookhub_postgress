@@ -2,7 +2,7 @@ package com.bookhup.controller;
 
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
-import com.bookhup.request.post.PostRequest;
+import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

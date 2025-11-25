@@ -1,4 +1,4 @@
-package com.bookhup.response.auth;
+package com.bookhup.dto.response.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

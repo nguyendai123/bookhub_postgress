@@ -1,6 +1,6 @@
 package com.bookhup.exception;
 
-import com.bookhup.response.ErrorResponse;
+import com.bookhup.dto.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.BadRequestException;
 import org.slf4j.Logger;
@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -70,7 +71,7 @@ public class GlobalExceptionHandler {
     }
 
     // -------- 401 Unauthorized --------
-    @ExceptionHandler(org.springframework.security.authentication.BadCredentialsException.class)
+    @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentials(
             Exception ex, HttpServletRequest request) {
         return buildResponse(HttpStatus.UNAUTHORIZED,

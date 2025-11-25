@@ -8,22 +8,20 @@ import com.bookhup.model.User;
 import com.bookhup.repository.PermissionRepository;
 import com.bookhup.repository.RoleRepository;
 import com.bookhup.repository.UserRepository;
-import com.bookhup.request.auth.LoginRequest;
-import com.bookhup.request.auth.RegisterRequest;
-import com.bookhup.request.auth.ResetPasswordRequest;
-import com.bookhup.response.MessageResponse;
-import com.bookhup.response.auth.AuthResponse;
+import com.bookhup.dto.request.auth.LoginRequest;
+import com.bookhup.dto.request.auth.RegisterRequest;
+import com.bookhup.dto.request.auth.ResetPasswordRequest;
+import com.bookhup.dto.response.MessageResponse;
+import com.bookhup.dto.response.auth.AuthResponse;
 import com.bookhup.service.EmailService;
 import com.bookhup.service.auth.AuthService;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 

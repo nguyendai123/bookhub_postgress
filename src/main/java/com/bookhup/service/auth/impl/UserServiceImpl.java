@@ -6,7 +6,7 @@ import com.bookhup.exception.ResourceNotFoundException;
 import com.bookhup.jwts.JwtProvider;
 import com.bookhup.model.User;
 import com.bookhup.repository.UserRepository;
-import com.bookhup.request.ProfileUpdateRequest;
+import com.bookhup.dto.request.ProfileUpdateRequest;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
