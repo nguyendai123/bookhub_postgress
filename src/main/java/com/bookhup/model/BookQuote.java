@@ -1,5 +1,6 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class BookQuote {
     private Long quoteId;
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "book_id")
@@ -27,6 +29,7 @@ public class BookQuote {
     private String quoteText;
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "added_by")

@@ -1,5 +1,6 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,12 +20,14 @@ public class ReadingProgress {
     private Long progressId;
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "book_id")

@@ -1,5 +1,6 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -22,6 +23,7 @@ public class UserBehaviorLog {
     private Long logId;
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user_id")

@@ -1,5 +1,6 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,6 +18,7 @@ public class BookMediaAsset {
     private Long assetId;
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "book_id")

@@ -76,7 +76,7 @@ public class User {
     @Column(columnDefinition = "json")
     private String socialLinks; // JSON
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinTable(name = "user_role",

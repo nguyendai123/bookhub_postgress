@@ -25,6 +25,7 @@ public class Post {
     private Long postId;
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user_id")
@@ -46,6 +47,7 @@ public class Post {
     private List<String> hashtags; // JSON array of tags
 
     @ManyToOne
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "book_id", nullable = true)
