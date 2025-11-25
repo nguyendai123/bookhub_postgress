@@ -1,5 +1,6 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -55,6 +56,7 @@ public class BookReview {
 
     // Comments on this BookReview
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Comment> comments = new HashSet<>();

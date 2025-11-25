@@ -37,6 +37,16 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public Book createBook(BookCreateRequest req) {
+        bookRepository.findByIsbn(req.getIsbn())
+                .ifPresent(b -> {
+                    throw new RuntimeException(
+                            "Sách với ISBN " + req.getIsbn() + " đã tồn tại: " + b.getTitle()
+                    );
+                });
+        boolean exists = bookRepository.existsByTitleIgnoreCaseAndAuthor_AuthorId(req.getTitle(), req.getAuthorId());
+        if (exists) {
+            throw new RuntimeException("Sách đã tồn tại theo (title + author)");
+        }
 
         // 1. Tìm Author
         Author author = authorRepository.findById(req.getAuthorId())

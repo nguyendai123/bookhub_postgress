@@ -1,10 +1,8 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,5 +24,8 @@ public class Genre {
     private String name;
 
     @ManyToMany(mappedBy = "genres")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JsonIgnore
     private Set<Book> books = new HashSet<>();
 }

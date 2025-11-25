@@ -1,5 +1,6 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,26 +46,32 @@ public class Book {
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<BookChapter> chapters = new HashSet<>();
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<BookMediaAsset> mediaAssets = new HashSet<>();
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<BookHighlight> highlights = new HashSet<>();
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<BookQuote> quotes = new HashSet<>();
 
     @ManyToMany
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @JoinTable(name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))

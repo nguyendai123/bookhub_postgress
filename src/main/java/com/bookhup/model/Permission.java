@@ -1,5 +1,6 @@
 package com.bookhup.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class Permission {
     private LocalDateTime updatedAt;
 
     @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
+    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Role> roles = new HashSet<>();

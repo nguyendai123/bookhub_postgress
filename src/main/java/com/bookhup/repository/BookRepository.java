@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
@@ -26,4 +27,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     """)
     List<Book> searchBooks(String keyword);
 
+    // Tìm sách theo ISBN
+    Optional<Book> findByIsbn(String isbn);
+
+    // Kiểm tra trùng sách theo (title + author_id)
+    boolean existsByTitleIgnoreCaseAndAuthor_AuthorId(String title, Long authorId);
 }
