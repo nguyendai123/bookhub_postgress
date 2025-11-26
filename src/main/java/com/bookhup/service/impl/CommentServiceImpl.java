@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
                 .user(user)
                 .content(content)
                 .parentId(parentId)
-                .likes(0)
+                .likesCount(0)
                 .createdAt(LocalDateTime.now())
                 .build();
 
@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
                 .user(user)
                 .content(content)
                 .parentId(parentId)
-                .likes(0)
+                .likesCount(0)
                 .createdAt(LocalDateTime.now())
                 .build();
 

@@ -28,7 +28,8 @@ public class BookChapter {
     private String chapterTitle;
 
     @Column(name = "chapter_order")
-    private Integer chapterOrder;
+    @Builder.Default
+    private Integer chapterOrder = 1;
 
     @Lob
     @Column(name = "text_content")

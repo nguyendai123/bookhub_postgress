@@ -33,6 +33,20 @@ public class Like {
     @JoinColumn(name="post_id", nullable=true)
     private Post post;
 
+    @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JoinColumn(name = "comment_id", nullable = true)
+    private Comment comment;
+
+    @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @JoinColumn(name = "review_id", nullable = true)
+    private BookReview bookReview;
+
     @Column(name = "target_type", length = 20)
     private String targetType; // POST, COMMENT, REVIEW
 

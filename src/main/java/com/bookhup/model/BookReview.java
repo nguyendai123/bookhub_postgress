@@ -35,7 +35,8 @@ public class BookReview {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    private Integer rating;
+    @Builder.Default
+    private Integer rating = 0;
 
     @Lob
     private String comment;
@@ -47,7 +48,8 @@ public class BookReview {
     private String lang;
 
     @Column(name = "ai_sentiment_score")
-    private Float aiSentimentScore;
+    @Builder.Default
+    private Float aiSentimentScore = 0.0f;
 
     @Lob
     @Column(name = "translated_text")
@@ -62,4 +64,10 @@ public class BookReview {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "bookReview", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Like> likes = new HashSet<>();
 }

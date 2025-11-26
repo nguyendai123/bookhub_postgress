@@ -26,19 +26,24 @@ public class UserStats {
     private User user;
 
     @Column(name = "total_books_read")
-    private Integer totalBooksRead;
+    @Builder.Default
+    private Integer totalBooksRead = 0;
 
     @Column(name = "total_reviews")
-    private Integer totalReviews;
+    @Builder.Default
+    private Integer totalReviews = 0;
 
     @Column(name = "total_likes_received")
-    private Integer totalLikesReceived;
+    @Builder.Default
+    private Integer totalLikesReceived = 0;
 
     @Column(name = "total_followers")
-    private Integer totalFollowers;
+    @Builder.Default
+    private Integer totalFollowers = 0;
 
     @Column(name = "rank_position")
-    private Integer rankPosition;
+    @Builder.Default
+    private Integer rankPosition = 0;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

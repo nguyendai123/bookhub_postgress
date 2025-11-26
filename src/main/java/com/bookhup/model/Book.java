@@ -40,9 +40,11 @@ public class Book {
 
     private String coverUrl;
 
-    private Float avgRating;
+    @Builder.Default
+    private Float avgRating = 0f;
 
-    private Integer totalReviews;
+    @Builder.Default
+    private Integer totalReviews = 0;
 
     private LocalDateTime createdAt;
 

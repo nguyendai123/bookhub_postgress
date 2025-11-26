@@ -57,10 +57,18 @@ public class Post {
     @Column(name = "share_of")
     private Long shareOf;
 
+    @Builder.Default
     private Integer likesCount = 0;
+
+    @Builder.Default
     private Integer commentsCount = 0;
+
+    @Builder.Default
     private Integer sharesCount = 0;
+
+    @Builder.Default
     private Integer views = 0;
+
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;

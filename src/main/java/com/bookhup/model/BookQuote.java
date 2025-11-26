@@ -42,5 +42,6 @@ public class BookQuote {
     private Boolean aiGenerated;
 
     @Column(name = "popularity_score")
-    private Integer popularityScore;
+    @Builder.Default
+    private Integer popularityScore = 0;
 }

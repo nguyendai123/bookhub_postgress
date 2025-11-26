@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -40,6 +42,12 @@ public class Comment {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<Like> likes = new HashSet<>();
+
     @Lob
     private String content;
 
@@ -50,7 +58,8 @@ public class Comment {
     @Column(name = "parent_id")
     private Long parentId;
 
-    private Integer likes;
+    @Builder.Default
+    private Integer likesCount = 0;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
