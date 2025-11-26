@@ -47,6 +47,9 @@ public class BookReview {
     @Column(length = 10)
     private String lang;
 
+    @Builder.Default
+    private Integer likesCount = 0;
+
     @Column(name = "ai_sentiment_score")
     @Builder.Default
     private Float aiSentimentScore = 0.0f;

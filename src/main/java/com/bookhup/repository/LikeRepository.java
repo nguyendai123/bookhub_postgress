@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
     Like findByUserAndPost(User user, Post post);
@@ -17,4 +19,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     void deleteByPostId(Long postId);
 
     boolean existsByUserUserIdAndTargetTypeAndTargetId(Long userId, String targetType, Long targetId);
+
+    Optional<Like> findByUserUserIdAndTargetTypeAndTargetId(Long userId, String type, Long targetId);
+
 }

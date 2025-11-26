@@ -1,9 +1,9 @@
 package com.bookhup.service.impl;
 
 import com.bookhup.dto.request.like.LikeRequest;
-import com.bookhup.model.Like;
-import com.bookhup.model.Post;
-import com.bookhup.model.User;
+import com.bookhup.model.*;
+import com.bookhup.repository.BookReviewRepository;
+import com.bookhup.repository.CommentRepository;
 import com.bookhup.repository.LikeRepository;
 import com.bookhup.repository.PostRepository;
 import com.bookhup.service.LikeService;
@@ -18,33 +18,61 @@ public class LikeServiceImpl implements LikeService {
 
     private final LikeRepository likeRepo;
     private final PostRepository postRepo;
+    private final CommentRepository commentRepo;
+    private final BookReviewRepository bookReviewRepo;
 
+    @Override
     public String toggleLike(LikeRequest req, User user) {
 
-        boolean existed = likeRepo
-                .existsByUserUserIdAndTargetTypeAndTargetId(user.getUserId(), req.getTargetType(), req.getTargetId());
+        boolean existed = likeRepo.existsByUserUserIdAndTargetTypeAndTargetId(
+                user.getUserId(), req.getTargetType(), req.getTargetId()
+        );
 
         if (existed) {
-            return "Đã thích trước đó";
+            return "Bạn đã thích trước đó!";
         }
 
         Like like = Like.builder()
                 .user(user)
-                .post(req.getTargetType().equals("POST") ? postRepo.findById(req.getTargetId()).orElse(null) : null)
                 .targetType(req.getTargetType())
                 .targetId(req.getTargetId())
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        likeRepo.save(like);
+        switch (req.getTargetType()) {
 
-        // Nếu like bài viết thì tăng likeCount
-        if ("POST".equals(req.getTargetType())) {
-            Post p = postRepo.findById(req.getTargetId()).orElseThrow();
-            p.setLikesCount(p.getLikesCount() + 1);
-            postRepo.save(p);
+            case "POST" -> {
+                Post p = postRepo.findById(req.getTargetId())
+                        .orElseThrow(() -> new RuntimeException("Post không tồn tại"));
+
+                like.setPost(p);
+                p.setLikesCount(p.getLikesCount() + 1);
+                postRepo.save(p);
+            }
+
+            case "COMMENT" -> {
+                Comment c = commentRepo.findById(req.getTargetId())
+                        .orElseThrow(() -> new RuntimeException("Comment không tồn tại"));
+
+                like.setComment(c);
+                c.setLikesCount(c.getLikesCount() + 1);
+                commentRepo.save(c);
+            }
+
+            case "BOOKREVIEW" -> {
+                BookReview r = bookReviewRepo.findById(req.getTargetId())
+                        .orElseThrow(() -> new RuntimeException("BOOKREVIEW không tồn tại"));
+
+                like.setBookReview(r);
+                r.setLikesCount(r.getLikesCount() + 1);
+                bookReviewRepo.save(r);
+            }
+
+            default -> throw new RuntimeException("targetType không hợp lệ! Chỉ chấp nhận POST, COMMENT, BOOKREVIEW");
         }
 
-        return "Đã thích thành công";
+        likeRepo.save(like);
+
+        return "Like thành công!";
     }
 }

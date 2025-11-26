@@ -48,7 +48,7 @@ public class Like {
     private BookReview bookReview;
 
     @Column(name = "target_type", length = 20)
-    private String targetType; // POST, COMMENT, REVIEW
+    private String targetType; // POST, COMMENT, BOOKREVIEW
 
     @Column(name = "target_id")
     private Long targetId;
