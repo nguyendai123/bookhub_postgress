@@ -46,6 +46,10 @@ public class Post {
     @Column(columnDefinition = "json")
     private List<String> hashtags; // JSON array of tags
 
+    @Column(name = "last_hashtag_scanned_at")
+    private LocalDateTime lastHashtagScannedAt;
+
+
     @ManyToOne
     @JsonIgnore
     @ToString.Exclude
@@ -69,9 +73,11 @@ public class Post {
     @Builder.Default
     private Integer views = 0;
 
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     // Comments on this Post
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)

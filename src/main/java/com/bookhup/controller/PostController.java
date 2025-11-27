@@ -37,7 +37,7 @@ public class PostController {
     @PreAuthorize("hasAuthority('POST_UPDATE')")
     @PutMapping("/{postId}")
     public ResponseEntity<Post> updatePost(@PathVariable Long postId,
-                                           @RequestBody Post post,
+                                           @RequestBody PostRequest post,
                                            @RequestAttribute("currentUser") User user) {
         return ResponseEntity.ok(postService.updatePost(postId, post, user));
     }

@@ -8,7 +8,9 @@ import com.bookhup.repository.HashtagRepository;
 import com.bookhup.repository.PostRepository;
 import com.bookhup.service.HashtagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +22,41 @@ public class HashtagServiceImpl implements HashtagService {
 
     private final HashtagRepository hashtagRepo;
     private final PostRepository postRepo;
+    private final PostRepository postRepository;
+    private final HashtagRepository hashtagRepository;
+
+    @Scheduled(fixedRateString = "${scheduler.hashtag.rate}")
+    @Transactional
+    public void scanHashtags() {
+        List<Post> posts = postRepository.findPostsNeedScan();
+
+        for (Post post : posts) {
+            List<String> tags = post.getHashtags();
+
+            if (tags != null) {
+                for (String tag : tags) {
+                    tag = tag.trim().toLowerCase();
+
+                    String finalTag = tag;
+                    Hashtag h = hashtagRepository.findByTagName(tag)
+                            .orElseGet(() -> hashtagRepository.save(
+                                    Hashtag.builder()
+                                            .tagName(finalTag)
+                                            .usageCount(0)
+                                            .createdAt(LocalDateTime.now())
+                                            .build()
+                            ));
+
+                    h.setUsageCount(h.getUsageCount() + 1);
+                    h.setLastUsedAt(LocalDateTime.now());
+                    hashtagRepository.save(h);
+                }
+            }
+
+            post.setLastHashtagScannedAt(LocalDateTime.now());
+            postRepository.save(post);
+        }
+    }
 
     public Post addHashtags(PostHashtagRequest req, User currentUser) {
 
@@ -42,22 +79,12 @@ public class HashtagServiceImpl implements HashtagService {
             post.setHashtags(new ArrayList<>());
 
         for (String tag : newTags) {
-
-            // Lưu vào bảng hashtags
-            hashtagRepo.findByTagName(tag)
-                    .orElseGet(() -> hashtagRepo.save(
-                            Hashtag.builder()
-                                    .tagName(tag)
-                                    .createdAt(LocalDateTime.now())
-                                    .build()
-                    ));
-
             // Thêm vào bài viết (JSON)
             if (!post.getHashtags().contains(tag)) {
                 post.getHashtags().add(tag);
             }
         }
-
+        post.setUpdatedAt(LocalDateTime.now());
         return postRepo.save(post);
     }
 }

@@ -1,9 +1,11 @@
 package com.bookhup.service.impl;
 
 import com.bookhup.model.Book;
+import com.bookhup.model.Hashtag;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
 import com.bookhup.repository.BookRepository;
+import com.bookhup.repository.HashtagRepository;
 import com.bookhup.repository.PostRepository;
 import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
@@ -20,6 +22,7 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final BookRepository bookRepository;
+    private final HashtagRepository hashtagRepo;
 
     @Override
     public Post createPost(PostRequest request, User currentUser) {
@@ -40,6 +43,7 @@ public class PostServiceImpl implements PostService {
                 .book(book)
                 .shareOf(request.getShareOf())
                 .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .likesCount(0)
                 .commentsCount(0)
                 .sharesCount(0)
@@ -62,18 +66,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(Long postId, Post request, User currentUser) {
+    public Post updatePost(Long postId, PostRequest request, User currentUser) {
         Post post = getPost(postId);
 
         if (!post.getUser().getUserId().equals(currentUser.getUserId()) && !currentUser.isAdmin()) {
             throw new AccessDeniedException("You don't have permission to edit this post");
         }
 
+        Book book = null;
+        if (request.getBookId() != null) {
+            book = bookRepository.findById(request.getBookId())
+                    .orElseThrow(() -> new RuntimeException("Book not found"));
+        }
+
         post.setContent(request.getContent());
         post.setTranslatedText(request.getTranslatedText());
         post.setImageUrl(request.getImageUrl());
         post.setHashtags(request.getHashtags());
-        post.setBook(request.getBook());
+        post.setBook(book);
+        post.setUpdatedAt(LocalDateTime.now());
 
         return postRepository.save(post);
     }
