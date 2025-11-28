@@ -1,12 +1,10 @@
 package com.bookhup.service.auth.impl;
 
 import com.bookhup.jwts.JwtProvider;
-import com.bookhup.model.Permission;
-import com.bookhup.model.Role;
-import com.bookhup.model.RoleType;
-import com.bookhup.model.User;
+import com.bookhup.model.*;
 import com.bookhup.repository.PermissionRepository;
 import com.bookhup.repository.RoleRepository;
+import com.bookhup.repository.UserFeedWeightsRepository;
 import com.bookhup.repository.UserRepository;
 import com.bookhup.dto.request.auth.LoginRequest;
 import com.bookhup.dto.request.auth.RegisterRequest;
@@ -32,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
+    private final UserFeedWeightsRepository weightsRepo;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final UserService userService;
@@ -59,6 +58,7 @@ public class AuthServiceImpl implements AuthService {
         user.getRoles().add(roleUser);
         userRepository.save(user);
 
+        createDefaultWeights(user.getUserId());
         return new AuthResponse("Register success", null);
     }
 
@@ -110,6 +110,17 @@ public class AuthServiceImpl implements AuthService {
         response.setMessage("Reset password instruction sent to email. Email sending runs in background.");
         return response;
     }
+
+    public void createDefaultWeights(Long userId) {
+        UserFeedWeights w = UserFeedWeights.builder()
+                .userId(userId)
+        .wRecentInteraction(0.5)
+        .wFollowing(0.3)
+        .wTrending(0.2)
+        .build();
+        weightsRepo.save(w);
+    }
+
 
 }
 

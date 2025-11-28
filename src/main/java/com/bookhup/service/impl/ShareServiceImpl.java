@@ -50,6 +50,7 @@ public class ShareServiceImpl implements ShareService {
 
         // Tăng số lần share
         original.setSharesCount(original.getSharesCount() + 1);
+        original.setScoreDirty(true);
         postRepo.save(original);
 
         return shareRepo.save(share);

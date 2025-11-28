@@ -73,6 +73,15 @@ public class Post {
     @Builder.Default
     private Integer views = 0;
 
+    @Column(name = "trending_score")
+    private Double trendingScore;
+
+    @Column(name = "score_dirty")
+    private boolean scoreDirty = false;
+
+    @Column(name = "last_score_update")
+    private LocalDateTime lastScoreUpdate;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

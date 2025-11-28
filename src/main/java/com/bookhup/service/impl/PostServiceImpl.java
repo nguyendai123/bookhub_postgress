@@ -10,6 +10,8 @@ import com.bookhup.repository.PostRepository;
 import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,27 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final BookRepository bookRepository;
     private final HashtagRepository hashtagRepo;
+
+    @Scheduled(fixedRate = 6000) // chạy mỗi phút
+    public void processTrendingUpdates() {
+
+        List<Post> dirtyPosts = postRepository.findDirtyPostsOrderByPriority(PageRequest.of(0, 10));
+
+        for (Post p : dirtyPosts) {
+
+            double score =
+                    (p.getLikesCount() / 10.0) +
+                            (p.getSharesCount() / 5.0) +
+                            (p.getCommentsCount() / 3.0);
+
+            p.setTrendingScore(score);
+            p.setLastScoreUpdate(LocalDateTime.now());
+            p.setScoreDirty(false);
+        }
+
+        postRepository.saveAll(dirtyPosts);
+    }
+
 
     @Override
     public Post createPost(PostRequest request, User currentUser) {

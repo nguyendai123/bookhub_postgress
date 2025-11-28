@@ -22,15 +22,12 @@ public class UserBehaviorLog {
     @Column(name = "log_id")
     private Long logId;
 
-    @ManyToOne
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user_id")
-    private User user;
+    private Long userId;
 
     @Column(name = "action_type", length = 50)
-    private String actionType;
+    @Enumerated(EnumType.STRING)
+    private ActionType actionType;
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)

@@ -35,6 +35,7 @@ public class CommentServiceImpl implements CommentService {
                 .likesCount(0)
                 .createdAt(LocalDateTime.now())
                 .build();
+        postRepository.markDirty(postId);
 
         return commentRepository.save(comment);
     }

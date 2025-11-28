@@ -47,6 +47,7 @@ public class LikeServiceImpl implements LikeService {
 
                 like.setPost(p);
                 p.setLikesCount(p.getLikesCount() + 1);
+                p.setScoreDirty(true);
                 postRepo.save(p);
             }
 
