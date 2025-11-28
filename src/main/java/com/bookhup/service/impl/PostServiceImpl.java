@@ -1,16 +1,16 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.dto.response.post.PostFeedProjection;
 import com.bookhup.model.Book;
-import com.bookhup.model.Hashtag;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
-import com.bookhup.repository.BookRepository;
-import com.bookhup.repository.HashtagRepository;
-import com.bookhup.repository.PostRepository;
+import com.bookhup.repository.*;
 import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,8 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final BookRepository bookRepository;
     private final HashtagRepository hashtagRepo;
+    private final FollowRepository followRepository;
+    private final UserFeedWeightsRepository weightRepo;
 
     @Scheduled(fixedRate = 6000) // chạy mỗi phút
     public void processTrendingUpdates() {
@@ -74,6 +76,22 @@ public class PostServiceImpl implements PostService {
                 .build();
 
         return postRepository.save(post);
+    }
+
+    @Override
+    public Page<PostFeedProjection> getFeed(Long userId, int page, int size,
+                                            double wRecent, double wFollowing, double wTrending) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findFeedForUser(userId, wRecent, wFollowing, wTrending, pageable);
+    }
+
+    @Override
+    public Page<PostFeedProjection> getFeed(Long userId, int page, int size) {
+        double defaultWRecent = 0.5;
+        double defaultWFollowing = 0.3;
+        double defaultWTrending = 0.2;
+        return getFeed(userId, page, size, defaultWRecent, defaultWFollowing, defaultWTrending);
     }
 
 

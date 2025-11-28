@@ -37,6 +37,12 @@ public class UserFeedWeights {
     @Column(name = "last_update")
     private LocalDateTime lastUpdate = LocalDateTime.now();
 
+    public UserFeedWeights(double wRecentInteraction, double wFollowing, double wTrending) {
+        this.wRecentInteraction = wRecentInteraction;
+        this.wFollowing = wFollowing;
+        this.wTrending = wTrending;
+    }
+
     public void normalize() {
         double total = wRecentInteraction + wFollowing + wTrending;
 

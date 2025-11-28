@@ -1,14 +1,22 @@
 package com.bookhup.service;
 
+import com.bookhup.dto.response.post.PostFeedProjection;
+import com.bookhup.dto.response.post.PostFeedResponse;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
 import com.bookhup.dto.request.post.PostRequest;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface PostService {
 
     Post createPost(PostRequest request, User user);
+
+    Page<PostFeedProjection> getFeed(Long userId, int page, int size,
+                                     double wRecent, double wFollowing, double wTrending);
+
+    Page<PostFeedProjection> getFeed(Long userId, int page, int size);
 
     List<Post> getAllPosts();
 

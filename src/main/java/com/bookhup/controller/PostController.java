@@ -1,10 +1,12 @@
 package com.bookhup.controller;
 
+import com.bookhup.dto.response.post.PostFeedProjection;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
 import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,21 @@ public class PostController {
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody PostRequest request, @RequestAttribute("currentUser") User user) {
         return ResponseEntity.ok(postService.createPost(request, user));
+    }
+
+    @GetMapping("/all-feeds")
+    public Page<PostFeedProjection> getFeed(
+            @RequestHeader("X-USER-ID") Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(required = false) Double wRecent,
+            @RequestParam(required = false) Double wFollowing,
+            @RequestParam(required = false) Double wTrending
+    ) {
+        if (wRecent != null && wFollowing != null && wTrending != null) {
+            return postService.getFeed(userId, page, size, wRecent, wFollowing, wTrending);
+        }
+        return postService.getFeed(userId, page, size);
     }
 
     @GetMapping
