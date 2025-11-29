@@ -40,12 +40,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = """
     WITH user_actions AS (
         SELECT 
-            CAST(metadata->>'post_id' AS BIGINT) AS post_id,
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.post_id')) AS UNSIGNED) AS post_id,
             SUM(CASE WHEN action_type = 'POST_VIEW' THEN 1 ELSE 0 END) AS views,
             CASE WHEN SUM(CASE WHEN action_type = 'POST_LIKE' THEN 1 ELSE 0 END) > 0 THEN 1 ELSE 0 END AS likes
         FROM user_behavior_log
         WHERE user_id = :userId
-        GROUP BY CAST(metadata->>'post_id' AS BIGINT)
+        GROUP BY CAST(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.post_id')) AS UNSIGNED)
     )
 
     SELECT 

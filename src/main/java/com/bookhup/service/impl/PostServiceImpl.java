@@ -28,7 +28,7 @@ public class PostServiceImpl implements PostService {
     private final FollowRepository followRepository;
     private final UserFeedWeightsRepository weightRepo;
 
-    @Scheduled(fixedRate = 6000) // chạy mỗi phút
+    @Scheduled(fixedRate = 600000) // chạy mỗi phút
     public void processTrendingUpdates() {
 
         List<Post> dirtyPosts = postRepository.findDirtyPostsOrderByPriority(PageRequest.of(0, 10));

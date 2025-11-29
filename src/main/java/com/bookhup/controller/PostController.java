@@ -28,7 +28,7 @@ public class PostController {
 
     @GetMapping("/all-feeds")
     public Page<PostFeedProjection> getFeed(
-            @RequestHeader("X-USER-ID") Long userId,
+            @RequestAttribute("currentUser") User user,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "2") int size,
             @RequestParam(required = false) Double wRecent,
@@ -36,9 +36,9 @@ public class PostController {
             @RequestParam(required = false) Double wTrending
     ) {
         if (wRecent != null && wFollowing != null && wTrending != null) {
-            return postService.getFeed(userId, page, size, wRecent, wFollowing, wTrending);
+            return postService.getFeed(user.getUserId(), page, size, wRecent, wFollowing, wTrending);
         }
-        return postService.getFeed(userId, page, size);
+        return postService.getFeed(user.getUserId(), page, size);
     }
 
     @GetMapping

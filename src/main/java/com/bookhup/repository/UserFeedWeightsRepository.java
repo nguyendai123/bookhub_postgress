@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserFeedWeightsRepository extends JpaRepository<UserFeedWeights, Long> {
-    ScopedValue<UserFeedWeights> findByUserId(Long userId);
 }
 
