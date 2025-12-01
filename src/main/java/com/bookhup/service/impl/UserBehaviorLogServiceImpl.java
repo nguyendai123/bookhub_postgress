@@ -1,5 +1,6 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.model.ActionType;
 import com.bookhup.model.UserBehaviorLog;
 import com.bookhup.repository.UserBehaviorLogRepository;
 import com.bookhup.service.UserBehaviorLogService;
@@ -17,6 +18,7 @@ import static com.bookhup.model.ActionType.POST_VIEW;
 public class UserBehaviorLogServiceImpl implements UserBehaviorLogService {
     private final UserBehaviorLogRepository userBehaviorLogRepository;
 
+    @Override
     public void logView(Long userId, Long postId, String device, String location) {
         UserBehaviorLog log = UserBehaviorLog.builder()
                 .userId(userId)
@@ -30,12 +32,25 @@ public class UserBehaviorLogServiceImpl implements UserBehaviorLogService {
         userBehaviorLogRepository.save(log);
     }
 
+    @Override
     public void logLike(Long userId, Long postId) {
         UserBehaviorLog log = UserBehaviorLog.builder()
                 .userId(userId)
                 .actionType(POST_LIKE)
                 .timestamp(LocalDateTime.now())
                 .metadata(Map.of("post_id", postId))
+                .build();
+
+        userBehaviorLogRepository.save(log);
+    }
+
+    @Override
+    public void logFollow(Long userId, Long targetUserId, ActionType type) {
+        UserBehaviorLog log = UserBehaviorLog.builder()
+                .userId(userId)
+                .actionType(type)
+                .timestamp(LocalDateTime.now())
+                .metadata(Map.of("target_user_id", targetUserId))
                 .build();
 
         userBehaviorLogRepository.save(log);
