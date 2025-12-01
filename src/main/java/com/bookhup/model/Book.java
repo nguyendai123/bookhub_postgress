@@ -46,6 +46,9 @@ public class Book {
     @Builder.Default
     private Integer totalReviews = 0;
 
+    @Builder.Default
+    private Integer totalPages = 0;
+
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -79,5 +82,11 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private Set<Genre> genres = new HashSet<>();
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<ReadingProgress> readingProgresses = new HashSet<>();
 }
 
