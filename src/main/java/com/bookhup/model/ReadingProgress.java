@@ -34,7 +34,8 @@ public class ReadingProgress {
     private Book book;
 
     @Column(name = "reading_status", length = 20)
-    private String readingStatus; // WANT_TO_READ, READING, FINISHED
+    @Enumerated(EnumType.STRING)
+    private ReadingStatus readingStatus; // WANT_TO_READ, READING, FINISHED
 
     @Column(name = "current_page")
     private Integer currentPage;

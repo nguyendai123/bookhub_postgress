@@ -25,6 +25,7 @@ public class Hashtag {
     private String tagName;
 
     @Column(name = "usage_count")
+    @Builder.Default
     private Integer usageCount = 0;
 
     @Column(name = "created_at")
