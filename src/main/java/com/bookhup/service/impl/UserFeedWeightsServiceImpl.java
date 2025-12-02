@@ -12,6 +12,7 @@ public class UserFeedWeightsServiceImpl implements UserFeedWeightsService {
     private final UserFeedWeightsRepository weightsRepo;
 
     //Khi user LIKE post
+    @Override
     public void adjustWeightsOnLike(Long userId,
                                     boolean isFollowingAuthor,
                                     boolean isTrendingPost) {
@@ -34,6 +35,7 @@ public class UserFeedWeightsServiceImpl implements UserFeedWeightsService {
     }
 
     //Khi user xem nhiều bài trending:
+    @Override
     public void adjustAfterTrendingViewed(Long userId) {
         UserFeedWeights w = weightsRepo.findById(userId).orElseThrow();
         w.setWTrending(w.getWTrending() + 0.03);
@@ -42,6 +44,7 @@ public class UserFeedWeightsServiceImpl implements UserFeedWeightsService {
     }
 
     //Khi user bỏ follow hoặc không xem bài follow
+    @Override
     public void adjustAfterUnfollowOrIgnore(Long userId) {
         UserFeedWeights w = weightsRepo.findById(userId).orElseThrow();
         w.setWFollowing(w.getWFollowing() - 0.03);
@@ -50,10 +53,12 @@ public class UserFeedWeightsServiceImpl implements UserFeedWeightsService {
     }
 
     //Khi user chỉ xem bài mới (new / recent)
+    @Override
     public void adjustForNewPostsOnly(Long userId) {
         UserFeedWeights w = weightsRepo.findById(userId).orElseThrow();
         w.setWRecentInteraction(w.getWRecentInteraction() + 0.02);
-        w.setWTrending(w.getWTrending() - 0.01);
+        w.setWTrending(w.getWTrending() - 0.005);
+        w.setWFollowing(w.getWFollowing() - 0.005);
         w.normalize();
         weightsRepo.save(w);
     }

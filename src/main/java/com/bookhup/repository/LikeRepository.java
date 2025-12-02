@@ -22,4 +22,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     Optional<Like> findByUserUserIdAndTargetTypeAndTargetId(Long userId, String type, Long targetId);
 
+    boolean existsByUserUserIdAndBookReviewReviewId(Long userId, Long reviewId);
+
+    void deleteByUserUserIdAndBookReviewReviewId(Long userId, Long reviewId);
 }

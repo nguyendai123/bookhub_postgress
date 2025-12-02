@@ -5,6 +5,7 @@ import com.bookhup.exception.ErrorCode;
 import com.bookhup.exception.ResourceNotFoundException;
 import com.bookhup.jwts.JwtProvider;
 import com.bookhup.model.User;
+import com.bookhup.model.UserStatus;
 import com.bookhup.repository.UserRepository;
 import com.bookhup.dto.request.ProfileUpdateRequest;
 import com.bookhup.service.auth.UserService;
@@ -91,7 +92,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-        user.setStatus("DELETED");  // soft delete
+        user.setStatus(UserStatus.DELETED);  // soft delete
         userRepository.save(user);
     }
 

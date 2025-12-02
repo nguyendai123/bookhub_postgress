@@ -1,5 +1,6 @@
 package com.bookhup.service;
 
+import com.bookhup.dto.response.comment.CommentResponse;
 import com.bookhup.model.Comment;
 import com.bookhup.model.User;
 
@@ -15,7 +16,7 @@ public interface CommentService {
 
     Comment addCommentToReview(Long reviewId, User currentUser, String content, Long parentId);
 
-    List<Comment> getCommentsByReview(Long reviewId);
+    List<CommentResponse> getCommentsByReview(Long reviewId);
 
     List<Comment> getReplies(Long parentId);
 

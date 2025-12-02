@@ -5,6 +5,7 @@ import com.bookhup.model.Post;
 import com.bookhup.model.User;
 import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
+import com.bookhup.service.UserBehaviorLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.Executor;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -19,6 +21,8 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
+    private final UserBehaviorLogService userBehaviorLogService;
+    private final Executor logExecutor;
 
     @PreAuthorize("hasAuthority('POST_CREATE')")
     @PostMapping
@@ -47,7 +51,9 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public Post getPost(@PathVariable Long postId) {
+    public Post getPost(@RequestAttribute("currentUser") User user, @PathVariable Long postId) {
+        //Ghi log view
+//        logExecutor.execute(() -> userBehaviorLogService.logView(user.getUserId(), postId));
         return postService.getPost(postId);
     }
 

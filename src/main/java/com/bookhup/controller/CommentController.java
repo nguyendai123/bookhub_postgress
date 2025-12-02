@@ -1,5 +1,6 @@
 package com.bookhup.controller;
 
+import com.bookhup.dto.response.comment.CommentResponse;
 import com.bookhup.model.Comment;
 import com.bookhup.model.User;
 import com.bookhup.service.CommentService;
@@ -62,7 +63,7 @@ public class CommentController {
 
     @PreAuthorize("hasAuthority('COMMENT_READ')")
     @GetMapping("/review/{reviewId}")
-    public ResponseEntity<List<Comment>> getReviewComments(@PathVariable Long reviewId) {
+    public ResponseEntity<List<CommentResponse>> getReviewComments(@PathVariable Long reviewId) {
         return ResponseEntity.ok(commentService.getCommentsByReview(reviewId));
     }
 

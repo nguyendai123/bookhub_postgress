@@ -51,6 +51,13 @@ public class Book {
 
     private LocalDateTime createdAt;
 
+    // ========== BookReview ==========
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Set<BookReview> bookReviews = new HashSet<>();
+
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     @ToString.Exclude
