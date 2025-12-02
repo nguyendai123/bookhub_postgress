@@ -6,6 +6,7 @@ import com.bookhup.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -27,4 +28,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     // Lấy reply theo parentId
     List<Comment> findByParentIdOrderByCreatedAtAsc(Long parentId);
+
+    Collection<Comment> findByReviewReviewIdOrderByCreatedAtAsc(Long reviewId);
 }

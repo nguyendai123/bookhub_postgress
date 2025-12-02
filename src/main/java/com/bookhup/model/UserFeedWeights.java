@@ -37,18 +37,30 @@ public class UserFeedWeights {
     @Column(name = "last_update")
     private LocalDateTime lastUpdate = LocalDateTime.now();
 
-    public UserFeedWeights(double wRecentInteraction, double wFollowing, double wTrending) {
+    public UserFeedWeights(Long userId, double wRecentInteraction, double wFollowing, double wTrending) {
+        this.userId = userId;
         this.wRecentInteraction = wRecentInteraction;
         this.wFollowing = wFollowing;
         this.wTrending = wTrending;
     }
 
+    // Scale tổng về 1.0 và không cho âm
     public void normalize() {
-        double total = wRecentInteraction + wFollowing + wTrending;
+        wRecentInteraction = Math.max(0, wRecentInteraction);
+        wFollowing = Math.max(0, wFollowing);
+        wTrending = Math.max(0, wTrending);
 
-        wRecentInteraction /= total;
-        wFollowing /= total;
-        wTrending /= total;
+        double sum = wRecentInteraction + wFollowing + wTrending;
+        if (sum == 0) {
+            wRecentInteraction = 0.5;
+            wFollowing = 0.3;
+            wTrending = 0.2;
+            return;
+        }
+
+        wRecentInteraction /= sum;
+        wFollowing /= sum;
+        wTrending /= sum;
     }
 }
 

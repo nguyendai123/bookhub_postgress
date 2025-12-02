@@ -1,6 +1,7 @@
 package com.bookhup.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -45,7 +46,8 @@ public class User {
     private Integer level;
 
     @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
 
     @Column(nullable = false)
     private boolean isAdmin = false;
@@ -76,12 +78,13 @@ public class User {
     @Column(columnDefinition = "json")
     private String socialLinks; // JSON
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Set<Role> roles = new HashSet<>();
 
     // ========== BookReview ==========

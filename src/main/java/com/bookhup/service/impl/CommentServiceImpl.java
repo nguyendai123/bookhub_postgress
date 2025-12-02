@@ -1,5 +1,6 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.dto.response.comment.CommentResponse;
 import com.bookhup.model.BookReview;
 import com.bookhup.model.Comment;
 import com.bookhup.model.Post;
@@ -64,11 +65,12 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findByPost(post);
     }
 
-    public List<Comment> getCommentsByReview(Long reviewId) {
-        BookReview review = reviewRepository.findById(reviewId)
-                .orElseThrow(() -> new RuntimeException("Review not found"));
-
-        return commentRepository.findByReview(review);
+    @Override
+    public List<CommentResponse> getCommentsByReview(Long reviewId) {
+        return commentRepository.findByReviewReviewIdOrderByCreatedAtAsc(reviewId)
+                .stream()
+                .map(CommentResponse::from)
+                .toList();
     }
 
     public List<Comment> getReplies(Long parentId) {

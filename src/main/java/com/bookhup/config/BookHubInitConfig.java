@@ -17,6 +17,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.bookhup.model.UserStatus.ACTIVE;
+
 @Configuration
 public class BookHubInitConfig {
 
@@ -140,6 +142,7 @@ public class BookHubInitConfig {
                         .passwordHash(passwordEncoder.encode("1232001"))
                         .createdAt(LocalDateTime.now())
                         .isAdmin(true)
+                        .status(ACTIVE)
                         .roles(new HashSet<>())
                         .build();
 
@@ -153,6 +156,7 @@ public class BookHubInitConfig {
                         .passwordHash(passwordEncoder.encode("1232001"))
                         .createdAt(LocalDateTime.now())
                         .isAdmin(false)
+                        .status(ACTIVE)
                         .roles(new HashSet<>())
                         .build();
 

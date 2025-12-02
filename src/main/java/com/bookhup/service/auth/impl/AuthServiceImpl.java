@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.bookhup.model.UserStatus.ACTIVE;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -52,6 +54,7 @@ public class AuthServiceImpl implements AuthService {
                 .passwordHash(passwordEncoder.encode(request.getPassword()))
                 .createdAt(LocalDateTime.now())
                 .isAdmin(false)
+                .status(ACTIVE)
                 .roles(new HashSet<>())
                 .build();
 
@@ -64,7 +67,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByUsernameWithRoles(request.getUsername())
+        User user = userRepository.findByUsernameActive(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid Username or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
