@@ -19,24 +19,24 @@ public class FollowController {
     @PostMapping("/{targetUserId}")
     public String follow(@RequestAttribute("currentUser") User user,
                          @PathVariable Long targetUserId) {
-        followService.follow(user.getUserId(), targetUserId);
+        followService.follow(user, targetUserId);
         return "Follow thành công.";
     }
 
     @DeleteMapping("/{targetUserId}")
     public String unfollow(@RequestAttribute("currentUser") User user,
                            @PathVariable Long targetUserId) {
-        followService.unfollow(user.getUserId(), targetUserId);
+        followService.unfollow(user, targetUserId);
         return "Unfollow thành công.";
     }
 
-    // ⭐ Lấy danh sách follower
+    // ⭐ Lấy danh sách cac follower ( nhung nguoi dang theo doi userId)
     @GetMapping("/{userId}/followers")
     public List<Follow> getFollowers(@PathVariable Long userId) {
         return followService.getFollowers(userId);
     }
 
-    // ⭐ Lấy danh sách following
+    // ⭐ Lấy danh sách cac following (userId dang theo doi nhung ai)
     @GetMapping("/{userId}/following")
     public List<Follow> getFollowing(@PathVariable Long userId) {
         return followService.getFollowing(userId);

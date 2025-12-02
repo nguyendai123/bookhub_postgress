@@ -28,10 +28,7 @@ public class ReadingServiceImpl implements ReadingService {
 
     // ====== Add book to reading shelf ======
     @Override
-    public ReadingProgress addToShelf(Long userId, ReadingAddRequest req) {
-
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ReadingProgress addToShelf(User user, ReadingAddRequest req) {
 
         Book book = bookRepo.findById(req.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
@@ -39,7 +36,7 @@ public class ReadingServiceImpl implements ReadingService {
         int totalPages = book.getTotalPages();
 
         ReadingProgress progress = repo
-                .findByUser_UserIdAndBook_BookId(userId, req.getBookId())
+                .findByUser_UserIdAndBook_BookId(user.getUserId(), req.getBookId())
                 .orElse(ReadingProgress.builder()
                         .user(user)
                         .book(book)
@@ -85,9 +82,9 @@ public class ReadingServiceImpl implements ReadingService {
 
     // ====== Update progress ======
     @Override
-    public ReadingProgressResponse updateProgress(Long userId, ReadingUpdateRequest req) {
+    public ReadingProgressResponse updateProgress(User user, ReadingUpdateRequest req) {
 
-        ReadingProgress progress = repo.findByUser_UserIdAndBook_BookId(userId, req.getBookId())
+        ReadingProgress progress = repo.findByUser_UserIdAndBook_BookId(user.getUserId(), req.getBookId())
                 .orElseThrow(() -> new RuntimeException("You haven't added this book to your shelf"));
 
         Book book = bookRepo.findById(req.getBookId())

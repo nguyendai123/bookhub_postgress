@@ -21,7 +21,7 @@ public class ReadingController {
             @RequestAttribute("currentUser") User user,
             @RequestBody ReadingAddRequest request) {
 
-        return ResponseEntity.ok(service.addToShelf(user.getUserId(), request));
+        return ResponseEntity.ok(service.addToShelf(user, request));
     }
 
     // --- Update reading progress ---
@@ -30,7 +30,7 @@ public class ReadingController {
             @RequestAttribute("currentUser") User user,
             @RequestBody ReadingUpdateRequest request) {
 
-        return ResponseEntity.ok(service.updateProgress(user.getUserId(), request));
+        return ResponseEntity.ok(service.updateProgress(user, request));
     }
 }
 

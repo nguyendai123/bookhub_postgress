@@ -25,13 +25,10 @@ public class FollowServiceImpl implements FollowService {
     private final UserBehaviorLogService behaviorLogService;
 
     @Override
-    public void follow(Long userId, Long targetUserId) {
+    public void follow(User user, Long targetUserId) {
 
-        if (userId.equals(targetUserId))
+        if (user.getUserId().equals(targetUserId))
             throw new RuntimeException("Không thể tự follow chính mình.");
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User không tồn tại."));
 
         User target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new RuntimeException("Người được follow không tồn tại."));
@@ -55,15 +52,11 @@ public class FollowServiceImpl implements FollowService {
         );
 
         // Ghi log hành vi
-        behaviorLogService.logFollow(userId, targetUserId, USER_FOLLOW);
+        behaviorLogService.logFollow(user.getUserId(), targetUserId, USER_FOLLOW);
     }
 
     @Override
-    public void unfollow(Long userId, Long targetUserId) {
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User không tồn tại."));
-
+    public void unfollow(User user, Long targetUserId) {
         User target = userRepository.findById(targetUserId)
                 .orElseThrow(() -> new RuntimeException("Người được unfollow không tồn tại."));
 
@@ -73,7 +66,7 @@ public class FollowServiceImpl implements FollowService {
         followRepository.delete(follow);
 
         // Ghi log hành vi
-        behaviorLogService.logFollow(userId, targetUserId, USER_UNFOLLOW);
+        behaviorLogService.logFollow(user.getUserId(), targetUserId, USER_UNFOLLOW);
     }
 
     @Override
