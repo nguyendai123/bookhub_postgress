@@ -1,20 +1,23 @@
 package com.bookhup.service.auth.impl;
 
+import com.bookhup.dto.request.auth.ChangePasswordRequest;
+import com.bookhup.dto.request.auth.LoginRequest;
+import com.bookhup.dto.request.auth.RegisterRequest;
+import com.bookhup.dto.request.auth.ResetPasswordRequest;
+import com.bookhup.dto.response.MessageResponse;
+import com.bookhup.dto.response.auth.AuthResponse;
 import com.bookhup.jwts.JwtProvider;
 import com.bookhup.model.*;
 import com.bookhup.repository.PermissionRepository;
 import com.bookhup.repository.RoleRepository;
 import com.bookhup.repository.UserFeedWeightsRepository;
 import com.bookhup.repository.UserRepository;
-import com.bookhup.dto.request.auth.LoginRequest;
-import com.bookhup.dto.request.auth.RegisterRequest;
-import com.bookhup.dto.request.auth.ResetPasswordRequest;
-import com.bookhup.dto.response.MessageResponse;
-import com.bookhup.dto.response.auth.AuthResponse;
 import com.bookhup.service.EmailService;
 import com.bookhup.service.auth.AuthService;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse register(RegisterRequest request) {
 
-        if (userRepository.existsByUsernameOrEmail(request.getUsername(),request.getEmail())) {
+        if (userRepository.existsByUsernameOrEmail(request.getUsername(), request.getEmail())) {
             throw new RuntimeException("Username or Email already in use");
         }
 
@@ -114,13 +117,30 @@ public class AuthServiceImpl implements AuthService {
         return response;
     }
 
+    @Override
+    public Object changePassword(User currentUser, ChangePasswordRequest request) {
+
+        // Validate current password
+        if (!passwordEncoder.matches(request.getOldPassword(), currentUser.getPasswordHash())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Mật khẩu hiện tại không đúng!");
+        }
+
+        // Set new password
+        currentUser.setPasswordHash(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(currentUser);
+
+        return ResponseEntity.ok("Mật khẩu tài khoản của bạn đã được thay đổi.");
+
+    }
+
     public void createDefaultWeights(Long userId) {
         UserFeedWeights w = UserFeedWeights.builder()
                 .userId(userId)
-        .wRecentInteraction(0.5)
-        .wFollowing(0.3)
-        .wTrending(0.2)
-        .build();
+                .wRecentInteraction(0.5)
+                .wFollowing(0.3)
+                .wTrending(0.2)
+                .build();
         weightsRepo.save(w);
     }
 

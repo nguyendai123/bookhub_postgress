@@ -5,7 +5,6 @@ import com.bookhup.model.UserFeedWeights;
 import com.bookhup.repository.UserFeedWeightsRepository;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 

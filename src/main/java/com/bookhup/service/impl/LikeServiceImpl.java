@@ -76,4 +76,50 @@ public class LikeServiceImpl implements LikeService {
 
         return "Like thành công!";
     }
+
+    @Override
+    public String toggleUnlike(LikeRequest req, User user) {
+        // Kiểm tra đã like chưa
+        Like like = likeRepo.findByUserUserIdAndTargetTypeAndTargetId(
+                user.getUserId(), req.getTargetType(), req.getTargetId()
+        ).orElse(null);
+
+        if (like == null) {
+            return "Bạn chưa thích trước đó!";
+        }
+
+        switch (req.getTargetType()) {
+            case "POST" -> {
+                Post p = postRepo.findById(req.getTargetId())
+                        .orElseThrow(() -> new RuntimeException("Post không tồn tại"));
+
+                p.setLikesCount(Math.max(0, p.getLikesCount() - 1));
+                p.setScoreDirty(true);
+                postRepo.save(p);
+            }
+
+            case "COMMENT" -> {
+                Comment c = commentRepo.findById(req.getTargetId())
+                        .orElseThrow(() -> new RuntimeException("Comment không tồn tại"));
+
+                c.setLikesCount(Math.max(0, c.getLikesCount() - 1));
+                commentRepo.save(c);
+            }
+
+            case "BOOKREVIEW" -> {
+                BookReview r = bookReviewRepo.findById(req.getTargetId())
+                        .orElseThrow(() -> new RuntimeException("BOOKREVIEW không tồn tại"));
+
+                r.setLikesCount(Math.max(0, r.getLikesCount() - 1));
+                bookReviewRepo.save(r);
+            }
+
+            default -> throw new RuntimeException("targetType không hợp lệ! Chỉ chấp nhận POST, COMMENT, BOOKREVIEW");
+        }
+
+        likeRepo.delete(like);
+
+        return "Unlike thành công!";
+    }
+
 }

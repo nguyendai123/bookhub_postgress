@@ -23,6 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 import static com.bookhup.model.ActionType.*;
@@ -100,13 +101,16 @@ public class UserBehaviorAspect {
 
             // Special: POST /api/like → LikeRequest trong body
             if (likeReq != null &&
-                (at == POST_LIKE || at == BOOKREVIEW_LIKE || at == COMMENT_LIKE)) {
+                Set.of(POST_LIKE, BOOKREVIEW_LIKE, COMMENT_LIKE, POST_UNLIKE, BOOKREVIEW_UNLIKE, COMMENT_UNLIKE).contains(at)) {
 
                 String target = likeReq.getTargetType();
 
-                if ("POST".equalsIgnoreCase(target)) return POST_LIKE;
-                if ("BOOKREVIEW".equalsIgnoreCase(target)) return BOOKREVIEW_LIKE;
-                if ("COMMENT".equalsIgnoreCase(target)) return COMMENT_LIKE;
+                return switch (target.toUpperCase()) {
+                    case "POST" -> at == COMMENT_UNLIKE ? POST_UNLIKE : POST_LIKE;
+                    case "BOOKREVIEW" -> at == COMMENT_UNLIKE ? BOOKREVIEW_UNLIKE : BOOKREVIEW_LIKE;
+                    case "COMMENT" -> at == COMMENT_UNLIKE ? COMMENT_UNLIKE : COMMENT_LIKE;
+                    default -> at; // fallback
+                };
             }
 
             return at;

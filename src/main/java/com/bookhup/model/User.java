@@ -27,9 +27,11 @@ public class User {
     @Column(nullable = false, length = 100, unique = true)
     private String username;
 
+    @JsonIgnore
     @Column(nullable = false, length = 255, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
@@ -85,6 +87,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     // ========== ReadingProgress ==========

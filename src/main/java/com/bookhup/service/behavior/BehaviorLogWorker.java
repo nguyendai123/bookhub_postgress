@@ -90,7 +90,8 @@ public class BehaviorLogWorker {
         for (Thread t : workerThreads) {
             try {
                 t.join();
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
         }
 
         // 3️⃣ Flush queue còn lại (không cần batch)

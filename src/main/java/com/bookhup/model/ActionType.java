@@ -35,10 +35,17 @@ public enum ActionType {
     POST_ALL_FEEDS("/api/posts/all-feeds", HttpMethod.GET),
     POST_SHARE("/api/share", HttpMethod.POST),
 
+    POST_CLICK_IMAGE("/api/posts/image/click/{id}", HttpMethod.POST),
+    POST_CLICK_COMMENT_SECTION("/api/posts/comments/click/{id}", HttpMethod.POST),
+
     // ================= LIKE =================
     COMMENT_LIKE("/api/like", HttpMethod.POST),
     BOOKREVIEW_LIKE("/api/like", HttpMethod.POST),
     POST_LIKE("/api/like", HttpMethod.POST),
+
+    COMMENT_UNLIKE("/api/unlike", HttpMethod.POST),
+    BOOKREVIEW_UNLIKE("/api/unlike", HttpMethod.POST),
+    POST_UNLIKE("/api/unlike", HttpMethod.POST),
 
     // ================= HASHTAGS =================
     HASHTAG_CLICK("/api/hashtags/add", HttpMethod.POST),
@@ -85,7 +92,8 @@ public enum ActionType {
     READING_PROGRESS_UPDATE("/api/reading/update", HttpMethod.POST),
 
     // ================= NOTIFICATION =================
-    NOTIFICATION_VIEW("/api/notifications", HttpMethod.GET);
+    NOTIFICATION_VIEW("/api/notifications", HttpMethod.GET),
+    UNKNOWN("", null );
 
     private final HttpMethod method;
 
@@ -93,11 +101,14 @@ public enum ActionType {
 
     ActionType(String pathPattern, HttpMethod method) {
         this.method = method;
+        if (pathPattern == null || pathPattern.isEmpty()) {
+            this.compiledPattern = null;
+        } else {
+            // Replace {xxx} → [^/]+
+            String regex = "^" + pathPattern
+                    .replaceAll("\\{[^/]+}", "[^/]+") + "$";
 
-        // Replace {xxx} → [^/]+
-        String regex = "^" + pathPattern
-                .replaceAll("\\{[^/]+}", "[^/]+") + "$";
-
-        this.compiledPattern = Pattern.compile(regex);
+            this.compiledPattern = Pattern.compile(regex);
+        }
     }
 }

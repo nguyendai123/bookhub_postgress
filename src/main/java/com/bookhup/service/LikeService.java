@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface LikeService {
     String toggleLike(LikeRequest req, User user);
+
+    String toggleUnlike(LikeRequest req, User user);
 }
