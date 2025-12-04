@@ -6,6 +6,7 @@ import com.bookhup.model.User;
 import com.bookhup.model.UserBehaviorLog;
 import com.bookhup.repository.UserBehaviorLogRepository;
 import com.bookhup.security.SecurityUtil;
+import com.bookhup.service.queue.BehaviorLogQueue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -33,6 +35,7 @@ public class UserBehaviorAspect {
 
     private final UserBehaviorLogRepository logRepo;
     private final ObjectMapper objectMapper;
+    private final BehaviorLogQueue logQueue;
     /**
      * ---------------- THREAD POOL CỰC NHẸ CHO LOGGING ----------------
      */
@@ -66,18 +69,15 @@ public class UserBehaviorAspect {
         /** ============ Gửi việc log vào BACKGROUND ============ */
         logExecutor.submit(() -> {
             try {
-                Map<String, Object> metadata = extractMetadata(pjp.getArgs());
-                UserBehaviorLog logItem = UserBehaviorLog.builder()
+                Map<String, Object> metadata = extractMetadata(pjp.getArgs(), pjp);
+                logQueue.push(UserBehaviorLog.builder()
                         .userId(userId)
                         .actionType(action)
                         .metadata(metadata)
                         .device(SecurityUtil.getDevice(req))
                         .location(SecurityUtil.getLocation(req))
                         .timestamp(LocalDateTime.now())
-                        .build();
-
-                logRepo.save(logItem);
-
+                        .build());
             } catch (Exception e) {
                 log.error("Failed to save user behavior log", e);
             }
@@ -127,12 +127,20 @@ public class UserBehaviorAspect {
     /**
      * ================== Metadata =====================
      **/
-    private Map<String, Object> extractMetadata(Object[] args) {
+    private Map<String, Object> extractMetadata(Object[] args, ProceedingJoinPoint pjp) {
 
         Map<String, Object> map = new HashMap<>();
 
+        MethodSignature sig = (MethodSignature) pjp.getSignature();
+        String[] paramNames = sig.getParameterNames();   // <-- tên thật trong method
+        Class<?>[] paramTypes = sig.getParameterTypes();
+
         int index = 0;
-        for (Object arg : args) {
+        for (int i = 0; i < args.length; i++) {
+
+            Object arg = args[i];
+            String paramName = paramNames[i];
+            Class<?> type = paramTypes[i];
 
             if (arg == null) continue;
 
@@ -157,18 +165,40 @@ public class UserBehaviorAspect {
                 continue;
             }
 
-            try {
-                // Nếu là DTO → convert sang map (nhỏ, gọn)
-                map.put("arg" + index, objectMapper.convertValue(arg, Map.class));
-            } catch (Exception e) {
-                // fallback nếu convert fail
-                map.put("arg" + index, arg.toString());
+            // ✔ 3. Nếu là primitive hoặc wrapper → lưu thẳng
+            if (isPrimitiveLike(type)) {
+                map.put(paramName, arg);
+                continue;
             }
 
-            index++;
+            // ✔ 4. Nếu là String → lưu luôn
+            if (arg instanceof String) {
+                map.put(paramName, arg);
+                continue;
+            }
+
+            // ✔ 5. Nếu là DTO → chuyển sang map bằng ObjectMapper
+            try {
+                Map<String, Object> dtoMap =
+                        objectMapper.convertValue(arg, Map.class);
+                map.put(paramName, dtoMap);
+            } catch (Exception e) {
+                // fallback
+                map.put(paramName, arg.toString());
+            }
         }
 
         return map;
+    }
+
+    /**
+     * Kiểm tra primitive / wrapper / Long / Integer / Boolean
+     */
+    private boolean isPrimitiveLike(Class<?> type) {
+        return type.isPrimitive()
+               || Number.class.isAssignableFrom(type)
+               || type == Boolean.class
+               || type == Character.class;
     }
 
     private boolean isIgnoredType(Object arg) {

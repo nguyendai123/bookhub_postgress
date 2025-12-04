@@ -5,6 +5,7 @@ import com.bookhup.repository.UserBehaviorLogRepository;
 import com.bookhup.service.queue.BehaviorLogQueue;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,12 +19,14 @@ public class BehaviorLogWorker {
     private final UserBehaviorLogRepository repo;
     private final WeightLearningEngine weightEngine;
 
-    private static final int BATCH_SIZE = 2;
+    @Value("${behavior-log.workers:1}")
+    private int workers;
+
+    @Value("${behavior-log.batch-size:2}")
+    private int batchSize;
 
     @PostConstruct
     public void startWorkers() {
-        int workers = Runtime.getRuntime().availableProcessors(); // số core CPU
-
         for (int i = 0; i < workers; i++) {
             Thread t = new Thread(this::processLoop, "log-worker-" + i);
             t.start();
@@ -32,7 +35,7 @@ public class BehaviorLogWorker {
 
 
     private void processLoop() {
-        List<UserBehaviorLog> buffer = new ArrayList<>(BATCH_SIZE);
+        List<UserBehaviorLog> buffer = new ArrayList<>(batchSize);
 
         while (true) {
             try {
@@ -41,7 +44,7 @@ public class BehaviorLogWorker {
                 buffer.add(log);
 
                 // nếu đủ batch thì ghi DB
-                if (buffer.size() >= BATCH_SIZE) {
+                if (buffer.size() >= batchSize) {
                     repo.saveAll(buffer);       // batch insert siêu nhanh
 
                     // chạy weightEngine async

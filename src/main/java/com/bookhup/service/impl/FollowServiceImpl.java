@@ -1,19 +1,16 @@
 package com.bookhup.service.impl;
 
-import com.bookhup.model.*;
+import com.bookhup.model.Follow;
+import com.bookhup.model.User;
 import com.bookhup.repository.FollowRepository;
 import com.bookhup.repository.UserRepository;
 import com.bookhup.service.FollowService;
 import com.bookhup.service.NotificationService;
-import com.bookhup.service.UserBehaviorLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static com.bookhup.model.ActionType.USER_FOLLOW;
-import static com.bookhup.model.ActionType.USER_UNFOLLOW;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +19,6 @@ public class FollowServiceImpl implements FollowService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final NotificationService notificationService;
-    private final UserBehaviorLogService behaviorLogService;
 
     @Override
     public void follow(User user, Long targetUserId) {
@@ -50,9 +46,6 @@ public class FollowServiceImpl implements FollowService {
                 user.getUsername() + " đã follow bạn.",
                 "FOLLOW"
         );
-
-        // Ghi log hành vi
-        behaviorLogService.logFollow(user.getUserId(), targetUserId, USER_FOLLOW);
     }
 
     @Override
@@ -64,9 +57,6 @@ public class FollowServiceImpl implements FollowService {
                 .orElseThrow(() -> new RuntimeException("Bạn chưa follow người này."));
 
         followRepository.delete(follow);
-
-        // Ghi log hành vi
-        behaviorLogService.logFollow(user.getUserId(), targetUserId, USER_UNFOLLOW);
     }
 
     @Override
