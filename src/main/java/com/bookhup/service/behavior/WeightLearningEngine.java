@@ -3,9 +3,13 @@ package com.bookhup.service.behavior;
 import com.bookhup.model.UserBehaviorLog;
 import com.bookhup.model.UserFeedWeights;
 import com.bookhup.repository.UserFeedWeightsRepository;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +19,7 @@ public class WeightLearningEngine {
     private final ThreadPoolTaskExecutor weightExecutor;
 
     public void asyncProcess(UserBehaviorLog log) {
+        if (weightExecutor.getThreadPoolExecutor().isShutdown()) return;
         weightExecutor.submit(() -> process(log));
     }
 
@@ -32,10 +37,12 @@ public class WeightLearningEngine {
 
             case USER_FOLLOW -> {
                 w.setWFollowing(w.getWFollowing() + 0.02);
+                w.setLastUpdate(LocalDateTime.now());
             }
 
             case USER_UNFOLLOW -> {
                 w.setWFollowing(w.getWFollowing() - 0.03);
+                w.setLastUpdate(LocalDateTime.now());
             }
         }
 
@@ -45,7 +52,7 @@ public class WeightLearningEngine {
 
     private void handlePostView(UserBehaviorLog log, UserFeedWeights w) {
         String source = (String) log.getMetadata().get("source");
-
+        w.setLastUpdate(LocalDateTime.now());
         if ("trending".equals(source)) {
             w.setWTrending(w.getWTrending() + 0.03);
         } else if ("following_feed".equals(source)) {
@@ -59,7 +66,7 @@ public class WeightLearningEngine {
     private void handlePostLike(UserBehaviorLog log, UserFeedWeights w) {
         Boolean trending = (Boolean) log.getMetadata().get("is_trending");
         Boolean following = (Boolean) log.getMetadata().get("is_following");
-
+        w.setLastUpdate(LocalDateTime.now());
         w.setWRecentInteraction(w.getWRecentInteraction() + 0.01);
 
         if (Boolean.TRUE.equals(trending)) {
@@ -68,6 +75,13 @@ public class WeightLearningEngine {
         if (Boolean.TRUE.equals(following)) {
             w.setWFollowing(w.getWFollowing() + 0.02);
         }
+    }
+
+    @PreDestroy
+    public void shutdown() {
+        System.out.println("Shutting down WeightLearningEngine...");
+        weightExecutor.shutdown(); // Spring sẽ chờ tasks finish
+        System.out.println("WeightLearningEngine stopped.");
     }
 }
 

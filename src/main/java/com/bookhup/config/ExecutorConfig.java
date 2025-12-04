@@ -24,13 +24,15 @@ public class ExecutorConfig {
     }
 
     // Feed weight
-    @Bean(name = "weightExecutor")
+    @Bean("weightExecutor")
     public ThreadPoolTaskExecutor weightExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(4);          // 4 thread xử lý ML
+        executor.setCorePoolSize(4);
         executor.setMaxPoolSize(8);
-        executor.setQueueCapacity(5000);
-        executor.setThreadNamePrefix("weight-");
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("weight-worker-");
+        executor.setWaitForTasksToCompleteOnShutdown(true); // ❗ chờ tasks còn lại
+        executor.setAwaitTerminationSeconds(10);          // max chờ 10s
         executor.initialize();
         return executor;
     }
