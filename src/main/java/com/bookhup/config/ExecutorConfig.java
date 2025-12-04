@@ -5,17 +5,25 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 @Configuration
 @EnableAsync
-public class FeedExecutorConfig {
+public class ExecutorConfig {
 
+    // Logging
     @Bean(name = "logExecutor")
-    public Executor taskExecutor() {
-        return Executors.newFixedThreadPool(4);
+    public ExecutorService logExecutor() {
+        return new ThreadPoolExecutor(
+                2,                      // Core threads
+                10,                     // Max threads
+                60L, TimeUnit.SECONDS,  // Idle thread timeout
+                new LinkedBlockingQueue<>(500),       // Queue size
+                new ThreadPoolExecutor.DiscardPolicy() // ❗ Không block API nếu full
+        );
     }
+
+    // Feed weight
     @Bean(name = "weightExecutor")
     public ThreadPoolTaskExecutor weightExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();

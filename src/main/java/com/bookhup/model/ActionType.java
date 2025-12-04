@@ -1,68 +1,103 @@
 package com.bookhup.model;
 
+import lombok.Getter;
+import org.springframework.http.HttpMethod;
+
+import java.util.regex.Pattern;
+
+@Getter
 public enum ActionType {
 
-    // AUTH
-    AUTH_LOGIN,
-    AUTH_LOGOUT,
+    // ================= AUTH =================
+    AUTH_LOGIN("/api/auth/login", HttpMethod.POST),
+    AUTH_LOGOUT("/api/auth/logout", HttpMethod.POST),
+    AUTH_REGISTER("/api/auth/register", HttpMethod.POST),
+    AUTH_RESET_PASSWORD("/api/auth/reset-password", HttpMethod.POST),
 
-    // USER
-    USER_FOLLOW,
-    USER_UNFOLLOW,
+    // ================= BOOK =================
+    BOOK_SEARCH("/api/books/search", HttpMethod.GET),
+    BOOK_VIEW_DETAIL("/api/books/{id}", HttpMethod.GET),
 
-    // POST
-    POST_CREATE,
-    POST_UPDATE,
-    POST_DELETE,
-    POST_VIEW,
-    POST_LIKE,
-    POST_UNLIKE,
-    POST_SHARE,
-    POST_SAVE,
-    POST_REPORT,
-    POST_CLICK_IMAGE,
-    POST_CLICK_COMMENT_SECTION,
+    // ================= ADMIN BOOK =================
+    ADMIN_BOOK_CREATE("/api/admin/books", HttpMethod.POST),
 
-    // COMMENT
-    COMMENT_CREATE,
-    COMMENT_REPLY,
-    COMMENT_DELETE,
-    COMMENT_LIKE,
-    COMMENT_VIEW,
+    // ================= AUTHORS =================
+    AUTHOR_LIST("/api/authors", HttpMethod.GET),
+    AUTHOR_CREATE("/api/authors", HttpMethod.POST),
 
-    // HASHTAG
-    HASHTAG_CLICK,
-    HASHTAG_FOLLOW,
+    // ================= POSTS =================
+    POST_LIST("/api/posts", HttpMethod.GET),
+    POST_CREATE("/api/posts", HttpMethod.POST),
+    POST_VIEW("/api/posts/{id}", HttpMethod.GET),
+    POST_UPDATE("/api/posts/{id}", HttpMethod.PUT),
+    POST_DELETE("/api/posts/{id}", HttpMethod.DELETE),
 
-    // BOOK
-    BOOK_SEARCH,
-    TAG_SEARCH,
-    POST_STATS_VIEW,
-    BOOK_VIEW,
-    BOOK_VIEW_TRENDING,
-    BOOK_VIEW_DETAIL,
-    BOOK_READ_SAMPLE,
-    BOOK_ADD_TO_FAVORITE,
-    BOOK_REMOVE_FROM_FAVORITE,
+    POST_ALL_FEEDS("/api/posts/all-feeds", HttpMethod.GET),
+    POST_SHARE("/api/share", HttpMethod.POST),
 
-    // REVIEW
-    REVIEW_CREATE,
-    REVIEW_UPDATE,
-    REVIEW_DELETE,
-    REVIEW_LIKE,
-    REVIEW_UNLIKE,
-    REVIEW_SHARE,
-    REVIEW_VIEW,
-    REVIEW_REPORT,
+    // ================= LIKE =================
+    COMMENT_LIKE("/api/like", HttpMethod.POST),
+    BOOKREVIEW_LIKE("/api/like", HttpMethod.POST),
+    POST_LIKE("/api/like", HttpMethod.POST),
 
-    // READING
-    READING_ADD,
-    READING_UPDATE,
-    READING_VIEW,
-    READING_PROGRESS_UPDATE,
-    READING_FINISH_BOOK,
+    // ================= HASHTAGS =================
+    HASHTAG_CLICK("/api/hashtags/add", HttpMethod.POST),
 
-    // NOTIFICATION
-    NOTIFICATION_VIEW,
-    NOTIFICATION_CLICK;
+    // ================= GENRES =================
+    GENRE_LIST("/api/genres", HttpMethod.GET),
+    GENRE_CREATE("/api/genres", HttpMethod.POST),
+
+    // ================= USERS =================
+    USER_LIST("/api/users", HttpMethod.GET),
+    USER_DELETE("/api/users/delete/{id}", HttpMethod.DELETE),
+    USER_UPDATE_PROFILE("/api/users/profile/update", HttpMethod.PUT),
+
+    // ================= FOLLOW =================
+    FOLLOW_CHECK("/api/follow/check", HttpMethod.GET),
+    USER_FOLLOW("/api/follow/{id}", HttpMethod.POST),
+    USER_UNFOLLOW("/api/follow/{id}", HttpMethod.DELETE),
+    FOLLOWERS_LIST("/api/follow/{id}/followers", HttpMethod.GET),
+    FOLLOWING_LIST("/api/follow/{id}/following", HttpMethod.GET),
+
+    // ================= REVIEWS =================
+    REVIEW_CREATE("/api/reviews", HttpMethod.POST),
+    REVIEW_LIST_BY_BOOK("/api/reviews/book/{id}", HttpMethod.GET),
+    REVIEW_VIEW("/api/reviews/{id}", HttpMethod.GET),
+    REVIEW_UPDATE("/api/reviews/{id}", HttpMethod.PUT),
+    REVIEW_DELETE("/api/reviews/{id}", HttpMethod.DELETE),
+    REVIEW_COMMENT_LIST("/api/reviews/{id}/comments", HttpMethod.GET),
+    REVIEW_ADD_MEDIA("/api/reviews/{id}/media", HttpMethod.POST),
+
+    // ================= COMMENTS =================
+    COMMENT_LIST_POST("/api/comments/post/{id}", HttpMethod.GET),
+    COMMENT_CREATE_POST("/api/comments/post/{id}", HttpMethod.POST),
+
+    COMMENT_LIST_REPLIES("/api/comments/replies/{id}", HttpMethod.GET),
+
+    COMMENT_LIST_REVIEW("/api/comments/review/{id}", HttpMethod.GET),
+    COMMENT_CREATE_REVIEW("/api/comments/review/{id}", HttpMethod.POST),
+
+    COMMENT_UPDATE("/api/comments/{id}", HttpMethod.PUT),
+    COMMENT_DELETE("/api/comments/{id}", HttpMethod.DELETE),
+
+    // ================= READING =================
+    READING_ADD("/api/reading/add", HttpMethod.POST),
+    READING_PROGRESS_UPDATE("/api/reading/update", HttpMethod.POST),
+
+    // ================= NOTIFICATION =================
+    NOTIFICATION_VIEW("/api/notifications", HttpMethod.GET);
+
+    private final HttpMethod method;
+
+    private final Pattern compiledPattern;
+
+    ActionType(String pathPattern, HttpMethod method) {
+        this.method = method;
+
+        // Replace {xxx} → [^/]+
+        String regex = "^" + pathPattern
+                .replaceAll("\\{[^/]+}", "[^/]+") + "$";
+
+        this.compiledPattern = Pattern.compile(regex);
+    }
 }

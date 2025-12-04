@@ -52,8 +52,6 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public Post getPost(@RequestAttribute("currentUser") User user, @PathVariable Long postId) {
-        //Ghi log view
-//        logExecutor.execute(() -> userBehaviorLogService.logView(user.getUserId(), postId));
         return postService.getPost(postId);
     }
 

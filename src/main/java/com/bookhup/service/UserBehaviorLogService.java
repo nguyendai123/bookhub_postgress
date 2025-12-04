@@ -1,5 +1,6 @@
 package com.bookhup.service;
 
+import com.bookhup.model.ActionType;
 import org.springframework.scheduling.annotation.Async;
 
 public interface UserBehaviorLogService {
@@ -11,8 +12,5 @@ public interface UserBehaviorLogService {
     void logLike(Long userId, Long postId, boolean isTrending, boolean isFollowing);
 
     @Async("logExecutor")
-    void logFollow(Long userId, Long followUserId);
-
-    @Async("logExecutor")
-    void logUnfollow(Long userId, Long followUserId);
+    void logFollow(Long userId, Long followUserId, ActionType type);
 }

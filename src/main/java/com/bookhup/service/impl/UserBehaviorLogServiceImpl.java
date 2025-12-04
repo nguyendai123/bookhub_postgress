@@ -54,26 +54,13 @@ public class UserBehaviorLogServiceImpl implements UserBehaviorLogService {
 
     @Async("logExecutor")
     @Override
-    public void logFollow(Long userId, Long followUserId) {
+    public void logFollow(Long userId, Long targetUserId, ActionType type) {
         logQueue.push(
                 UserBehaviorLog.builder()
                         .userId(userId)
-                        .actionType(ActionType.USER_FOLLOW)
+                        .actionType(type)
                         .timestamp(LocalDateTime.now())
-                        .metadata(Map.of("follow_user", followUserId))
-                        .build()
-        );
-    }
-
-    @Async("logExecutor")
-    @Override
-    public void logUnfollow(Long userId, Long followUserId) {
-        logQueue.push(
-                UserBehaviorLog.builder()
-                        .userId(userId)
-                        .actionType(ActionType.USER_UNFOLLOW)
-                        .timestamp(LocalDateTime.now())
-                        .metadata(Map.of("follow_user", followUserId))
+                        .metadata(Map.of("target_user_id", targetUserId))
                         .build()
         );
     }
