@@ -1,8 +1,12 @@
 package com.bookhup.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 
@@ -19,22 +23,35 @@ public class Notification {
     @Column(name = "notification_id")
     private Long notificationId;
 
-    @ManyToOne
-    @JsonIgnore
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @JoinColumn(name = "user_id")
-    private User user;
+    // Người nhận thông báo
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @Column(length = 255)
-    private String message;
+    // Enum NotificationType – lưu dạng VARCHAR
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", length = 50, nullable = false)
+    private NotificationType type;
 
-    @Column(length = 50)
-    private String type;
+    // Ưu tiên (LOW, NORMAL, HIGH)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "priority", length = 20)
+    private NotificationPriority priority;
+
+    @Column(name = "title", length = 200)
+    private String title;
+
+    @Column(name = "content", columnDefinition = "TEXT")
+    private String content;
+
+    // JSON metadata (ví dụ: postId, commentId…)
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "metadata", columnDefinition = "JSON")
+    private JsonNode metadata;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "is_read")
-    private Boolean isRead;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Boolean read;
 }

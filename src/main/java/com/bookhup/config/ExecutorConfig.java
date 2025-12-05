@@ -36,6 +36,19 @@ public class ExecutorConfig {
         executor.initialize();
         return executor;
     }
+
+    @Bean("notificationExecutor")
+    public ThreadPoolTaskExecutor notificationExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(4);
+        executor.setMaxPoolSize(8);
+        executor.setQueueCapacity(500);
+        executor.setThreadNamePrefix("notification-worker-");
+        executor.setWaitForTasksToCompleteOnShutdown(true); // ❗ chờ tasks còn lại
+        executor.setAwaitTerminationSeconds(10);          // max chờ 10s
+        executor.initialize();
+        return executor;
+    }
 }
 
 

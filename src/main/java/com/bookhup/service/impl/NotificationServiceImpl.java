@@ -1,43 +1,64 @@
 package com.bookhup.service.impl;
 
 import com.bookhup.model.Notification;
+import com.bookhup.model.NotificationType;
 import com.bookhup.model.User;
 import com.bookhup.repository.NotificationRepository;
 import com.bookhup.repository.UserRepository;
 import com.bookhup.service.NotificationService;
+import com.bookhup.service.gateway.WebSocketGateway;
+import com.bookhup.service.notification.NotificationBuilder;
+import com.bookhup.service.notification.NotificationRuleEngine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
-    private final NotificationRepository repository;
     private final UserRepository userRepository;
+    private final NotificationBuilder builder;
+    private final NotificationRuleEngine ruleEngine;
+    private final NotificationRepository notificationRepo;
+    private final WebSocketGateway webSocketGateway;
 
     @Override
-    public void sendNotification(Long userId, String message, String type) {
-        User user = userRepository.findById(userId)
+    public void send(NotificationType type, Long userId, Map<String, Object> data) {
+        if (ruleEngine.isAllowed(type, userId)) return;
+
+        Notification noti = builder.build(type, userId, data);
+        notificationRepo.save(noti);
+
+        ruleEngine.markSent(type, userId);
+        // 5. Gửi realtime qua WebSocket
+        webSocketGateway.sendNotification(userId, noti);
+
+    }
+
+    @Override
+    public void sendNotification(Long userId, String message, NotificationType type) {
+        userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User không tồn tại."));
 
         Notification n = Notification.builder()
-                .user(user)
-                .message(message)
+                .userId(userId)
+                .content(message)
                 .type(type)
-                .isRead(false)
+                .read(false)
                 .createdAt(LocalDateTime.now())
                 .build();
 
-        repository.save(n);
+        notificationRepo.save(n);
     }
 
     @Override
     public List<Notification> getNotifications(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User không tồn tại."));
-        return repository.findByUserOrderByCreatedAtDesc(user);
+        return notificationRepo.findByUserIdOrderByCreatedAtDesc(userId);
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.bookhup.model.NotificationType.N050_FOLLOW_YOU;
+
 @Service
 @RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService {
@@ -44,7 +46,7 @@ public class FollowServiceImpl implements FollowService {
         notificationService.sendNotification(
                 targetUserId,
                 user.getUsername() + " đã follow bạn.",
-                "FOLLOW"
+                N050_FOLLOW_YOU
         );
     }
 

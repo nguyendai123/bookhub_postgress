@@ -6,6 +6,7 @@ import com.bookhup.model.User;
 import com.bookhup.model.UserBehaviorLog;
 import com.bookhup.repository.UserBehaviorLogRepository;
 import com.bookhup.security.SecurityUtil;
+import com.bookhup.service.notification.NotificationBatchWorker;
 import com.bookhup.service.queue.BehaviorLogQueue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +38,7 @@ public class UserBehaviorAspect {
     private final UserBehaviorLogRepository logRepo;
     private final ObjectMapper objectMapper;
     private final BehaviorLogQueue logQueue;
+    private final NotificationBatchWorker notificationWorker;
     /**
      * ---------------- THREAD POOL CỰC NHẸ CHO LOGGING ----------------
      */
@@ -71,14 +73,18 @@ public class UserBehaviorAspect {
         logExecutor.submit(() -> {
             try {
                 Map<String, Object> metadata = extractMetadata(pjp.getArgs(), pjp);
-                logQueue.push(UserBehaviorLog.builder()
+                var log = UserBehaviorLog.builder()
                         .userId(userId)
                         .actionType(action)
                         .metadata(metadata)
                         .device(SecurityUtil.getDevice(req))
                         .location(SecurityUtil.getLocation(req))
                         .timestamp(LocalDateTime.now())
-                        .build());
+                        .build();
+                // 1) Ghi log hành vi
+                logQueue.push(log);
+                // 2) Gửi thông báo nếu cần
+                notificationWorker.submit(log);
             } catch (Exception e) {
                 log.error("Failed to save user behavior log", e);
             }
