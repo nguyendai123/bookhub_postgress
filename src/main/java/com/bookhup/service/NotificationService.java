@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface NotificationService {
 
-    void send(NotificationType type, Long userId, Map<String, Object> data);
+    void send(NotificationType type, Long targetUserId, Map<String, Object> data, String username);
 
     void sendNotification(Long userId, String message, NotificationType type);
 

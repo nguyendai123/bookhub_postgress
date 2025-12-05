@@ -25,6 +25,9 @@ public class UserBehaviorLog {
     @JoinColumn(name = "user_id")
     private Long userId;
 
+    @Column(nullable = false, length = 100, unique = true)
+    private String username;
+
     @Column(name = "action_type", length = 50)
     @Enumerated(EnumType.STRING)
     private ActionType actionType;

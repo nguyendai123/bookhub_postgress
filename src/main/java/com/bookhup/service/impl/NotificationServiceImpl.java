@@ -27,15 +27,15 @@ public class NotificationServiceImpl implements NotificationService {
     private final WebSocketGateway webSocketGateway;
 
     @Override
-    public void send(NotificationType type, Long userId, Map<String, Object> data) {
-        if (ruleEngine.isAllowed(type, userId)) return;
+    public void send(NotificationType type, Long targetUserId, Map<String, Object> data, String username) {
+        if (ruleEngine.isAllowed(type, targetUserId)) return;
 
-        Notification noti = builder.build(type, userId, data);
+        Notification noti = builder.build(type, targetUserId, data, username);
         notificationRepo.save(noti);
 
-        ruleEngine.markSent(type, userId);
+        ruleEngine.markSent(type, targetUserId);
         // 5. Gửi realtime qua WebSocket
-        webSocketGateway.sendNotification(userId, noti);
+        webSocketGateway.sendNotification(targetUserId, noti);
 
     }
 

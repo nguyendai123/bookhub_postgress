@@ -45,6 +45,9 @@ public class UserStats {
     @Builder.Default
     private Integer rankPosition = 0;
 
+    @Column(name = "daily_limit", nullable = false)
+    private Integer dailyLimit;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

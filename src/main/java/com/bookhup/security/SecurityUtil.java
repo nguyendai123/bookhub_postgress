@@ -10,7 +10,7 @@ public class SecurityUtil {
     /**
      * Lấy userId từ SecurityContext (principal = User)
      */
-    public static Long getCurrentUserId() {
+    public static User getCurrentUser() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -22,7 +22,7 @@ public class SecurityUtil {
 
         // principal là User vì bạn set trong Filter
         if (principal instanceof User user) {
-            return user.getUserId();
+            return user;
         }
 
         return null; // hoặc throw exception tùy bạn

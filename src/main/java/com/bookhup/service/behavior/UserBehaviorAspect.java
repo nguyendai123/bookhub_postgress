@@ -59,7 +59,7 @@ public class UserBehaviorAspect {
 
         // Tự suy luận action theo API + Method
         ActionType action = resolveAction(uri, method, pjp.getArgs());
-        Long userId = SecurityUtil.getCurrentUserId();
+        var user = SecurityUtil.getCurrentUser();
         // Chạy API thật
         Object result = pjp.proceed();
 
@@ -73,8 +73,10 @@ public class UserBehaviorAspect {
         logExecutor.submit(() -> {
             try {
                 Map<String, Object> metadata = extractMetadata(pjp.getArgs(), pjp);
+                assert user != null;
                 var log = UserBehaviorLog.builder()
-                        .userId(userId)
+                        .userId(user.getUserId())
+                        .username(user.getUsername())
                         .actionType(action)
                         .metadata(metadata)
                         .device(SecurityUtil.getDevice(req))

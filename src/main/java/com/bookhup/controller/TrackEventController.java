@@ -23,15 +23,17 @@ public class TrackEventController {
 
     @PostMapping("/event")
     public void trackEvent(@RequestBody TrackEventRequest request) {
-        Long userId = SecurityUtil.getCurrentUserId();
+        var user = SecurityUtil.getCurrentUser();
         ServletRequestAttributes attr =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
         if (attr == null) return;
         HttpServletRequest req = attr.getRequest();
         for (TrackEventRequest.Event event : request.getEvents()) {
+            assert user != null;
             UserBehaviorLog log = UserBehaviorLog.builder()
-                    .userId(userId)
+                    .userId(user.getUserId())
+                    .username(user.getUsername())
                     .actionType(resolveActionType(event))
                     .metadata(Map.of(
                             "targetType", event.getTargetType(),

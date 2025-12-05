@@ -70,7 +70,7 @@ public class NotificationBatchWorker {
 
                 Map<String, Object> data = log.getMetadata();
 
-                Notification n = notificationBuilder.build(type, targetUserId, data);
+                Notification n = notificationBuilder.build(type, targetUserId, data, log.getUsername());
                 buffer.add(n);
 
                 // Batch save
@@ -137,7 +137,7 @@ public class NotificationBatchWorker {
 
                 if (ruleEngine.isAllowed(type, targetUserId)) continue;
 
-                Notification n = notificationBuilder.build(type, targetUserId, log.getMetadata());
+                Notification n = notificationBuilder.build(type, targetUserId, log.getMetadata(), log.getUsername());
                 finalNoti.add(n);
             }
 
