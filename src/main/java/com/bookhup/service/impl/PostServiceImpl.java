@@ -4,6 +4,7 @@ import com.bookhup.dto.response.post.PostFeedProjection;
 import com.bookhup.model.Book;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
+import com.bookhup.model.UserFeedWeights;
 import com.bookhup.repository.*;
 import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
@@ -14,9 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -79,21 +82,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<PostFeedProjection> getFeed(Long userId, int page, int size,
-                                            double wRecent, double wFollowing, double wTrending) {
+    @Transactional(readOnly = true)
+    public Page<PostFeedProjection> getFeed(Long userId, int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
+
+        double wRecent = 0.5;
+        double wFollowing = 0.3;
+        double wTrending = 0.2;
+
+        Optional<UserFeedWeights> weight = weightRepo.findById(userId);
+        if(weight.isPresent()) {
+            wRecent = weight.get().getWRecentInteraction();
+            wFollowing = weight.get().getWFollowing();
+            wTrending = weight.get().getWTrending();
+        }
+
         return postRepository.findFeedForUser(userId, wRecent, wFollowing, wTrending, pageable);
     }
-
-    @Override
-    public Page<PostFeedProjection> getFeed(Long userId, int page, int size) {
-        double defaultWRecent = 0.5;
-        double defaultWFollowing = 0.3;
-        double defaultWTrending = 0.2;
-        return getFeed(userId, page, size, defaultWRecent, defaultWFollowing, defaultWTrending);
-    }
-
 
     @Override
     public List<Post> getAllPosts() {

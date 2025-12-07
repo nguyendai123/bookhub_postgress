@@ -30,14 +30,8 @@ public class PostController {
     public Page<PostFeedProjection> getFeed(
             @RequestAttribute("currentUser") User user,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size,
-            @RequestParam(required = false) Double wRecent,
-            @RequestParam(required = false) Double wFollowing,
-            @RequestParam(required = false) Double wTrending
+            @RequestParam(defaultValue = "2") int size
     ) {
-        if (wRecent != null && wFollowing != null && wTrending != null) {
-            return postService.getFeed(user.getUserId(), page, size, wRecent, wFollowing, wTrending);
-        }
         return postService.getFeed(user.getUserId(), page, size);
     }
 

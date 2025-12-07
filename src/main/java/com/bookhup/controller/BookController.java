@@ -1,6 +1,7 @@
 package com.bookhup.controller;
 
 import com.bookhup.model.Book;
+import com.bookhup.model.User;
 import com.bookhup.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class BookController {
 
     @PreAuthorize("hasAuthority('BOOK_SEARCH')")
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestParam(required = false) String keyword) {
+    public ResponseEntity<List<Book>> searchBooks(@RequestAttribute("currentUser") User user, @RequestParam(required = false) String keyword) {
         return ResponseEntity.ok(bookService.search(keyword));
     }
 

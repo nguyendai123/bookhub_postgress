@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.bookhup.model.ActionType.*;
 
@@ -61,61 +62,56 @@ public class UserBehaviorAspect {
 
         String uri = req.getRequestURI();
         String method = req.getMethod();
+        //Lấy device + location NGAY TRONG REQUEST THREAD
+        String device = SecurityUtil.getDevice(req);
+        String location = SecurityUtil.getLocation(req);
 
-        // Tự suy luận action theo API + Method
-        ActionType action = resolveAction(uri, method, pjp.getArgs());
-
-        // Chạy API thật
+        // 👇 Chạy API thật
         Object result = pjp.proceed();
 
-        Long currentUserId = null;
-        String currentUserName = null;
+        AtomicReference<Long> finalCurrentUserId = new AtomicReference<>();
+        AtomicReference<String> finalCurrentUserName = new AtomicReference<>();
 
         // Lấy từ Security (nếu có)
         User user = SecurityUtil.getCurrentUser();
         if (user != null) {
-            currentUserId = user.getUserId();
-            currentUserName = user.getUsername();
-        }
-
-        // Nếu login, Security không có → lấy từ token hoặc return value
-        if (currentUserId == null) {
-
-            // 1) Trường hợp result là Map
-            if (result instanceof Map<?, ?> map && map.containsKey("userId")) {
-                currentUserId = Long.parseLong(map.get("userId").toString());
-            }
-
-            // 2) Trường hợp result là ResponseEntity<AuthResponse>
-            else if (result instanceof ResponseEntity<?> res
-                     && res.getBody() instanceof AuthResponse auth) {
-
-                currentUserId = auth.getUserId();
-                currentUserName = auth.getUsername();
-            }
-        }
-
-        // 👇 Lấy device + location NGAY TRONG REQUEST THREAD
-        String device = SecurityUtil.getDevice(req);
-        String location = SecurityUtil.getLocation(req);
-
-        // Không cần log → return luôn
-        if (action == null) {
-            log.info("⏭️ NO LOG ACTION: {} {}", method, uri);
-            return result;
+            finalCurrentUserId.set(user.getUserId());
+            finalCurrentUserName.set(user.getUsername());
         }
 
         /** ============ Gửi việc log vào BACKGROUND ============ */
-        Long finalCurrentUserId = currentUserId;
-        String finalCurrentUserName = currentUserName;
         logExecutor.submit(() -> {
             try {
+                // Tự suy luận action theo API + Method
+                ActionType action = resolveAction(uri, method, pjp.getArgs());
+                // Không cần log → return luôn
+                if (action == null) {
+                    log.info("⏭️ NO LOG ACTION: {} {}", method, uri);
+                    return;
+                }
+                // Nếu login, Security không có → lấy từ token hoặc return value
+                if (finalCurrentUserId.get() == null) {
+
+                    // 1) Trường hợp result là Map
+                    if (result instanceof Map<?, ?> map && map.containsKey("userId")) {
+                        finalCurrentUserId.set(Long.parseLong(map.get("userId").toString()));
+                    }
+
+                    // 2) Trường hợp result là ResponseEntity<AuthResponse>
+                    else if (result instanceof ResponseEntity<?> res
+                             && res.getBody() instanceof AuthResponse auth) {
+
+                        finalCurrentUserId.set(auth.getUserId());
+                        finalCurrentUserName.set(auth.getUsername());
+                    }
+                }
+
                 Map<String, Object> metadata = extractMetadata(pjp.getArgs(), pjp);
-                Long target = targetUserResolver.resolve(action, uri, metadata,finalCurrentUserId);
+                Long target = targetUserResolver.resolve(action, uri, metadata, finalCurrentUserId.get());
 
                 var log = UserBehaviorLog.builder()
-                        .userId(finalCurrentUserId)
-                        .username(finalCurrentUserName)
+                        .userId(finalCurrentUserId.get())
+                        .username(finalCurrentUserName.get())
                         .targetUserId(target)
                         .actionType(action)
                         .metadata(metadata)

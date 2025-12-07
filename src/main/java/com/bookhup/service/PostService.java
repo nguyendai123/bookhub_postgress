@@ -13,9 +13,6 @@ public interface PostService {
 
     Post createPost(PostRequest request, User user);
 
-    Page<PostFeedProjection> getFeed(Long userId, int page, int size,
-                                     double wRecent, double wFollowing, double wTrending);
-
     Page<PostFeedProjection> getFeed(Long userId, int page, int size);
 
     List<Post> getAllPosts();

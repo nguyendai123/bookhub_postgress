@@ -19,12 +19,15 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<String> findAllAuthors();
 
     @Query("""
-        SELECT b FROM Book b
-        WHERE (:keyword IS NULL OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
-            OR LOWER(b.isbn) LIKE LOWER(CONCAT('%', :keyword, '%'))
-            OR LOWER(b.genres) LIKE LOWER(CONCAT('%', :keyword, '%'))
-            OR LOWER(b.author.name) LIKE LOWER(CONCAT('%', :keyword, '%')))
-    """)
+                SELECT DISTINCT b FROM Book b
+                LEFT JOIN b.genres g
+                WHERE (:keyword IS NULL 
+                    OR LOWER(b.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                    OR LOWER(b.isbn) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                    OR LOWER(g.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                    OR LOWER(b.author.name) LIKE LOWER(CONCAT('%', :keyword, '%'))
+                )
+            """)
     List<Book> searchBooks(String keyword);
 
     // Tìm sách theo ISBN

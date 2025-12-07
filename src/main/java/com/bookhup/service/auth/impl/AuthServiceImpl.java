@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -68,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
         // 2. Gửi event tạo UserStats
         eventPublisher.publishEvent(new UserRegisteredEvent(user));
 
-        return new AuthResponse(user.getUserId(), user.getUsername(), "Register success", null);
+        return new AuthResponse(user.getUserId(), user.getUsername(), request.getRole(), "Register success", null);
     }
 
     @Override
@@ -94,7 +95,8 @@ public class AuthServiceImpl implements AuthService {
 
         String jwt = jwtProvider.generateToken(user.getUserId(), roles, permissions);
 
-        return new AuthResponse(user.getUserId(), user.getUsername(), "Login success", jwt);
+        return new AuthResponse(user.getUserId(), user.getUsername(),
+                user.getRoles().stream().map(r -> r.getRoleName().toString()).collect(Collectors.toSet()),"Login success", jwt);
     }
 
     @Override
