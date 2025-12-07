@@ -16,7 +16,7 @@ public class JwtProvider {
     @Value("${bookhub.app.jwtSecret}")
     private String jwtSecret;
 
-    @Value("${bookHub.app.jwtExpirationMs}")
+    @Value("${bookhub.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
 

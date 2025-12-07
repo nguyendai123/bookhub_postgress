@@ -6,20 +6,20 @@ import com.bookhup.dto.request.auth.RegisterRequest;
 import com.bookhup.dto.request.auth.ResetPasswordRequest;
 import com.bookhup.dto.response.MessageResponse;
 import com.bookhup.dto.response.auth.AuthResponse;
+import com.bookhup.event.UserRegisteredEvent;
 import com.bookhup.jwts.JwtProvider;
 import com.bookhup.model.*;
-import com.bookhup.repository.PermissionRepository;
-import com.bookhup.repository.RoleRepository;
-import com.bookhup.repository.UserFeedWeightsRepository;
-import com.bookhup.repository.UserRepository;
+import com.bookhup.repository.*;
 import com.bookhup.service.EmailService;
 import com.bookhup.service.auth.AuthService;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -35,13 +35,14 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
-    private final UserFeedWeightsRepository weightsRepo;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final UserService userService;
     private final JwtProvider jwtProvider;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
 
         if (userRepository.existsByUsernameOrEmail(request.getUsername(), request.getEmail())) {
@@ -64,8 +65,10 @@ public class AuthServiceImpl implements AuthService {
         user.getRoles().add(roleUser);
         userRepository.save(user);
 
-        createDefaultWeights(user.getUserId());
-        return new AuthResponse("Register success", null);
+        // 2. Gửi event tạo UserStats
+        eventPublisher.publishEvent(new UserRegisteredEvent(user));
+
+        return new AuthResponse(user.getUserId(), user.getUsername(), "Register success", null);
     }
 
     @Override
@@ -91,7 +94,7 @@ public class AuthServiceImpl implements AuthService {
 
         String jwt = jwtProvider.generateToken(user.getUserId(), roles, permissions);
 
-        return new AuthResponse("Login success", jwt);
+        return new AuthResponse(user.getUserId(), user.getUsername(), "Login success", jwt);
     }
 
     @Override
@@ -133,17 +136,6 @@ public class AuthServiceImpl implements AuthService {
         return ResponseEntity.ok("Mật khẩu tài khoản của bạn đã được thay đổi.");
 
     }
-
-    public void createDefaultWeights(Long userId) {
-        UserFeedWeights w = UserFeedWeights.builder()
-                .userId(userId)
-                .wRecentInteraction(0.5)
-                .wFollowing(0.3)
-                .wTrending(0.2)
-                .build();
-        weightsRepo.save(w);
-    }
-
 
 }
 

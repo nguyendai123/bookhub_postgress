@@ -37,8 +37,8 @@ public class NotificationRuleEngine {
 
         // 3. DAILY LIMIT theo từng user
         UserStats userLimit = userStatsRepository.findByUserId(userId);
-        int dailyLimit = (userLimit != null && userLimit.getDailyLimit() != null)
-                ? userLimit.getDailyLimit()
+        int dailyLimit = (userLimit != null && userLimit.getDailyLimitNoti() != null)
+                ? userLimit.getDailyLimitNoti()
                 : 10; // default nếu user không config
 
         // đếm số thông báo đã gửi trong ngày

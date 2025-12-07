@@ -103,7 +103,7 @@ public class NotificationBatchWorker {
     }
 
     private Long extractTargetUser(UserBehaviorLog log) {
-        return Long.parseLong(log.getMetadata().get("targetUserId").toString());
+        return log.getTargetUserId();
     }
 
     @PreDestroy

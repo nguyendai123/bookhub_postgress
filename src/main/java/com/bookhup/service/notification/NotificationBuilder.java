@@ -25,7 +25,7 @@ public class NotificationBuilder {
                 .priority(NotificationPriorityResolver.priorityOf(type))
                 .title(null)
                 .content(finalContent)
-                .metadata((JsonNode) data)
+                .metadata(data)
                 .createdAt(LocalDateTime.now())
                 .read(false)
                 .build();

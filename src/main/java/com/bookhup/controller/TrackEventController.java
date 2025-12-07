@@ -3,11 +3,15 @@ package com.bookhup.controller;
 import com.bookhup.dto.request.behavior.TrackEventRequest;
 import com.bookhup.model.ActionType;
 import com.bookhup.model.UserBehaviorLog;
-import com.bookhup.service.queue.BehaviorLogQueue;
 import com.bookhup.security.SecurityUtil;
+import com.bookhup.service.notification.TargetUserResolver;
+import com.bookhup.service.queue.BehaviorLogQueue;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -30,10 +34,9 @@ public class TrackEventController {
         if (attr == null) return;
         HttpServletRequest req = attr.getRequest();
         for (TrackEventRequest.Event event : request.getEvents()) {
-            assert user != null;
             UserBehaviorLog log = UserBehaviorLog.builder()
-                    .userId(user.getUserId())
-                    .username(user.getUsername())
+                    .userId(user != null ? user.getUserId() : null)
+                    .username(user != null ? user.getUsername() : null)
                     .actionType(resolveActionType(event))
                     .metadata(Map.of(
                             "targetType", event.getTargetType(),

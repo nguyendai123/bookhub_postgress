@@ -9,6 +9,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 @NoArgsConstructor
@@ -46,7 +47,7 @@ public class Notification {
     // JSON metadata (ví dụ: postId, commentId…)
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "metadata", columnDefinition = "JSON")
-    private JsonNode metadata;
+    private Map<String, Object> metadata;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

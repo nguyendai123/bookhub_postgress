@@ -1,12 +1,14 @@
 package com.bookhup.service.behavior;
 
 import com.bookhup.dto.request.like.LikeRequest;
+import com.bookhup.dto.response.auth.AuthResponse;
 import com.bookhup.model.ActionType;
 import com.bookhup.model.User;
 import com.bookhup.model.UserBehaviorLog;
 import com.bookhup.repository.UserBehaviorLogRepository;
 import com.bookhup.security.SecurityUtil;
 import com.bookhup.service.notification.NotificationBatchWorker;
+import com.bookhup.service.notification.TargetUserResolver;
 import com.bookhup.service.queue.BehaviorLogQueue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,6 +42,8 @@ public class UserBehaviorAspect {
     private final ObjectMapper objectMapper;
     private final BehaviorLogQueue logQueue;
     private final NotificationBatchWorker notificationWorker;
+    private final TargetUserResolver targetUserResolver;
+
     /**
      * ---------------- THREAD POOL CỰC NHẸ CHO LOGGING ----------------
      */
@@ -59,9 +64,40 @@ public class UserBehaviorAspect {
 
         // Tự suy luận action theo API + Method
         ActionType action = resolveAction(uri, method, pjp.getArgs());
-        var user = SecurityUtil.getCurrentUser();
+
         // Chạy API thật
         Object result = pjp.proceed();
+
+        Long currentUserId = null;
+        String currentUserName = null;
+
+        // Lấy từ Security (nếu có)
+        User user = SecurityUtil.getCurrentUser();
+        if (user != null) {
+            currentUserId = user.getUserId();
+            currentUserName = user.getUsername();
+        }
+
+        // Nếu login, Security không có → lấy từ token hoặc return value
+        if (currentUserId == null) {
+
+            // 1) Trường hợp result là Map
+            if (result instanceof Map<?, ?> map && map.containsKey("userId")) {
+                currentUserId = Long.parseLong(map.get("userId").toString());
+            }
+
+            // 2) Trường hợp result là ResponseEntity<AuthResponse>
+            else if (result instanceof ResponseEntity<?> res
+                     && res.getBody() instanceof AuthResponse auth) {
+
+                currentUserId = auth.getUserId();
+                currentUserName = auth.getUsername();
+            }
+        }
+
+        // 👇 Lấy device + location NGAY TRONG REQUEST THREAD
+        String device = SecurityUtil.getDevice(req);
+        String location = SecurityUtil.getLocation(req);
 
         // Không cần log → return luôn
         if (action == null) {
@@ -70,17 +106,21 @@ public class UserBehaviorAspect {
         }
 
         /** ============ Gửi việc log vào BACKGROUND ============ */
+        Long finalCurrentUserId = currentUserId;
+        String finalCurrentUserName = currentUserName;
         logExecutor.submit(() -> {
             try {
                 Map<String, Object> metadata = extractMetadata(pjp.getArgs(), pjp);
-                assert user != null;
+                Long target = targetUserResolver.resolve(action, uri, metadata,finalCurrentUserId);
+
                 var log = UserBehaviorLog.builder()
-                        .userId(user.getUserId())
-                        .username(user.getUsername())
+                        .userId(finalCurrentUserId)
+                        .username(finalCurrentUserName)
+                        .targetUserId(target)
                         .actionType(action)
                         .metadata(metadata)
-                        .device(SecurityUtil.getDevice(req))
-                        .location(SecurityUtil.getLocation(req))
+                        .device(device)
+                        .location(location)
                         .timestamp(LocalDateTime.now())
                         .build();
                 // 1) Ghi log hành vi

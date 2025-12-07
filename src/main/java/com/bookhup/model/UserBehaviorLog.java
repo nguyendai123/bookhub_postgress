@@ -8,6 +8,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -18,14 +19,17 @@ import java.util.Map;
 public class UserBehaviorLog {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "log_id")
-    private Long logId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID logId;
 
     @JoinColumn(name = "user_id")
     private Long userId;
 
-    @Column(nullable = false, length = 100, unique = true)
+    @JoinColumn(name = "target_user_id")
+    private Long targetUserId;
+
+    @Column(length = 100)
     private String username;
 
     @Column(name = "action_type", length = 50)
