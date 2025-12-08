@@ -2,7 +2,9 @@ package com.bookhup.service.impl;
 
 import com.bookhup.dto.request.readingProgress.ReadingUpdateRequest;
 import com.bookhup.dto.request.shelf.ReadingAddRequest;
+import com.bookhup.dto.response.readingProgress.BookDTO;
 import com.bookhup.dto.response.readingProgress.ReadingProgressResponse;
+import com.bookhup.dto.response.readingProgress.ReadingResponse;
 import com.bookhup.model.Book;
 import com.bookhup.model.ReadingProgress;
 import com.bookhup.model.User;
@@ -11,6 +13,7 @@ import com.bookhup.repository.ReadingProgressRepository;
 import com.bookhup.repository.UserRepository;
 import com.bookhup.service.ReadingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -40,12 +43,13 @@ public class ReadingServiceImpl implements ReadingService {
                 .orElse(ReadingProgress.builder()
                         .user(user)
                         .book(book)
-                        .currentPage(0)
+                        .currentPage(req.getCurrentPage())
                         .percentDone(0f)
                         .startDate(LocalDateTime.now())
                         .build()
                 );
 
+        progress.setCurrentPage(req.getCurrentPage());
         progress.setReadingStatus(req.getStatus());
         progress.setLastUpdated(LocalDateTime.now());
 
@@ -126,6 +130,21 @@ public class ReadingServiceImpl implements ReadingService {
                 progress.getPercentDone(),
                 progress.getLastUpdated()
         );
+    }
+
+    @Override
+    public ReadingResponse getReadingProgress(User user, Long bookId) {
+        Book book = bookRepo.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        Optional<ReadingProgress> progressOpt =
+                repo.findByUser_UserIdAndBook_BookId(user.getUserId(), bookId);
+
+        ReadingResponse resp = new ReadingResponse();
+        resp.setBook(new BookDTO(book));
+        resp.setReadPage(progressOpt.map(ReadingProgress::getCurrentPage).orElse(null));
+
+        return resp;
     }
 }
 

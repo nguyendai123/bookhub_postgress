@@ -11,6 +11,7 @@ import java.util.List;
 public class PostFeedResponse {
 
     private Long postId;
+    private Long bookId;
     private String content;
     private String imageUrl;
     private List<String> hashtags;
@@ -30,6 +31,7 @@ public class PostFeedResponse {
     public static PostFeedResponse fromProjection(PostFeedProjection p){
         return PostFeedResponse.builder()
                 .postId(p.getPostId())
+                .bookId(p.getBookId())
                 .content(p.getContent())
                 .imageUrl(p.getImageUrl())
                 .hashtags(p.getHashtags())

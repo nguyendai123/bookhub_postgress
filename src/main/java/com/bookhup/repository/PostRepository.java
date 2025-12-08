@@ -49,6 +49,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
             SELECT 
                 p.post_id AS postId,
+                p.book_id AS bookId,
                 p.user_id AS userId,
                 p.content,
                 p.image_url AS imageUrl,

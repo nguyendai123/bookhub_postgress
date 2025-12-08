@@ -19,7 +19,7 @@ public class BookController {
 
     @PreAuthorize("hasAuthority('BOOK_SEARCH')")
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> searchBooks(@RequestAttribute("currentUser") User user, @RequestParam(required = false) String keyword) {
+    public ResponseEntity<List<Book>> searchBooks(@RequestParam(required = false) String keyword) {
         return ResponseEntity.ok(bookService.search(keyword));
     }
 

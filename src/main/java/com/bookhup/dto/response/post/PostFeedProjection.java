@@ -6,6 +6,7 @@ import java.util.List;
 public interface PostFeedProjection {
 
     Long getPostId();
+    Long getBookId();
     String getContent();
     String getImageUrl();
     List<String> getHashtags();
