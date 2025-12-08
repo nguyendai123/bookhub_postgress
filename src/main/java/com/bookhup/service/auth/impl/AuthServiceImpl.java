@@ -6,6 +6,7 @@ import com.bookhup.dto.request.auth.RegisterRequest;
 import com.bookhup.dto.request.auth.ResetPasswordRequest;
 import com.bookhup.dto.response.MessageResponse;
 import com.bookhup.dto.response.auth.AuthResponse;
+import com.bookhup.dto.response.auth.LoginResponse;
 import com.bookhup.event.UserRegisteredEvent;
 import com.bookhup.jwts.JwtProvider;
 import com.bookhup.model.*;
@@ -73,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponse login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
         User user = userRepository.findByUsernameActive(request.getUsername())
                 .orElseThrow(() -> new RuntimeException("Invalid Username or password"));
 
@@ -95,8 +96,8 @@ public class AuthServiceImpl implements AuthService {
 
         String jwt = jwtProvider.generateToken(user.getUserId(), roles, permissions);
 
-        return new AuthResponse(user.getUserId(), user.getUsername(),
-                user.getRoles().stream().map(r -> r.getRoleName().toString()).collect(Collectors.toSet()),"Login success", jwt);
+        return new LoginResponse(user.getUserId(), user.getUsername(), user.getAvatarUrl(), user.getRoles()
+                .stream().map(r -> r.getRoleName().toString()).collect(Collectors.toSet()),"Login success", jwt);
     }
 
     @Override

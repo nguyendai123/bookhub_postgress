@@ -6,12 +6,13 @@ import com.bookhup.dto.request.auth.RegisterRequest;
 import com.bookhup.dto.request.auth.ResetPasswordRequest;
 import com.bookhup.dto.response.MessageResponse;
 import com.bookhup.dto.response.auth.AuthResponse;
+import com.bookhup.dto.response.auth.LoginResponse;
 import com.bookhup.model.User;
 
 public interface AuthService {
     AuthResponse register(RegisterRequest request);
 
-    AuthResponse login(LoginRequest request);
+    LoginResponse login(LoginRequest request);
 
     String logout();
 

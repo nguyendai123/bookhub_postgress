@@ -2,6 +2,7 @@ package com.bookhup.service.auth;
 
 import com.bookhup.model.User;
 import com.bookhup.dto.request.ProfileUpdateRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface UserService {
     void deleteUser(Long userId, String token);
 
     User updateProfile(ProfileUpdateRequest request, String token);
+
+    String uploadUserAvatar(User user, MultipartFile file);
 }
 
 

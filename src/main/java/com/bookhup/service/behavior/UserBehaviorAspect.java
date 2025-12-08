@@ -2,6 +2,7 @@ package com.bookhup.service.behavior;
 
 import com.bookhup.dto.request.like.LikeRequest;
 import com.bookhup.dto.response.auth.AuthResponse;
+import com.bookhup.dto.response.auth.LoginResponse;
 import com.bookhup.model.ActionType;
 import com.bookhup.model.User;
 import com.bookhup.model.UserBehaviorLog;
@@ -97,9 +98,9 @@ public class UserBehaviorAspect {
                         finalCurrentUserId.set(Long.parseLong(map.get("userId").toString()));
                     }
 
-                    // 2) Trường hợp result là ResponseEntity<AuthResponse>
+                    // 2) Trường hợp result là ResponseEntity<LoginResponse>
                     else if (result instanceof ResponseEntity<?> res
-                             && res.getBody() instanceof AuthResponse auth) {
+                             && res.getBody() instanceof LoginResponse auth) {
 
                         finalCurrentUserId.set(auth.getUserId());
                         finalCurrentUserName.set(auth.getUsername());

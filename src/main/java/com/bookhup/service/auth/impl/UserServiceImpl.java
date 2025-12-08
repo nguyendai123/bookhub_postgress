@@ -13,9 +13,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -115,5 +122,38 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return user;
+    }
+
+    private static final String AVATAR_FOLDER = "src/main/resources/static/avatars/";
+
+    public String uploadUserAvatar(User user, MultipartFile file) {
+
+        try {
+            // Tạo tên file: userId + đuôi
+            String extension = Objects.requireNonNull(file.getOriginalFilename())
+                    .substring(file.getOriginalFilename().lastIndexOf("."));
+
+            String fileName = "user_" + user.getUserId() + extension;
+
+            // Path lưu file vào static
+            Path filePath = Paths.get(AVATAR_FOLDER + fileName);
+
+            // Tạo thư mục nếu chưa có
+            Files.createDirectories(filePath.getParent());
+
+            // Ghi file
+            Files.write(filePath, file.getBytes(), StandardOpenOption.CREATE);
+
+            // URL để FE hiển thị
+            String avatarUrl = "/avatars/" + fileName;
+
+            user.setAvatarUrl(avatarUrl);
+            userRepository.save(user);
+
+            return avatarUrl;
+
+        } catch (IOException e) {
+            throw new RuntimeException("Upload avatar failed", e);
+        }
     }
 }
