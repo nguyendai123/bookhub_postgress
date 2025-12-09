@@ -141,8 +141,8 @@ public class UserBehaviorAspect {
 
         for (ActionType at : ActionType.values()) {
 
-            if (!at.getMethod().name().equals(method)) continue;
-            if (!at.getCompiledPattern().matcher(uri).matches()) continue;
+            if (at.getMethod() == null || !method.equals(at.getMethod().name())) continue;
+            if (at.getCompiledPattern() == null || !at.getCompiledPattern().matcher(uri).matches()) continue;
 
             // Special: POST /api/like → LikeRequest trong body
             if (likeReq != null &&

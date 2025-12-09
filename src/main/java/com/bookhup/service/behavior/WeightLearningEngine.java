@@ -9,6 +9,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,35 +18,39 @@ public class WeightLearningEngine {
     private final UserFeedWeightsRepository repo;
     private final ThreadPoolTaskExecutor weightExecutor;
 
-    public void asyncProcess(UserBehaviorLog log) {
+    public void asyncProcess(Long userId, List<UserBehaviorLog> logs) {
         if (weightExecutor.getThreadPoolExecutor().isShutdown()) return;
-        weightExecutor.submit(() -> process(log));
+        weightExecutor.submit(() -> processUser(userId, logs));
     }
 
-    public void process(UserBehaviorLog log) {
-        Long userId = log.getUserId();
+    public void processUser(Long userId, List<UserBehaviorLog> logs) {
+        // lấy weight hiện tại
         UserFeedWeights w = repo.findById(userId)
-                .orElseGet(() -> repo.save(new UserFeedWeights(userId,
-                        0.5, 0.3, 0.2)));
+                .orElseGet(() -> new UserFeedWeights(userId, 0.5, 0.3, 0.2));
 
-        switch (log.getActionType()) {
+        // xử lý tất cả logs cho user đó
+        for (UserBehaviorLog log : logs) {
+            switch (log.getActionType()) {
 
-            case POST_VIEW -> handlePostView(log, w);
+                case POST_VIEW -> handlePostView(log, w);
+                case POST_LIKE -> handlePostLike(log, w);
 
-            case POST_LIKE -> handlePostLike(log, w);
+                case USER_FOLLOW -> {
+                    w.setWFollowing(w.getWFollowing() + 0.02);
+                    w.setLastUpdate(LocalDateTime.now());
+                }
 
-            case USER_FOLLOW -> {
-                w.setWFollowing(w.getWFollowing() + 0.02);
-                w.setLastUpdate(LocalDateTime.now());
-            }
-
-            case USER_UNFOLLOW -> {
-                w.setWFollowing(w.getWFollowing() - 0.03);
-                w.setLastUpdate(LocalDateTime.now());
+                case USER_UNFOLLOW -> {
+                    w.setWFollowing(w.getWFollowing() - 0.03);
+                    w.setLastUpdate(LocalDateTime.now());
+                }
             }
         }
 
+        // normalize 1 lần
         w.normalize();
+
+        // lưu 1 lần
         repo.save(w);
     }
 

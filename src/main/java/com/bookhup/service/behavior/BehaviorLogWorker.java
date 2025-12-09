@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +72,12 @@ public class BehaviorLogWorker {
         buffer.clear();
 
         repo.saveAll(copy);
-        copy.forEach(weightEngine::asyncProcess);
+        // Gom theo userId
+        Map<Long, List<UserBehaviorLog>> byUser = copy.stream()
+                .collect(Collectors.groupingBy(UserBehaviorLog::getUserId));
+
+        // xử lý mỗi userId bằng 1 thread riêng
+        byUser.forEach((userId, logs) -> weightEngine.asyncProcess(userId, logs));
 
         System.out.println("Flushed " + copy.size() + " logs");
     }
@@ -101,7 +108,12 @@ public class BehaviorLogWorker {
         if (!leftover.isEmpty()) {
             System.out.println("Final leftover flush: " + leftover.size());
             repo.saveAll(leftover);
-            leftover.forEach(weightEngine::asyncProcess);
+            // Gom theo userId
+            Map<Long, List<UserBehaviorLog>> byUser = leftover.stream()
+                    .collect(Collectors.groupingBy(UserBehaviorLog::getUserId));
+
+            // xử lý mỗi userId bằng 1 thread riêng
+            byUser.forEach((userId, logs) -> weightEngine.asyncProcess(userId, logs));
         }
 
         System.out.println("BehaviorLogWorker stopped safely.");
