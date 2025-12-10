@@ -58,6 +58,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 p.likes_count AS likesCount,
                 p.comments_count AS commentsCount,
                 p.shares_count AS sharesCount,
+                p.share_of AS shareOf,
                 p.views AS views,
                 p.trending_score AS trendingScore,
                 p.updated_at AS updatedAt,

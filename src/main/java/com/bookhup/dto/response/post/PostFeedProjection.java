@@ -15,6 +15,7 @@ public interface PostFeedProjection {
     Integer getLikesCount();
     Integer getCommentsCount();
     Integer getSharesCount();
+    Integer getShareOf();
     Integer getViews();
 
     Long getUserId();
@@ -22,7 +23,6 @@ public interface PostFeedProjection {
     String getUserAvatar();
 
     Integer getIsLiked(); // quan trọng!
-    String getPostTitle();
     String getTotalPages();
     String getReadingStatus();
     String getCurrentPage();
