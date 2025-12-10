@@ -34,9 +34,11 @@ public class AIInteraction {
     private Book book;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String question;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String answer;
 
     @Column(name = "context_book_id")

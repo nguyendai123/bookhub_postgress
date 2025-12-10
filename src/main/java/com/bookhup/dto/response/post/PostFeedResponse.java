@@ -15,18 +15,20 @@ public class PostFeedResponse {
     private String content;
     private String imageUrl;
     private List<String> hashtags;
-    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     private Integer likesCount;
     private Integer commentsCount;
     private Integer sharesCount;
     private Integer views;
 
-    private boolean isLiked;
+    private Integer isLiked;
 
     private Long userId;
     private String userName;
     private String userAvatar;
+    private String readPage;
+    private String totalPage;
 
     public static PostFeedResponse fromProjection(PostFeedProjection p){
         return PostFeedResponse.builder()
@@ -35,7 +37,7 @@ public class PostFeedResponse {
                 .content(p.getContent())
                 .imageUrl(p.getImageUrl())
                 .hashtags(p.getHashtags())
-                .createdAt(p.getCreatedAt())
+                .updatedAt(p.getUpdatedAt())
                 .likesCount(p.getLikesCount())
                 .commentsCount(p.getCommentsCount())
                 .sharesCount(p.getSharesCount())
@@ -44,6 +46,8 @@ public class PostFeedResponse {
                 .userId(p.getUserId())
                 .userName(p.getUserName())
                 .userAvatar(p.getUserAvatar())
+                .readPage(p.getCurrentPage())
+                .totalPage(p.getTotalPages())
                 .build();
     }
 }

@@ -36,6 +36,7 @@ public class Book {
     private String language;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String coverUrl;

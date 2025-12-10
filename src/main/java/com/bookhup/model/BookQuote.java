@@ -25,7 +25,7 @@ public class BookQuote {
     private Book book;
 
     @Lob
-    @Column(name = "quote_text")
+    @Column(columnDefinition = "TEXT", name = "quote_text")
     private String quoteText;
 
     @ManyToOne

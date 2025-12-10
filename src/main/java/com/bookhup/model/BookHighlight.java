@@ -43,6 +43,7 @@ public class BookHighlight {
     private BookChapter chapter;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String text;
 
     @Column(name = "position", length = 100)
@@ -52,7 +53,7 @@ public class BookHighlight {
     private String sentiment;
 
     @Lob
-    @Column(name = "ai_summary")
+    @Column(columnDefinition = "TEXT", name = "ai_summary")
     private String aiSummary;
 
     @Lob

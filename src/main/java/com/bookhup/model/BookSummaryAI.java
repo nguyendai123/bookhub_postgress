@@ -36,7 +36,7 @@ public class BookSummaryAI {
     private BookChapter chapter;
 
     @Lob
-    @Column(name = "summary_text")
+    @Column(columnDefinition = "TEXT", name = "summary_text")
     private String summaryText;
 
     @Lob
@@ -53,6 +53,6 @@ public class BookSummaryAI {
     private String modelVersion;
 
     @Lob
-    @Column(name = "embedding_vector")
+    @Column(columnDefinition = "TEXT", name = "embedding_vector")
     private byte[] embeddingVector;
 }

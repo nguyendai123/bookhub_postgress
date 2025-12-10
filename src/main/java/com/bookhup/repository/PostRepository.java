@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findPostsNeedScan();
 
     @Modifying
+    @Transactional
     @Query("UPDATE Post p SET p.scoreDirty = true WHERE p.postId = :postId")
     void markDirty(Long postId);
 
@@ -58,6 +60,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 p.shares_count AS sharesCount,
                 p.views AS views,
                 p.trending_score AS trendingScore,
+                p.updated_at AS updatedAt,
+                p.hashtags AS hashtags,
+                
+                rp.reading_status AS readingStatus,
+                rp.current_page AS currentPage,
+                rp.total_pages AS totalPages,
+                rp.percent_done AS percentDone,
+                
+                u.username AS userName,
+                u.avatar_url AS userAvatar,
+                COALESCE(ua.likes,0) AS isLiked,
 
                 -- final_score formula
                 (
@@ -69,7 +82,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 ) AS finalScore
 
             FROM posts p
-
+            -- JOIN bảng tiến độ đọc theo user + sách
+            LEFT JOIN reading_progress rp
+                ON rp.book_id = p.book_id
+                AND rp.user_id = p.user_id
+            LEFT JOIN users u ON u.user_id = p.user_id
             -- hoạt động user xem/like post
             LEFT JOIN user_actions ua ON ua.post_id = p.post_id
 

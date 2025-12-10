@@ -39,6 +39,7 @@ public class BookReview {
     private Integer rating = 0;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String comment;
 
     @Column(name = "image_url", length = 255)
@@ -55,7 +56,7 @@ public class BookReview {
     private Float aiSentimentScore = 0.0f;
 
     @Lob
-    @Column(name = "translated_text")
+    @Column(columnDefinition = "TEXT", name = "translated_text")
     private String translatedText;
 
     @Column(name = "created_at")

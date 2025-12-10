@@ -1,6 +1,7 @@
 package com.bookhup.service.impl;
 
 import com.bookhup.dto.response.comment.CommentResponse;
+import com.bookhup.dto.response.comment.CommentWithUserDTO;
 import com.bookhup.model.BookReview;
 import com.bookhup.model.Comment;
 import com.bookhup.model.Post;
@@ -58,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     // ------------------ GET COMMENTS ------------------
-    public List<Comment> getCommentsByPost(Long postId) {
+    public List<CommentWithUserDTO> getCommentsByPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 

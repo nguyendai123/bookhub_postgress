@@ -10,7 +10,7 @@ public interface PostFeedProjection {
     String getContent();
     String getImageUrl();
     List<String> getHashtags();
-    LocalDateTime getCreatedAt();
+    LocalDateTime getUpdatedAt();
 
     Integer getLikesCount();
     Integer getCommentsCount();
@@ -21,5 +21,11 @@ public interface PostFeedProjection {
     String getUserName();
     String getUserAvatar();
 
-    Boolean getIsLiked(); // quan trọng!
+    Integer getIsLiked(); // quan trọng!
+    String getPostTitle();
+    String getTotalPages();
+    String getReadingStatus();
+    String getCurrentPage();
+    String getPercentDone();
+
 }

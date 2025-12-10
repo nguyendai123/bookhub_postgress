@@ -2,16 +2,11 @@ package com.bookhup.controller;
 
 import com.bookhup.dto.request.readingProgress.ReadingUpdateRequest;
 import com.bookhup.dto.request.shelf.ReadingAddRequest;
-import com.bookhup.model.Book;
-import com.bookhup.model.ReadingProgress;
 import com.bookhup.model.User;
-import com.bookhup.repository.BookRepository;
 import com.bookhup.service.ReadingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/reading")
@@ -45,6 +40,14 @@ public class ReadingController {
     ) {
 
         return ResponseEntity.ok(service.getReadingProgress(user, bookId));
+    }
+
+    @GetMapping("/{userId}/{bookId}")
+    public ResponseEntity<?> getReadingProgress(
+            @PathVariable("bookId") Long bookId,
+            @PathVariable("userId") Long userId
+    ) {
+        return ResponseEntity.ok(service.getReadingProgress(userId, bookId));
     }
 }
 

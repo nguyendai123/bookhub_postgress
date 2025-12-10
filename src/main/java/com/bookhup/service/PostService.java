@@ -1,7 +1,6 @@
 package com.bookhup.service;
 
 import com.bookhup.dto.response.post.PostFeedProjection;
-import com.bookhup.dto.response.post.PostFeedResponse;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
 import com.bookhup.dto.request.post.PostRequest;

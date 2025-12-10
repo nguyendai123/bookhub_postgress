@@ -32,7 +32,7 @@ public class BookChapter {
     private Integer chapterOrder = 1;
 
     @Lob
-    @Column(name = "text_content")
+    @Column(columnDefinition = "TEXT", name = "text_content")
     private String textContent;
 
     @Column(name = "audio_url", length = 255)
@@ -42,6 +42,6 @@ public class BookChapter {
     private Float duration;
 
     @Lob
-    @Column(name = "embedding_vector")
+    @Column(columnDefinition = "TEXT", name = "embedding_vector")
     private byte[] embeddingVector; // BLOB for mariadb
 }

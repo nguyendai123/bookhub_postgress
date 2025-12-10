@@ -36,7 +36,6 @@ public class Comment {
     private Post post;
 
     @ManyToOne
-    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "user_id")
@@ -49,10 +48,11 @@ public class Comment {
     private Set<Like> likes = new HashSet<>();
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Lob
-    @Column(name = "translated_text")
+    @Column(columnDefinition = "TEXT", name = "translated_text")
     private String translatedText;
 
     @Column(name = "parent_id")

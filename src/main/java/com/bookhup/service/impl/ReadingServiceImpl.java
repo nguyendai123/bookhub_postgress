@@ -5,6 +5,8 @@ import com.bookhup.dto.request.shelf.ReadingAddRequest;
 import com.bookhup.dto.response.readingProgress.BookDTO;
 import com.bookhup.dto.response.readingProgress.ReadingProgressResponse;
 import com.bookhup.dto.response.readingProgress.ReadingResponse;
+import com.bookhup.exception.AppException;
+import com.bookhup.exception.ErrorCode;
 import com.bookhup.model.Book;
 import com.bookhup.model.ReadingProgress;
 import com.bookhup.model.User;
@@ -13,6 +15,7 @@ import com.bookhup.repository.ReadingProgressRepository;
 import com.bookhup.repository.UserRepository;
 import com.bookhup.service.ReadingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +48,7 @@ public class ReadingServiceImpl implements ReadingService {
                         .book(book)
                         .currentPage(req.getCurrentPage())
                         .percentDone(0f)
+                        .totalPages(totalPages)
                         .startDate(LocalDateTime.now())
                         .build()
                 );
@@ -69,7 +73,7 @@ public class ReadingServiceImpl implements ReadingService {
                 if (currentPage == null) currentPage = 0;
 
                 if (totalPages > 0)
-                    progress.setPercentDone((currentPage * 100f) / totalPages);
+                    progress.setPercentDone(Math.round(((currentPage * 100f) / totalPages) * 10) / 10f);
                 else
                     progress.setPercentDone(0f);
                 break;
@@ -108,8 +112,9 @@ public class ReadingServiceImpl implements ReadingService {
 
         // Percent Done
         int totalPages = book.getTotalPages(); //lưu tổng trang ở Book
+        progress.setTotalPages(totalPages);
         if (totalPages > 0) {
-            progress.setPercentDone((req.getCurrentPage() * 100f) / totalPages);
+            progress.setPercentDone(Math.round(((req.getCurrentPage() * 100f) / totalPages) * 10) / 10f);
         }
 
         if (progress.getPercentDone() != null && progress.getPercentDone() >= 100) {
@@ -139,6 +144,23 @@ public class ReadingServiceImpl implements ReadingService {
 
         Optional<ReadingProgress> progressOpt =
                 repo.findByUser_UserIdAndBook_BookId(user.getUserId(), bookId);
+
+        ReadingResponse resp = new ReadingResponse();
+        resp.setBook(new BookDTO(book));
+        resp.setReadPage(progressOpt.map(ReadingProgress::getCurrentPage).orElse(null));
+
+        return resp;
+    }
+    @Override
+    public ReadingResponse getReadingProgress(Long userId, Long bookId) {
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        Book book = bookRepo.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+
+        Optional<ReadingProgress> progressOpt =
+                repo.findByUser_UserIdAndBook_BookId(userId, bookId);
 
         ReadingResponse resp = new ReadingResponse();
         resp.setBook(new BookDTO(book));

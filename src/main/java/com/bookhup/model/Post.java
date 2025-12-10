@@ -32,10 +32,11 @@ public class Post {
     private User user;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Lob
-    @Column(name = "translated_text")
+    @Column(columnDefinition = "TEXT", name = "translated_text")
     private String translatedText;
 
     @Column(name = "image_url", length = 255)

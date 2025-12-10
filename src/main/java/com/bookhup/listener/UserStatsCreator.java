@@ -26,7 +26,6 @@ public class UserStatsCreator {
 
         UserStats stats = UserStats.builder()
                 .user(user)                    // Quan hệ @OneToOne
-                .userId(user.getUserId())          // @MapsId
                 .dailyLimitNoti(DEFAULT_DAILY_LIMIT_NOTI)
                 .totalBooksRead(0)
                 .totalReviews(0)

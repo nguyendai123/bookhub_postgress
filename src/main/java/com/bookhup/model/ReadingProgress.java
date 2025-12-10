@@ -40,6 +40,9 @@ public class ReadingProgress {
     @Column(name = "current_page")
     private Integer currentPage;
 
+    @Column(name = "total_pages")
+    private Integer totalPages;
+
     @Column(name = "percent_done")
     private Float percentDone;
 

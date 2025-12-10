@@ -24,6 +24,7 @@ public class Author {
     private String name;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String bio;
 
     @Column(length = 50)

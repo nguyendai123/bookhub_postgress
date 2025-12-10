@@ -58,7 +58,7 @@ public class User {
     private String aiClusterSegment;
 
     @Lob
-    @Column(name = "bio")
+    @Column(columnDefinition = "TEXT", name = "bio")
     private String bio;
 
     @Lob

@@ -15,4 +15,5 @@ public interface ReadingService {
     ReadingProgressResponse updateProgress(User user, ReadingUpdateRequest req);
 
     ReadingResponse getReadingProgress(User user, Long bookId);
+    ReadingResponse getReadingProgress(Long userId, Long bookId);
 }
