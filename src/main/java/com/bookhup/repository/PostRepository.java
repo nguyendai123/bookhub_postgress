@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -24,12 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             """)
     List<Post> findPostsNeedScan();
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Post p SET p.scoreDirty = true WHERE p.postId = :postId")
-    void markDirty(Long postId);
-
-    @Query("""
+     @Query("""
             SELECT p FROM Post p
             WHERE p.scoreDirty = true
             ORDER BY
@@ -40,15 +36,17 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = """
             WITH user_actions AS (
-                SELECT 
-                    CAST(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.post_id')) AS UNSIGNED) AS post_id,
-                    SUM(CASE WHEN action_type = 'POST_VIEW' THEN 1 ELSE 0 END) AS views,
-                    CASE WHEN SUM(CASE WHEN action_type = 'POST_LIKE' THEN 1 ELSE 0 END) > 0 THEN 1 ELSE 0 END AS likes
-                FROM user_behavior_log
-                WHERE user_id = :userId
-                GROUP BY CAST(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.post_id')) AS UNSIGNED)
+                    SELECT
+                        CAST(
+                            COALESCE(
+                                JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.postId')),
+                                JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.req.targetId'))
+                            ) AS UNSIGNED
+                        ) AS post_id,
+                        action_type
+                    FROM user_behavior_log
+                    WHERE user_id = :userId
             )
-
             SELECT 
                 p.post_id AS postId,
                 p.book_id AS bookId,
@@ -69,9 +67,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 rp.total_pages AS totalPages,
                 rp.percent_done AS percentDone,
                 
-                u.username AS userName,
-                u.avatar_url AS userAvatar,
-                COALESCE(ua.likes,0) AS isLiked,
+                 u.username AS userName,
+                 u.avatar_url AS userAvatar,
+                EXISTS(
+                       SELECT 1 FROM likes l
+                       WHERE l.post_id = p.post_id
+                       AND l.user_id = :userId
+                ) AS isLiked,
 
                 -- final_score formula
                 (
@@ -89,7 +91,15 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 AND rp.user_id = p.user_id
             LEFT JOIN users u ON u.user_id = p.user_id
             -- hoạt động user xem/like post
-            LEFT JOIN user_actions ua ON ua.post_id = p.post_id
+            -- Join user_actions để lấy view/like count
+            LEFT JOIN (
+                SELECT
+                    post_id,
+                    SUM(action_type = 'POST_VIEW') AS views,
+                    SUM(action_type = 'POST_LIKE') AS likes
+                FROM user_actions
+                GROUP BY post_id
+            ) ua ON ua.post_id = p.post_id
 
             -- follow: user xem có follow tác giả hay không
             LEFT JOIN follows f 
@@ -106,5 +116,40 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             @Param("wFollowing") double wFollowing,
             @Param("wTrending") double wTrending,
             Pageable pageable);
+
+    @Query(value = """
+            SELECT 
+                p.post_id AS postId,
+                p.user_id AS userId,
+                p.book_id AS bookId,
+                u.username AS userName,
+                u.avatar_url AS userAvatar,
+
+                p.content AS content,
+                p.image_url AS imageUrl,
+                p.hashtags AS hashtags,
+
+                p.likes_count AS likesCount,
+                p.comments_count AS commentsCount,
+                p.shares_count AS sharesCount,
+                p.share_of AS shareOf,
+                p.views AS views,
+                p.updated_at AS updatedAt,
+
+                rp.total_pages AS totalPages,
+                rp.reading_status AS readingStatus,
+                rp.current_page AS currentPage,
+                rp.percent_done AS percentDone
+
+            FROM posts p
+            JOIN users u ON p.user_id = u.user_id
+            LEFT JOIN reading_progress rp 
+                   ON p.book_id = rp.book_id AND rp.user_id = p.user_id
+
+            WHERE p.post_id = :postId
+            """, nativeQuery = true)
+    Optional<PostFeedProjection> findOriginalPost(
+            @Param("postId") Long postId
+    );
 
 }

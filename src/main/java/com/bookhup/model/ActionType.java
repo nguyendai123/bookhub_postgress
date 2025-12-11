@@ -106,7 +106,7 @@ public enum ActionType {
         } else {
             // Replace {xxx} → [^/]+
             String regex = "^" + pathPattern
-                    .replaceAll("\\{[^/]+}", "[^/]+") + "$";
+                    .replaceAll("\\{[^/]+}", "\\\\d+");
 
             this.compiledPattern = Pattern.compile(regex);
         }

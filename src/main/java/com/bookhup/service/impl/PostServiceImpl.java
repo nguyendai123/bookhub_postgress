@@ -1,5 +1,7 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.dto.response.post.OriginalPostDto;
+import com.bookhup.dto.response.post.PostFeedDto;
 import com.bookhup.dto.response.post.PostFeedProjection;
 import com.bookhup.model.Book;
 import com.bookhup.model.Post;
@@ -83,7 +85,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<PostFeedProjection> getFeed(Long userId, int page, int size) {
+    public Page<PostFeedDto> getFeed(Long userId, int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -98,7 +100,66 @@ public class PostServiceImpl implements PostService {
             wTrending = weight.get().getWTrending();
         }
 
-        return postRepository.findFeedForUser(userId, wRecent, wFollowing, wTrending, pageable);
+        Page<PostFeedProjection> feedPage = postRepository.findFeedForUser(userId, wRecent, wFollowing, wTrending, pageable);
+        return feedPage.map(this::mapToFeedDto);
+    }
+
+    private PostFeedDto mapToFeedDto(PostFeedProjection p) {
+
+        PostFeedDto dto = PostFeedDto.builder()
+                .postId(p.getPostId())
+                .bookId(p.getBookId())
+                .content(p.getContent())
+                .imageUrl(p.getImageUrl())
+                .hashtags(p.getHashtags())
+                .updatedAt(p.getUpdatedAt())
+                .likesCount(p.getLikesCount())
+                .commentsCount(p.getCommentsCount())
+                .sharesCount(p.getSharesCount())
+                .shareOf(p.getShareOf())
+                .views(p.getViews())
+                .userId(p.getUserId())
+                .userName(p.getUserName())
+                .userAvatar(p.getUserAvatar())
+                .isLiked(p.getIsLiked())
+                .totalPages(p.getTotalPages())
+                .readingStatus(p.getReadingStatus())
+                .currentPage(p.getCurrentPage())
+                .percentDone(p.getPercentDone())
+                .build();
+
+        // nếu là bài chia sẻ → load bài gốc
+        if (p.getShareOf() != null) {
+            dto.setOriginalPost(loadOriginalPost(p.getShareOf()));
+        }
+
+        return dto;
+    }
+
+    private OriginalPostDto loadOriginalPost(Long originalPostId) {
+        return postRepository.findOriginalPost(originalPostId)
+                .map(op -> OriginalPostDto.builder()
+                        .postId(op.getPostId())
+                        .userId(op.getUserId())
+                        .bookId(op.getBookId())
+                        .userName(op.getUserName())
+                        .userAvatar(op.getUserAvatar())
+                        .content(op.getContent())
+                        .imageUrl(op.getImageUrl())
+                        .hashtags(op.getHashtags())
+                        .likesCount(op.getLikesCount())
+                        .commentsCount(op.getCommentsCount())
+                        .sharesCount(op.getSharesCount())
+                        .shareOf(op.getShareOf())
+                        .views(op.getViews())
+                        .updatedAt(op.getUpdatedAt())
+                        .totalPages(op.getTotalPages())
+                        .readingStatus(op.getReadingStatus())
+                        .currentPage(op.getCurrentPage())
+                        .percentDone(op.getPercentDone())
+                        .build()
+                )
+                .orElse(null);
     }
 
     @Override

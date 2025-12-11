@@ -1,6 +1,7 @@
 package com.bookhup.controller;
 
 import com.bookhup.dto.request.post.PostRequest;
+import com.bookhup.dto.response.post.PostFeedDto;
 import com.bookhup.dto.response.post.PostFeedProjection;
 import com.bookhup.model.Post;
 import com.bookhup.model.User;
@@ -27,7 +28,7 @@ public class PostController {
     }
 
     @GetMapping("/all-feeds")
-    public Page<PostFeedProjection> getFeed(
+    public Page<PostFeedDto> getFeed(
             @RequestAttribute("currentUser") User user,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "2") int size

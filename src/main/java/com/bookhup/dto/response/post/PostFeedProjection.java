@@ -15,7 +15,7 @@ public interface PostFeedProjection {
     Integer getLikesCount();
     Integer getCommentsCount();
     Integer getSharesCount();
-    Integer getShareOf();
+    Long getShareOf();
     Integer getViews();
 
     Long getUserId();
