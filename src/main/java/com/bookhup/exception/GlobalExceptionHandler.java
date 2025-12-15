@@ -11,7 +11,12 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -92,4 +97,26 @@ public class GlobalExceptionHandler {
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR,
                 "Internal server error: " + ex.getMessage(), request, ex);
     }
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleMaxSize(MaxUploadSizeExceededException ex) {
+        return Map.of(
+                "error", "FILE_TOO_LARGE",
+                "message", "File vượt quá dung lượng cho phép (tối đa 10MB)"
+        );
+    }
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<?> handleNoResourceFound(NoResourceFoundException ex) {
+
+        // Ignore favicon.ico
+        if (ex.getResourcePath().equals("/favicon.ico")) {
+            return ResponseEntity.notFound().build();
+        }
+
+        logger.warn("Static resource not found: {}", ex.getResourcePath());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Resource not found");
+    }
+
+
 }

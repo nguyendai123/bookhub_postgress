@@ -27,7 +27,6 @@ public class Book {
     private String title;
 
     @ManyToOne
-    @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JoinColumn(name = "author_id")
