@@ -139,7 +139,7 @@ notification:
 
 upload:
 #  base-dir: ${UPLOAD_BASE_DIR:file:/uploads/}
-  base-dir: ${UPLOAD_BASE_DIR:D:/BookHub_F_KIT2023/bookhub_postgress/uploads/}
+  base-dir: ${UPLOAD_BASE_DIR:${user.dir}/uploads/}
 
   posts-dir: ${UPLOAD_POSTS_DIR:${upload.base-dir}posts/}
   avatars-dir: ${UPLOAD_AVATARS_DIR:${upload.base-dir}avatars/}
