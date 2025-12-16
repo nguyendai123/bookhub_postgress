@@ -71,6 +71,7 @@ public class NotificationBatchWorker {
                 Map<String, Object> data = log.getMetadata();
 
                 Notification n = notificationBuilder.build(type, targetUserId, data, log.getUsername());
+                if (n == null) continue;
                 buffer.add(n);
 
                 // Batch save

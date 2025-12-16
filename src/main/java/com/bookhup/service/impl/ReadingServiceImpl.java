@@ -2,14 +2,14 @@ package com.bookhup.service.impl;
 
 import com.bookhup.dto.request.readingProgress.ReadingUpdateRequest;
 import com.bookhup.dto.request.shelf.ReadingAddRequest;
+import com.bookhup.dto.response.book.GenreDTO;
 import com.bookhup.dto.response.readingProgress.BookDTO;
+import com.bookhup.dto.response.readingProgress.ReadingBookResponse;
 import com.bookhup.dto.response.readingProgress.ReadingProgressResponse;
 import com.bookhup.dto.response.readingProgress.ReadingResponse;
 import com.bookhup.exception.AppException;
 import com.bookhup.exception.ErrorCode;
-import com.bookhup.model.Book;
-import com.bookhup.model.ReadingProgress;
-import com.bookhup.model.User;
+import com.bookhup.model.*;
 import com.bookhup.repository.BookRepository;
 import com.bookhup.repository.ReadingProgressRepository;
 import com.bookhup.repository.UserRepository;
@@ -20,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static com.bookhup.model.ReadingStatus.*;
@@ -31,6 +32,30 @@ public class ReadingServiceImpl implements ReadingService {
     private final ReadingProgressRepository repo;
     private final UserRepository userRepo;
     private final BookRepository bookRepo;
+
+    @Override
+    public List<ReadingBookResponse> getAllReadingProgress(User user) {
+
+        List<ReadingProgress> progresses =
+                repo.findByUser(user);
+
+        return progresses.stream()
+                .map(this::toReadingBookResponse)
+                .toList();
+    }
+
+    @Override
+    public List<ReadingBookResponse> getByStatus(
+            User user,
+            ReadingStatus status
+    ) {
+        return repo
+                .findByUserAndReadingStatus(user, status)
+                .stream()
+                .map(this::toReadingBookResponse)
+                .toList();
+    }
+
 
     // ====== Add book to reading shelf ======
     @Override
@@ -168,5 +193,39 @@ public class ReadingServiceImpl implements ReadingService {
 
         return resp;
     }
+    private ReadingBookResponse toReadingBookResponse(
+            ReadingProgress progress
+    ) {
+        Book book = progress.getBook();
+
+        return ReadingBookResponse.builder()
+                // book
+                .bookId(book.getBookId())
+                .title(book.getTitle())
+                .coverUrl(book.getCoverUrl())
+                .authorName(
+                        book.getAuthor() != null
+                                ? book.getAuthor().getName()
+                                : null
+                )
+                .avgRating(book.getAvgRating())
+                .totalReviews(book.getTotalReviews())
+                .totalPages(book.getTotalPages())
+                .genres(book.getGenres().stream()
+                                .map(g -> new GenreDTO(
+                                        g.getGenreId(),
+                                        g.getName()
+                                ))
+                                .toList()
+                )
+
+                // progress
+                .readingStatus(progress.getReadingStatus())
+                .currentPage(progress.getCurrentPage())
+                .percentDone(progress.getPercentDone())
+                .lastUpdated(progress.getLastUpdated())
+                .build();
+    }
+
 }
 

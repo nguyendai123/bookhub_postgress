@@ -2,6 +2,7 @@ package com.bookhup.controller;
 
 import com.bookhup.dto.request.readingProgress.ReadingUpdateRequest;
 import com.bookhup.dto.request.shelf.ReadingAddRequest;
+import com.bookhup.model.ReadingStatus;
 import com.bookhup.model.User;
 import com.bookhup.service.ReadingService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,24 @@ import org.springframework.web.bind.annotation.*;
 public class ReadingController {
 
     private final ReadingService service;
+
+    // All books in shelf
+    @GetMapping
+    public ResponseEntity<?> getAll(
+            @RequestAttribute("currentUser") User user
+    ) {
+        return ResponseEntity.ok(service.getAllReadingProgress(user));
+    }
+
+    // Filter by status
+    @GetMapping("/status/{status}")
+    public ResponseEntity<?> getByStatus(
+            @RequestAttribute("currentUser") User user,
+            @PathVariable ReadingStatus status
+    ) {
+        return ResponseEntity.ok(service.getByStatus(user, status));
+    }
+
 
     // --- Add book to shelf ---
     @PostMapping("/add")

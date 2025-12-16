@@ -31,6 +31,7 @@ public class NotificationServiceImpl implements NotificationService {
         if (ruleEngine.isAllowed(type, targetUserId)) return;
 
         Notification noti = builder.build(type, targetUserId, data, username);
+        if (noti == null) return;
         notificationRepo.save(noti);
 
         ruleEngine.markSent(type, targetUserId);

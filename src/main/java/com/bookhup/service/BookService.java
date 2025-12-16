@@ -1,18 +1,18 @@
 package com.bookhup.service;
 
 import com.bookhup.dto.request.book.BookCreateRequest;
-import com.bookhup.model.Author;
+import com.bookhup.dto.response.book.BookDetailDTO;
+import com.bookhup.dto.response.book.BookShelfDTO;
 import com.bookhup.model.Book;
-import org.springframework.web.multipart.MultipartFile;
+import com.bookhup.model.User;
+import org.springframework.data.domain.Page;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface BookService {
-    List<Book> search(String keyword);
+    Page<BookShelfDTO> search(String keyword, User user, int page, int size);
 
-    Book getDetail(Long id);
+    BookDetailDTO getDetail(Long id);
 
     Book getBook(Long id);
 
