@@ -12,7 +12,7 @@ public class WebSocketGateway {
     private final SimpMessagingTemplate messagingTemplate;
 
     public void sendNotification(Long userId, Notification noti) {
-        String destination = "/topic/user/" + userId + "/notifications";
+        String destination = "/topic/notifications/" + userId;
         messagingTemplate.convertAndSend(destination, noti);
     }
 }
