@@ -24,4 +24,10 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     // Lấy danh sách following (user đang follow ai)
     List<Follow> findByUser(User user);
+
+    // số follower
+    long countByFollowUser_UserId(Long targetUserId);
+
+    // số user đang follow
+    long countByUser_UserId(Long targetUserId);
 }

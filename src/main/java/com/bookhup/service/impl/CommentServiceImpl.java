@@ -44,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
+    @Override
     public Comment addCommentToReview(Long reviewId, User user, String content, Long parentId) {
         BookReview review = reviewRepository.findById(reviewId)
                 .orElseThrow(() -> new RuntimeException("Review not found"));
@@ -61,6 +62,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     // ------------------ GET COMMENTS ------------------
+    @Override
     public List<CommentWithUserDTO> getCommentsByPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));

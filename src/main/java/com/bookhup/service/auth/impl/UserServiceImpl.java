@@ -1,13 +1,15 @@
 package com.bookhup.service.auth.impl;
 
+import com.bookhup.dto.response.user.UserProfileResponse;
 import com.bookhup.exception.AppException;
 import com.bookhup.exception.ErrorCode;
 import com.bookhup.exception.ResourceNotFoundException;
 import com.bookhup.jwts.JwtProvider;
 import com.bookhup.model.User;
 import com.bookhup.model.UserStatus;
+import com.bookhup.repository.FollowRepository;
 import com.bookhup.repository.UserRepository;
-import com.bookhup.dto.request.ProfileUpdateRequest;
+import com.bookhup.dto.request.user.ProfileUpdateRequest;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,6 +33,7 @@ import java.util.Set;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
@@ -38,6 +41,28 @@ public class UserServiceImpl implements UserService {
             "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     private static final SecureRandom RANDOM = new SecureRandom();
+
+    public UserProfileResponse getUserProfile(Long targetUserId, User currentUser) {
+
+        User target = userRepository.findById(targetUserId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        boolean isFollowing = followRepository.existsByUserAndFollowUser(currentUser, target);
+
+        return UserProfileResponse.builder()
+                .userId(target.getUserId())
+                .username(target.getUsername())
+                .avatar(target.getAvatarUrl())
+                .bio(target.getBio())
+                .followersCount(
+                        followRepository.countByFollowUser_UserId(targetUserId)
+                )
+                .followingCount(
+                        followRepository.countByUser_UserId(targetUserId)
+                )
+                .isFollowing(isFollowing)
+                .build();
+    }
 
     @Override
     public User createUser(User user) {

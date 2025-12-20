@@ -12,6 +12,7 @@ public interface CommentWithUserDTO {
     UserInfo getUser();
 
     interface UserInfo {
+        Long getUserId();
         String getUsername();
         String getAvatarUrl();
     }

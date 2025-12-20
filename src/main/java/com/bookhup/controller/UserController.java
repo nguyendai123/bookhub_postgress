@@ -1,7 +1,8 @@
 package com.bookhup.controller;
 
+import com.bookhup.dto.response.user.UserProfileResponse;
 import com.bookhup.model.User;
-import com.bookhup.dto.request.ProfileUpdateRequest;
+import com.bookhup.dto.request.user.ProfileUpdateRequest;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,17 @@ public class UserController {
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
+    @GetMapping("/{userId}/profile")
+    public ResponseEntity<UserProfileResponse> getUserProfile(
+            @PathVariable Long userId,
+            @RequestAttribute("currentUser") User user
+    ) {
+        return ResponseEntity.ok(
+                userService.getUserProfile(userId, user)
+        );
+    }
+
 
     @PreAuthorize("hasAuthority('USER_UPDATE')")
     @PutMapping("/profile/update")
