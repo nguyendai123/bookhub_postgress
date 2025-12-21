@@ -1,6 +1,8 @@
 package com.bookhup.controller;
 
+import com.bookhup.dto.response.ai.bookTrending.BookTrendingDTO;
 import com.bookhup.dto.response.book.BookDetailDTO;
+import com.bookhup.dto.response.book.BookPdfResponse;
 import com.bookhup.dto.response.book.BookShelfDTO;
 import com.bookhup.model.Book;
 import com.bookhup.model.User;
@@ -36,5 +38,26 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<BookDetailDTO> getBookDetail(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.getDetail(id));
+    }
+
+    @GetMapping("/{bookId}/pdf")
+    public ResponseEntity<BookPdfResponse> getBookPdf(
+            @PathVariable Long bookId,
+            @RequestAttribute("currentUser") User user
+    ) {
+        return ResponseEntity.ok(bookService.getBookPdf(user, bookId));
+    }
+
+
+    /**
+     * UC21 – Lấy danh sách sách đang hot (community trend)
+     */
+    @GetMapping("/trending")
+    public ResponseEntity<List<BookTrendingDTO>> getTrendingBooks(
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        return ResponseEntity.ok(
+                bookService.getTrendingBooks(limit)
+        );
     }
 }

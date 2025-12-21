@@ -1,6 +1,7 @@
 package com.bookhup.service.impl;
 
 import com.bookhup.dto.request.book.BookCreateRequest;
+import com.bookhup.dto.response.ai.bookTrending.BookTrendingDTO;
 import com.bookhup.dto.response.book.*;
 import com.bookhup.model.*;
 import com.bookhup.repository.*;
@@ -12,11 +13,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.bookhup.model.ActionType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +33,11 @@ public class BookServiceImpl implements BookService {
     private final GenreRepository genreRepository;
     private final BookChapterRepository chapterRepository;
     private final BookMediaAssetRepository mediaRepository;
+    private final ReadingProgressRepository readingProgressRepository;
+
+    private final UserBehaviorLogRepository logRepo;
+
+    private final RestTemplate restTemplate;
 
     @Override
     public Page<BookShelfDTO> search(
@@ -258,6 +269,56 @@ public class BookServiceImpl implements BookService {
                     )
                     .build();
         });
+    }
+
+    public BookPdfResponse getBookPdf(User user, Long bookId) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new RuntimeException("Book not found"));
+        ReadingProgress progress = readingProgressRepository.findByUser_UserIdAndBook_BookId(user.getUserId(), bookId)
+                .orElseThrow(() -> new RuntimeException("You haven't added this book to your shelf"));
+
+        BookMediaAsset pdf = book.getMediaAssets().stream()
+                .filter(a -> "PDF".equalsIgnoreCase(a.getType()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("PDF not found"));
+
+        return new BookPdfResponse(
+                pdf.getFileUrl(),
+                progress.getCurrentPage(),
+                book.getTotalPages()
+        );
+    }
+
+    public List<BookTrendingDTO> getTrendingBooks(int limit) {
+
+        Pageable pageable = PageRequest.of(0, limit);
+        List<String> actions = Stream.of(
+                        BOOK_SEARCH,
+                        BOOK_VIEW_DETAIL,
+                        REVIEW_LIST_BY_BOOK
+                )
+                .map(Enum::name)
+                .toList();
+
+        var rows =
+                logRepo.findTrendingBooks(actions, pageable);
+
+        return rows.stream()
+                .filter(row -> row.getBookId() != null)
+                .map(row -> {
+                    Long bookId = Long.valueOf(row.getBookId().toString());
+                    Long count = row.getCount();
+
+                    Book book = bookRepository.findById(bookId).orElseThrow();
+
+                    return BookTrendingDTO.builder()
+                            .bookId(book.getBookId())
+                            .title(book.getTitle())
+                            .coverUrl(book.getCoverUrl())
+                            .readCount(count)
+                            .trendScore(count.doubleValue())
+                            .build();
+                }).toList();
     }
 }
 

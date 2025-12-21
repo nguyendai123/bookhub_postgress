@@ -1,10 +1,16 @@
 package com.bookhup.controller;
 
+import com.bookhup.dto.response.post.PostFeedDto;
+import com.bookhup.dto.response.user.PostOfUserResponse;
 import com.bookhup.dto.response.user.UserProfileResponse;
 import com.bookhup.model.User;
 import com.bookhup.dto.request.user.ProfileUpdateRequest;
+import com.bookhup.service.PostService;
 import com.bookhup.service.auth.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +27,7 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
     @GetMapping
     public List<User> getAllUsers() {
@@ -68,5 +75,18 @@ public class UserController {
         response.put("avatar_url", avatarUrl);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{userId}/posts")
+    public ResponseEntity<Page<PostFeedDto>> getUserPosts(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestAttribute("currentUser") User currentUser
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(
+                postService.getUserPosts(userId, pageable)
+        );
     }
 }

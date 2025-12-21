@@ -3,15 +3,15 @@ package com.bookhup.service.impl;
 import com.bookhup.dto.response.post.OriginalPostDto;
 import com.bookhup.dto.response.post.PostFeedDto;
 import com.bookhup.dto.response.post.PostFeedProjection;
-import com.bookhup.model.Book;
-import com.bookhup.model.Post;
-import com.bookhup.model.User;
-import com.bookhup.model.UserFeedWeights;
+import com.bookhup.dto.response.user.PostOfUserResponse;
+import com.bookhup.model.*;
 import com.bookhup.repository.*;
 import com.bookhup.dto.request.post.PostRequest;
 import com.bookhup.service.PostService;
+import com.bookhup.service.ReadingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +34,8 @@ public class PostServiceImpl implements PostService {
     private final HashtagRepository hashtagRepo;
     private final FollowRepository followRepository;
     private final UserFeedWeightsRepository weightRepo;
+    private final LikeRepository likeRepository;
+    private final ReadingService readingService;
 
     @Scheduled(fixedRate = 600000) // chạy mỗi phút
     public void processTrendingUpdates() {
@@ -206,5 +210,77 @@ public class PostServiceImpl implements PostService {
         }
 
         postRepository.delete(post);
+    }
+
+    public Page<PostFeedDto> getUserPosts(Long userId, Pageable pageable) {
+
+        // 1️⃣ Lấy PAGE ID
+        Page<Post> page = postRepository.findUserPosts(userId, pageable);
+
+        if (page.isEmpty()) {
+            return Page.empty(pageable);
+        }
+
+        // 2️⃣ Lấy ID
+        List<Long> postIds = page.getContent()
+                .stream()
+                .map(Post::getPostId)
+                .toList();
+
+        // 3️⃣ Fetch đầy đủ dữ liệu
+        List<Post> fullPosts =
+                postRepository.fetchPostsWithReadingProgress(postIds);
+
+        // 4️⃣ Map theo ID
+        Map<Long, Post> postMap = fullPosts.stream()
+                .collect(Collectors.toMap(Post::getPostId, p -> p));
+
+        // 5️⃣ Convert DTO theo thứ tự page ban đầu
+        List<PostFeedDto> responses = page.getContent().stream()
+                .map(p -> postMap.get(p.getPostId()))
+                .map(p -> toDto(p, userId))
+                .toList();
+
+        return new PageImpl<>(responses, pageable, page.getTotalElements());
+    }
+
+    private PostFeedDto toDto(Post post, Long userId) {
+
+        ReadingProgress rp = null;
+
+        if (post.getBook() != null) {
+            rp = post.getBook().getReadingProgresses()
+                    .stream()
+                    .filter(x -> x.getUser().getUserId().equals(userId))
+                    .findFirst()
+                    .orElse(null);
+        }
+
+        return PostFeedDto.builder()
+                .postId(post.getPostId())
+                .content(post.getContent())
+                .updatedAt(post.getUpdatedAt())
+
+                .totalPages(rp == null ? null : rp.getTotalPages().toString())
+                .currentPage(rp == null ? null : rp.getCurrentPage().toString())
+                .percentDone(rp == null ? null : rp.getPercentDone().toString())
+                .readingStatus(rp == null ? null : rp.getReadingStatus().name())
+                .postId(post.getPostId())
+                .bookId(post.getBook().getBookId())
+                .content(post.getContent())
+                .imageUrl(post.getImageUrl())
+                .hashtags(post.getHashtags())
+                .updatedAt(post.getUpdatedAt())
+                .likesCount(post.getLikesCount())
+                .commentsCount(post.getCommentsCount())
+                .sharesCount(post.getSharesCount())
+                .shareOf(post.getShareOf())
+                .views(post.getViews())
+                .userId(post.getUser().getUserId())
+                .userName(post.getUser().getUsername())
+                .userAvatar(post.getUser().getAvatarUrl())
+                .isLiked(likeRepository.existsByUserUserIdAndTargetTypeAndTargetId(userId, "POST", post.getPostId()) ? 1: 0)
+
+                .build();
     }
 }

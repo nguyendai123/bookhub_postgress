@@ -19,6 +19,9 @@ public class StaticResourceConfig implements WebMvcConfigurer {
     @Value("${upload.book-covers-dir}")
     private String bookCoversDir;
 
+    @Value("${upload.book-pdf-dir}")
+    private String bookPdfDir;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
@@ -32,6 +35,10 @@ public class StaticResourceConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/books/covers/**")
                 .addResourceLocations("file:" + bookCoversDir)
+                .setCachePeriod(3600);
+
+        registry.addResourceHandler("/books/pdf/**")
+                .addResourceLocations("file:" + bookPdfDir)
                 .setCachePeriod(3600);
     }
 }

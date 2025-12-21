@@ -1,7 +1,9 @@
 package com.bookhup.service;
 
 import com.bookhup.dto.request.book.BookCreateRequest;
+import com.bookhup.dto.response.ai.bookTrending.BookTrendingDTO;
 import com.bookhup.dto.response.book.BookDetailDTO;
+import com.bookhup.dto.response.book.BookPdfResponse;
 import com.bookhup.dto.response.book.BookShelfDTO;
 import com.bookhup.model.Book;
 import com.bookhup.model.User;
@@ -17,5 +19,9 @@ public interface BookService {
     Book getBook(Long id);
 
     Book createBook(BookCreateRequest request);
+
+    BookPdfResponse getBookPdf(User user,Long bookId);
+
+    List<BookTrendingDTO> getTrendingBooks(int limit);
 }
 

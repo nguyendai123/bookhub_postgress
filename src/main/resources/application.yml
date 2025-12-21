@@ -145,5 +145,11 @@ upload:
   avatars-dir: ${UPLOAD_AVATARS_DIR:${upload.base-dir}avatars/}
   book-covers-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}books/covers/}
   reviews-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}reviews/}
+  book-pdf-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}books/pdf/}
+
+# AI
+openai:
+  api:
+    key: ''
 
 
