@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableAsync
@@ -49,6 +52,18 @@ public class ExecutorConfig {
         executor.initialize();
         return executor;
     }
+
+    @Bean
+    public ThreadPoolTaskExecutor fanoutExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(2);          // ít thread
+        executor.setMaxPoolSize(4);
+        executor.setQueueCapacity(200);       // BẮT BUỘC giới hạn
+        executor.setThreadNamePrefix("fanout-");
+        executor.initialize();
+        return executor;
+    }
+
 }
 
 

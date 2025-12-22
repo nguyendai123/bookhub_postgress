@@ -174,5 +174,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             @Param("postIds") List<Long> postIds
     );
 
+    @Query("""
+        select p.ownerId
+        from Post p
+        where p.postId = :postId
+    """)
+    Optional<Long> findOwnerId(@Param("postId") Long postId);
 
 }

@@ -1,13 +1,16 @@
 package com.bookhup.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -27,7 +30,7 @@ public class UserBehaviorLog {
     private Long userId;
 
     @JoinColumn(name = "target_user_id")
-    private Long targetUserId;
+    private Long targetUserId;  // SINGLE
 
     @Column(length = 100)
     private String username;
@@ -35,6 +38,15 @@ public class UserBehaviorLog {
     @Column(name = "action_type", length = 50)
     @Enumerated(EnumType.STRING)
     private ActionType actionType;
+
+    @Column(name = "target_type", length = 50)
+    @Enumerated(EnumType.STRING)
+    private TargetType targetType;
+
+    @JoinColumn(name = "target_userIds")
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "json")
+    private Set<Long> targetUserIds; // MULTI
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)

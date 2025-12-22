@@ -4,12 +4,13 @@ import com.bookhup.dto.request.like.LikeRequest;
 import com.bookhup.dto.response.auth.AuthResponse;
 import com.bookhup.dto.response.auth.LoginResponse;
 import com.bookhup.model.ActionType;
+import com.bookhup.model.TargetResult;
 import com.bookhup.model.User;
 import com.bookhup.model.UserBehaviorLog;
 import com.bookhup.repository.UserBehaviorLogRepository;
 import com.bookhup.security.SecurityUtil;
 import com.bookhup.service.notification.NotificationBatchWorker;
-import com.bookhup.service.notification.TargetUserResolver;
+import com.bookhup.service.notification.NotificationTargetResolver;
 import com.bookhup.service.queue.BehaviorLogQueue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,7 +45,7 @@ public class UserBehaviorAspect {
     private final ObjectMapper objectMapper;
     private final BehaviorLogQueue logQueue;
     private final NotificationBatchWorker notificationWorker;
-    private final TargetUserResolver targetUserResolver;
+    private final NotificationTargetResolver notificationTargetResolver;
 
     /**
      * ---------------- THREAD POOL CỰC NHẸ CHO LOGGING ----------------
@@ -108,18 +109,22 @@ public class UserBehaviorAspect {
                 }
 
                 Map<String, Object> metadata = extractMetadata(pjp.getArgs(), pjp);
-                Long target = targetUserResolver.resolve(action, uri, metadata, finalCurrentUserId.get());
+                TargetResult target = notificationTargetResolver
+                        .resolve(action, metadata, finalCurrentUserId.get());
 
-                var log = UserBehaviorLog.builder()
+                UserBehaviorLog log = UserBehaviorLog.builder()
                         .userId(finalCurrentUserId.get())
                         .username(finalCurrentUserName.get())
-                        .targetUserId(target)
                         .actionType(action)
+                        .targetType(target.getType())
+                        .targetUserId(target.getTargetUserId())
+                        .targetUserIds(target.getTargetUserIds())
                         .metadata(metadata)
                         .device(device)
                         .location(location)
                         .timestamp(LocalDateTime.now())
                         .build();
+
                 // 1) Ghi log hành vi
                 logQueue.push(log);
                 // 2) Gửi thông báo nếu cần

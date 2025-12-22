@@ -4,7 +4,6 @@ import com.bookhup.dto.request.behavior.TrackEventRequest;
 import com.bookhup.model.ActionType;
 import com.bookhup.model.UserBehaviorLog;
 import com.bookhup.security.SecurityUtil;
-import com.bookhup.service.notification.TargetUserResolver;
 import com.bookhup.service.queue.BehaviorLogQueue;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
