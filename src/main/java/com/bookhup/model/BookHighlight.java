@@ -60,4 +60,7 @@ public class BookHighlight {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")
     private List<String> keywords; // JSON
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

@@ -40,4 +40,7 @@ public class RecommendationLog {
 
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

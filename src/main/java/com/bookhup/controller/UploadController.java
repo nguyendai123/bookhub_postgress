@@ -2,7 +2,6 @@ package com.bookhup.controller;
 
 import com.bookhup.model.UploadType;
 import com.bookhup.model.User;
-import com.bookhup.service.auth.UserService;
 import com.bookhup.service.upload.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class UploadController {
             @RequestParam("file") MultipartFile file,
             @RequestAttribute("currentUser") User user
     ) {
-return ResponseEntity.ok(Map.of("url",uploadService.uploadFile(file, type, user.getUserId())));
+        return ResponseEntity.ok(Map.of("url",uploadService.uploadFile(file, type, user.getUserId())));
 
     }
 }

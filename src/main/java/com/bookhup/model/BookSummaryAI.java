@@ -55,4 +55,7 @@ public class BookSummaryAI {
     @Lob
     @Column(columnDefinition = "TEXT", name = "embedding_vector")
     private byte[] embeddingVector;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

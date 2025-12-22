@@ -55,4 +55,7 @@ public class Like {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

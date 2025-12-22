@@ -44,4 +44,7 @@ public class BookChapter {
     @Lob
     @Column(columnDefinition = "TEXT", name = "embedding_vector")
     private byte[] embeddingVector; // BLOB for mariadb
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

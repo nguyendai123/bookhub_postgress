@@ -4,5 +4,6 @@ public enum UploadType {
     AVATAR,
     POST,
     BOOKCOVERS,
+    BOOKPDF,
     REVIEW
 }

@@ -74,4 +74,7 @@ public class BookReview {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Like> likes = new HashSet<>();
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

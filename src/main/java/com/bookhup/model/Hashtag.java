@@ -33,5 +33,8 @@ public class Hashtag {
 
     @Column(name = "last_used_at")
     private LocalDateTime lastUsedAt;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }
 

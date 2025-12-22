@@ -63,4 +63,7 @@ public class ReadingProgress {
 
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

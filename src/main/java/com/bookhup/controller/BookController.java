@@ -35,9 +35,9 @@ public class BookController {
 
 
     @PreAuthorize("hasAuthority('BOOK_VIEW')")
-    @GetMapping("/{id}")
-    public ResponseEntity<BookDetailDTO> getBookDetail(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.getDetail(id));
+    @GetMapping("/{bookId}")
+    public ResponseEntity<BookDetailDTO> getBookDetail(@PathVariable Long bookId) {
+        return ResponseEntity.ok(bookService.getDetail(bookId));
     }
 
     @GetMapping("/{bookId}/pdf")

@@ -28,4 +28,7 @@ public class Genre {
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     private Set<Book> books = new HashSet<>();
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

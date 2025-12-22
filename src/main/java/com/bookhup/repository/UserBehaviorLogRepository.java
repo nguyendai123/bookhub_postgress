@@ -28,7 +28,7 @@ public interface UserBehaviorLogRepository extends JpaRepository<UserBehaviorLog
 
     @Query(value = """
         SELECT 
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.id')) AS UNSIGNED) AS bookId,
+            CAST(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.bookId')) AS UNSIGNED) AS bookId,
             COUNT(*) AS count
         FROM user_behavior_log
         WHERE action_type IN (:actions)

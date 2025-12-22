@@ -55,4 +55,7 @@ public class Notification {
 
     @Column(name = "is_read")
     private Boolean read;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

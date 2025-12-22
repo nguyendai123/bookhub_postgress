@@ -35,5 +35,8 @@ public class Author {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Book> books = new HashSet<>();
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }
 

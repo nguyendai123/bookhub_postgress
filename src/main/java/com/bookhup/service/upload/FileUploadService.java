@@ -33,6 +33,9 @@ public class FileUploadService {
     @Value("${upload.reviews-dir}")
     private String reviewsDir;
 
+    @Value("${upload.book-pdf-dir}")
+    private String bookPdfDir;
+
     /**
      * Upload file & trả về URL để lưu DB
      */
@@ -89,6 +92,7 @@ public class FileUploadService {
             case AVATAR -> new UploadPath(avatarsDir, "/avatars/");
             case POST -> new UploadPath(postsDir, "/posts/");
             case BOOKCOVERS -> new UploadPath(bookCoversDir, "/books/covers/");
+            case BOOKPDF -> new UploadPath(bookPdfDir, "/books/pdf/");
             case REVIEW -> new UploadPath(reviewsDir, "/reviews/");
         };
     }

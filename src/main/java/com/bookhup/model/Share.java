@@ -35,4 +35,7 @@ public class Share {
 
     @Column(name = "shared_at")
     private LocalDateTime sharedAt;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

@@ -95,5 +95,8 @@ public class Book {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<ReadingProgress> readingProgresses = new HashSet<>();
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }
 

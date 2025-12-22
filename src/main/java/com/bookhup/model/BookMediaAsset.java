@@ -29,4 +29,7 @@ public class BookMediaAsset {
 
     @Column(name = "type", length = 30)
     private String type;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

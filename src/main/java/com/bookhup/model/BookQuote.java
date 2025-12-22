@@ -44,4 +44,7 @@ public class BookQuote {
     @Column(name = "popularity_score")
     @Builder.Default
     private Integer popularityScore = 0;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

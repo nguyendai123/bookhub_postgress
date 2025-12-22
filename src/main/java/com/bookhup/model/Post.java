@@ -109,4 +109,7 @@ public class Post {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Share> shares = new HashSet<>();
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }

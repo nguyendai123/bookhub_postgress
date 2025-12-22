@@ -31,5 +31,8 @@ public class NotificationRateLimit {
 
     @Column(name = "count_in_period")
     private Integer countInPeriod;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
 }
 
