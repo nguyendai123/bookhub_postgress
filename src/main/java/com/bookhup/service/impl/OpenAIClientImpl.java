@@ -1,5 +1,10 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.dto.request.ai.aiInteraction.AIAskRequest;
+import com.bookhup.dto.request.ai.recommendation.AIRecommendationRequest;
+import com.bookhup.dto.response.ai.aiInteraction.AIAnswerResponse;
+import com.bookhup.dto.response.ai.highLight.AIHighlightResponse;
+import com.bookhup.dto.response.ai.recommendation.AIRecommendationResponse;
 import com.bookhup.dto.response.ai.summary.AISummaryAIResult;
 import com.bookhup.service.AIClient;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +32,11 @@ public class OpenAIClientImpl implements AIClient {
     @Value("${openai.api.key}")
     private String apiKey;
 
+    @Value("${openai.api.url}")
+    private String aiEngineUrl;
+
     @Override
     public AISummaryAIResult summarize(String content, String lang) {
-
-        String url = "https://api.openai.com/v1/chat/completions";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -52,10 +58,11 @@ public class OpenAIClientImpl implements AIClient {
         try {
             ResponseEntity<Map<String, Object>> response =
                     restTemplate.exchange(
-                            url,
+                            aiEngineUrl + "/api/summarize",
                             HttpMethod.POST,
                             request,
-                            new ParameterizedTypeReference<Map<String, Object>>() {}
+                            new ParameterizedTypeReference<Map<String, Object>>() {
+                            }
                     );
 
             // ✅ parse thành object domain
@@ -89,4 +96,49 @@ public class OpenAIClientImpl implements AIClient {
                 .modelVersion("gpt-4.1")
                 .build();
     }
+
+    @Override
+    public AIRecommendationResponse recommend(AIRecommendationRequest req) {
+        return restTemplate.postForObject(
+                aiEngineUrl + "/api/recommend",
+                req,
+                AIRecommendationResponse.class
+        );
+    }
+
+    @Override
+    public AIHighlightResponse highlight(String text) {
+        return restTemplate.postForObject(
+                aiEngineUrl + "/api/highlight",
+                Map.of("text", text),
+                AIHighlightResponse.class
+        );
+    }
+
+    @Override
+    public AIAnswerResponse ask(AIAskRequest req, Long bookId) {
+        // 6️⃣ Call AI Engine
+        try {
+            ResponseEntity<AIAnswerResponse> res =
+                    restTemplate.postForEntity(
+                            aiEngineUrl + "/api/ask",
+                            req,
+                            AIAnswerResponse.class
+                    );
+
+            return res.getBody();
+
+        } catch (Exception e) {
+            log.error("❌ AI ask failed", e);
+
+            // fallback an toàn
+            AIAnswerResponse fallback = new AIAnswerResponse();
+            fallback.setAnswer("Xin lỗi, AI chưa thể trả lời lúc này.");
+            fallback.setConfidence(0.0f);
+            fallback.setModel("fallback");
+
+            return fallback;
+        }
+    }
+
 }

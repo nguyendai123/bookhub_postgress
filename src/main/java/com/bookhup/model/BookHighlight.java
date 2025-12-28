@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -50,7 +51,7 @@ public class BookHighlight {
     private String position;
 
     @Column(name = "sentiment", length = 20)
-    private String sentiment;
+    private String sentiment; // POSITIVE | NEGATIVE | NEUTRAL
 
     @Lob
     @Column(columnDefinition = "TEXT", name = "ai_summary")
@@ -60,6 +61,8 @@ public class BookHighlight {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")
     private List<String> keywords; // JSON
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "owner_id")
     private Long ownerId;

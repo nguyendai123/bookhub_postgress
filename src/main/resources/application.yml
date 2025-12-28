@@ -151,5 +151,6 @@ upload:
 openai:
   api:
     key: ''
+    url: http://localhost:8000
 
 

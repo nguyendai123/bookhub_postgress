@@ -1,6 +1,5 @@
 package com.bookhup.repository;
 
-import com.bookhup.dto.response.book.BookShelfDTO;
 import com.bookhup.model.Author;
 import com.bookhup.model.Book;
 import com.bookhup.model.User;
@@ -9,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -58,5 +58,16 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "readingProgresses"
     })
     Optional<Book> findDetailByBookId(Long bookId);
+
+    @Query(value = """
+            SELECT g.name
+            FROM reading_progress rp
+            JOIN book_genre bg ON rp.book_id = bg.book_id
+            JOIN genres g ON bg.genre_id = g.genre_id
+            WHERE rp.user_id = :userId
+            GROUP BY g.name
+            ORDER BY COUNT(*) DESC
+            """, nativeQuery = true)
+    List<String> findTopGenres(@Param("userId") Long userId);
 
 }

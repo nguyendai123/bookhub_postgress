@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class AISummaryAIResult {
+public class AISummaryAIResult implements AIResult {
 
     /**
      * Nội dung tóm tắt sinh bởi AI

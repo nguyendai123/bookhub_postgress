@@ -1,4 +1,4 @@
-package com.bookhup.dto.request.ai;
+package com.bookhup.dto.request.ai.summary;
 
 import lombok.Data;
 

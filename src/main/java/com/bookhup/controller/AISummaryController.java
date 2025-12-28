@@ -1,6 +1,6 @@
 package com.bookhup.controller;
 
-import com.bookhup.dto.request.ai.AISummaryRequest;
+import com.bookhup.dto.request.ai.summary.AISummaryRequest;
 import com.bookhup.dto.response.ai.summary.AISummaryResponse;
 import com.bookhup.model.User;
 import com.bookhup.service.AISummaryService;
