@@ -40,7 +40,9 @@ public class HighlightServiceImpl implements HighlightService {
         h.setBook(book);
         h.setChapter(chapter);
         h.setText(req.getText());
+        h.setPageNumber(req.getPageNumber());
         h.setPosition(req.getPosition());
+        h.setSource(req.getSource());
         h.setSentiment(ai.getSentiment());
         h.setAiSummary(ai.getSummary());
         h.setKeywords(ai.getKeywords());
@@ -49,7 +51,7 @@ public class HighlightServiceImpl implements HighlightService {
     }
 
     @Override
-    public List<BookHighlight> getHighlights(Long chapterId) {
-        return repo.findByChapterChapterId(chapterId);
+    public List<BookHighlight> getHighlights(Long chapterId, User user) {
+        return repo.findByBook_BookIdAndUser_UserId(chapterId, user.getUserId());
     }
 }

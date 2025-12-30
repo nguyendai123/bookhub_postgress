@@ -9,7 +9,8 @@ import java.util.List;
 @Repository
 public interface BookHighlightRepository extends JpaRepository<BookHighlight, Long> {
 
-    List<BookHighlight> findByChapterChapterId(Long chapterId);
+    List<BookHighlight> findByBook_BookIdAndUser_UserId(Long bookId, Long userId);
+
     List<BookHighlight> findTop5ByBookBookIdOrderByHighlightIdDesc(Long bookId);
 }
 

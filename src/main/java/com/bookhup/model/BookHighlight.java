@@ -47,7 +47,11 @@ public class BookHighlight {
     @Column(columnDefinition = "TEXT")
     private String text;
 
-    @Column(name = "position", length = 100)
+    @Column(name = "page")
+    private String pageNumber;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String position;
 
     @Column(name = "sentiment", length = 20)
@@ -66,4 +70,7 @@ public class BookHighlight {
 
     @Column(name = "owner_id")
     private Long ownerId;
+
+    @Column(name = "source")
+    private String source;  //"USER", // hoặc "AI"
 }

@@ -7,6 +7,8 @@ public class HighlightRequest {
     private Long bookId;
     private Long chapterId;
     private String text;
+    private String pageNumber;
     private String position;
+    private String source;
 }
 

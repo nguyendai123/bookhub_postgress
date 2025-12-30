@@ -11,5 +11,5 @@ public interface HighlightService {
     @Transactional
     BookHighlight highlight(User user, HighlightRequest req);
 
-    List<BookHighlight> getHighlights(Long chapterId);
+    List<BookHighlight> getHighlights(Long chapterId, User user);
 }

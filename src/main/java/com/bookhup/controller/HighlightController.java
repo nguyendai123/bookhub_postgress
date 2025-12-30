@@ -24,8 +24,9 @@ public class HighlightController {
     }
 
     @GetMapping("/{chapterId}")
-    public List<BookHighlight> getHighlights(@PathVariable Long chapterId) {
-        return service.getHighlights(chapterId);
+    public List<BookHighlight> getHighlights(@RequestAttribute("currentUser") User user,
+                                             @PathVariable Long chapterId) {
+        return service.getHighlights(chapterId, user);
     }
 }
 
