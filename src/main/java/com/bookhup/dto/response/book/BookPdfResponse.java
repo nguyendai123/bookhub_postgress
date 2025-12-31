@@ -7,6 +7,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class BookPdfResponse {
     private String pdfUrl;
-    private Integer currenPage;
+    private Integer currentPage;
     private Integer totalPages;
 }
