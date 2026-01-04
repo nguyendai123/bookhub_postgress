@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -49,6 +50,35 @@ public class HighlightServiceImpl implements HighlightService {
 
         return repo.save(h);
     }
+
+    @Transactional
+    @Override
+    public void autoHighlightChapter(User user, BookChapter chapter) {
+
+        // ⛔ Tránh chạy lại
+        if (repo.existsByChapter_ChapterId(chapter.getChapterId())) return;
+
+        List<String> highlights =
+                aiClient.generateHighlights(chapter.getTextContent());
+
+        for (String text : highlights) {
+            AIHighlightResponse ai = aiClient.highlight(text);
+
+            repo.save(BookHighlight.builder()
+                    .user(user)
+                    .book(chapter.getBook())
+                    .chapter(chapter)
+                    .text(text)
+                    .sentiment(ai.getSentiment())
+                    .aiSummary(ai.getSummary())
+                    .keywords(ai.getKeywords())
+                    .source("AI")
+                    .createdAt(LocalDateTime.now())
+                    .ownerId(user.getUserId())
+                    .build());
+        }
+    }
+
 
     @Override
     public List<BookHighlight> getHighlights(Long chapterId, User user) {

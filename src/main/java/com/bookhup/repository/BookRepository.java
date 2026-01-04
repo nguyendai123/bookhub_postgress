@@ -59,15 +59,51 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     })
     Optional<Book> findDetailByBookId(Long bookId);
 
+    @Query("""
+                select distinct b
+                from Book b
+                join b.genres g
+                where g.name in :genres
+                  and b.bookId not in :excludedIds
+                order by b.avgRating desc
+            """)
+    List<Book> findBooksByGenres(
+            @Param("genres") List<String> genres,
+            @Param("excludedIds") List<Long> excludedIds
+    );
+
+    @Query("""
+                select b
+                from Book b
+                where b.author.authorId in (
+                    select distinct rp.book.author.authorId
+                    from ReadingProgress rp
+                    where rp.user.userId = :userId
+                )
+                and b.bookId not in :excludedIds
+            """)
+    List<Book> findBooksByFavoriteAuthors(
+            @Param("userId") Long userId,
+            @Param("excludedIds") List<Long> excludedIds
+    );
+
     @Query(value = """
-            SELECT g.name
-            FROM reading_progress rp
-            JOIN book_genre bg ON rp.book_id = bg.book_id
-            JOIN genres g ON bg.genre_id = g.genre_id
-            WHERE rp.user_id = :userId
-            GROUP BY g.name
-            ORDER BY COUNT(*) DESC
+            SELECT DISTINCT b.*
+            FROM books b
+            WHERE b.language = (
+                SELECT b2.language
+                FROM reading_progress rp
+                JOIN books b2 ON rp.book_id = b2.book_id
+                WHERE rp.user_id = :userId
+                GROUP BY b2.language
+                ORDER BY COUNT(*) DESC
+                LIMIT 1
+            )
+            AND b.book_id NOT IN (:historyBookIds)
             """, nativeQuery = true)
-    List<String> findTopGenres(@Param("userId") Long userId);
+    List<Book> findBooksSameLanguage(
+            @Param("userId") Long userId,
+            @Param("historyBookIds") List<Long> historyBookIds
+    );
 
 }

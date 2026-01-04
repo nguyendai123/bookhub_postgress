@@ -31,22 +31,33 @@ public class AISummaryServiceImpl implements AISummaryService {
         Book book = bookRepo.findById(req.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
-        BookChapter chapter = null;
         String content;
+        String scope;
+        BookChapter chapter = null;
 
         if ("CHAPTER".equals(req.getType())) {
             chapter = chapterRepo.findById(req.getChapterId())
                     .orElseThrow(() -> new RuntimeException("Chapter not found"));
+
             content = chapter.getTextContent();
+            scope = "CHAPTER";
         } else {
             content = book.getChapters()
                     .stream()
                     .map(BookChapter::getTextContent)
                     .collect(Collectors.joining("\n"));
+
+            scope = "BOOK";
         }
 
-        // 🔹 Call AI
-        AISummaryAIResult aiResult = aiClient.summarize(content, req.getLang());
+        // 🔹 Call AI (FULL CONTEXT)
+        AISummaryAIResult aiResult = aiClient.summarize(
+                content,
+                book.getTitle(),
+                book.getAuthor().getName(),
+                scope,
+                req.getLang()
+        );
 
         BookSummaryAI entity = new BookSummaryAI();
         entity.setBook(book);

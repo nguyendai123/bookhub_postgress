@@ -28,14 +28,57 @@ public interface ReadingProgressRepository extends JpaRepository<ReadingProgress
 
     Optional<ReadingProgress> findByUser_UserIdAndBook_BookId(Long userId, Long bookId);
 
+    /*Goi y sach theo lich su doc*/
+
     @Query("""
                 SELECT rp.book.bookId
                 FROM ReadingProgress rp
                 WHERE rp.user.userId = :userId
+                  AND rp.readingStatus IN (:statuses)
                 GROUP BY rp.book.bookId
                 ORDER BY MAX(rp.lastUpdated) DESC
             """)
-    List<Long> findHistoryBookIds(@Param("userId") Long userId);
+    List<Long> findHistoryBookIds(
+            @Param("userId") Long userId,
+            @Param("statuses") List<ReadingStatus> statuses
+    );
 
+    @Query(value = """
+            SELECT g.name
+            FROM reading_progress rp
+            JOIN book_genre bg ON rp.book_id = bg.book_id
+            JOIN genres g ON bg.genre_id = g.genre_id
+            WHERE rp.user_id = :userId
+            GROUP BY g.name
+            ORDER BY COUNT(*) DESC
+            LIMIT 5
+            """, nativeQuery = true)
+    List<String> findTopGenres(@Param("userId") Long userId);
+
+    @Query("""
+                SELECT rp.book.bookId, rp.percentDone
+                FROM ReadingProgress rp
+                WHERE rp.user.userId = :userId
+            """)
+    List<Object[]> findCompletionRates(@Param("userId") Long userId);
+
+    @Query("""
+                SELECT rp.book.bookId, rp.lastUpdated
+                FROM ReadingProgress rp
+                WHERE rp.user.userId = :userId
+            """)
+    List<Object[]> findReadingRecency(@Param("userId") Long userId);
+
+    @Query("""
+                SELECT AVG(b.totalPages)
+                FROM ReadingProgress rp
+                JOIN rp.book b
+                WHERE rp.user.userId = :userId
+                  AND rp.percentDone >= 60
+            """)
+    Float findAvgBookLength(@Param("userId") Long userId);
+
+
+    /*Goi y sach theo lich su doc*/
 }
 

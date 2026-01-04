@@ -79,6 +79,14 @@ bookhub:
     jwtSecret: "======================bookHub=Spring==========================="
     jwtExpirationMs: 86400000
 
+  recommendation:
+    score:
+      genre: 5.0
+      author: 3.0
+      history: 10.0
+      highlight: 0.5
+      same-language: 1.5
+
 scheduler:
   hashtag:
     rate: 900000  # 15 minutes
@@ -152,5 +160,12 @@ openai:
   api:
     key: ''
     url: http://localhost:8000
+
+huggingface:
+  token: ${HF_TOKEN}
+groq:
+  api-key: ${GROQ_API_KEY}
+
+
 
 
