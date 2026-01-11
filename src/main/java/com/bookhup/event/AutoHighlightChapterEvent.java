@@ -8,16 +8,16 @@ import lombok.ToString;
 public class AutoHighlightChapterEvent {
 
     private final Long chapterId;
-    private final String trigger; // READ_COMPLETE, CRON, ADMIN, ...
+    private Long triggerUserId; // user kích hoạt (để log / analytics)
 
     public AutoHighlightChapterEvent(Long chapterId) {
         this.chapterId = chapterId;
-        this.trigger = "READ_COMPLETE";
+        this.triggerUserId = 1L;
     }
 
-    public AutoHighlightChapterEvent(Long chapterId, String trigger) {
+    public AutoHighlightChapterEvent(Long chapterId, Long triggerUserId) {
         this.chapterId = chapterId;
-        this.trigger = trigger;
+        this.triggerUserId = triggerUserId;
     }
 }
 

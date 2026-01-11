@@ -24,5 +24,21 @@ public interface BookHighlightRepository extends JpaRepository<BookHighlight, Lo
     List<Object[]> findHighlightCounts(@Param("userId") Long userId);
 
     boolean existsByChapter_ChapterId(Long chapterId);
+
+    /**
+     * 🔹 Kiểm tra chapter đã có highlight theo source (AI / USER) chưa
+     */
+    boolean existsByChapter_ChapterIdAndSource(
+            Long chapterId,
+            String source
+    );
+
+    // =========================
+    // AI HIGHLIGHT (SHARED)
+    // =========================
+    List<BookHighlight> findByBook_BookIdAndSource(
+            Long bookId,
+            String source
+    );
 }
 

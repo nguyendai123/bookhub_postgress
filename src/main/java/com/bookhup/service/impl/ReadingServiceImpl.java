@@ -7,16 +7,15 @@ import com.bookhup.dto.response.readingProgress.BookDTO;
 import com.bookhup.dto.response.readingProgress.ReadingBookResponse;
 import com.bookhup.dto.response.readingProgress.ReadingProgressResponse;
 import com.bookhup.dto.response.readingProgress.ReadingResponse;
+import com.bookhup.event.AutoHighlightChapterEvent;
 import com.bookhup.exception.AppException;
 import com.bookhup.exception.ErrorCode;
 import com.bookhup.model.*;
-import com.bookhup.repository.BookRepository;
-import com.bookhup.repository.ReadingProgressRepository;
-import com.bookhup.repository.UserRepository;
+import com.bookhup.repository.*;
+import com.bookhup.service.HighlightService;
 import com.bookhup.service.ReadingService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
-import org.springframework.http.ResponseEntity;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,6 +31,11 @@ public class ReadingServiceImpl implements ReadingService {
     private final ReadingProgressRepository repo;
     private final UserRepository userRepo;
     private final BookRepository bookRepo;
+    private final ApplicationEventPublisher eventPublisher;
+    private final BookHighlightRepository aiHighlightRepo;
+    private final BookChapterRepository bookChapterRepository;
+    private final HighlightService highlightService;
+
 
     @Override
     public List<ReadingBookResponse> getAllReadingProgress(User user) {
@@ -153,6 +157,15 @@ public class ReadingServiceImpl implements ReadingService {
 
         repo.save(progress);
 
+        // 🔥 Trigger auto highlight
+        var completionRate = progress.getPercentDone() / 100f;
+        if (progress.getPercentDone() >= 0f) {
+            highlightService.tryHighlightCurrentChapter(progress);
+        }
+        if (progress.getPercentDone() >= 70f) {
+            highlightService.tryHighlightNextChapter(progress);
+        }
+
         return new ReadingProgressResponse(
                 req.getBookId(),
                 progress.getReadingStatus(),
@@ -176,6 +189,7 @@ public class ReadingServiceImpl implements ReadingService {
 
         return resp;
     }
+
     @Override
     public ReadingResponse getReadingProgress(Long userId, Long bookId) {
         User user = userRepo.findById(userId)
@@ -193,6 +207,7 @@ public class ReadingServiceImpl implements ReadingService {
 
         return resp;
     }
+
     private ReadingBookResponse toReadingBookResponse(
             ReadingProgress progress
     ) {
@@ -212,11 +227,11 @@ public class ReadingServiceImpl implements ReadingService {
                 .totalReviews(book.getTotalReviews())
                 .totalPages(book.getTotalPages())
                 .genres(book.getGenres().stream()
-                                .map(g -> new GenreDTO(
-                                        g.getGenreId(),
-                                        g.getName()
-                                ))
-                                .toList()
+                        .map(g -> new GenreDTO(
+                                g.getGenreId(),
+                                g.getName()
+                        ))
+                        .toList()
                 )
 
                 // progress
@@ -226,6 +241,5 @@ public class ReadingServiceImpl implements ReadingService {
                 .lastUpdated(progress.getLastUpdated())
                 .build();
     }
-
 }
 

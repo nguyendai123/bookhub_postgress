@@ -75,7 +75,21 @@ public class GroqClientImpl implements GroqClient {
         String content = (String) msg.get("content");
         // Parse JSON AI trả về
         try {
-            return new ObjectMapper().readValue(content, AIHighlightResponse.class);
+            String cleanJson = content
+                    .replaceAll("(?s)```json", "")
+                    .replaceAll("(?s)```", "")
+                    .trim();
+
+            int start = cleanJson.indexOf("{");
+            int end = cleanJson.lastIndexOf("}");
+
+            if (start == -1 || end == -1) {
+                throw new RuntimeException("Invalid JSON from AI: " + cleanJson);
+            }
+
+            String json = cleanJson.substring(start, end + 1);
+
+            return new ObjectMapper().readValue(json, AIHighlightResponse.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -50,6 +50,9 @@ public class BookHighlight {
     @Column(name = "page")
     private String pageNumber;
 
+    @Column(name = "highlight_len")
+    private Long highlightLen;
+
     @Lob
     @Column(columnDefinition = "TEXT")
     private String position;

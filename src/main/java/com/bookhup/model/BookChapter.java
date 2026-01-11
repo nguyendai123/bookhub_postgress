@@ -31,8 +31,14 @@ public class BookChapter {
     @Builder.Default
     private Integer chapterOrder = 1;
 
+    @Column(name = "start_page")
+    private Integer startPage;
+
+    @Column(name = "end_page")
+    private Integer endPage;
+
     @Lob
-    @Column(columnDefinition = "TEXT", name = "text_content")
+    @Column(name = "text_content", columnDefinition = "LONGTEXT")
     private String textContent;
 
     @Column(name = "audio_url", length = 255)
