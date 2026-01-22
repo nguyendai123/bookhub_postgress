@@ -96,7 +96,7 @@ public class RecommendationService {
         });
 
         // 6.độ dài / độ khó – chống “recommend sai trình”
-        Float avgPages = readingRepo.findAvgBookLength(user.getUserId());
+        float avgPages = readingRepo.findAvgBookLength(user.getUserId()).orElse(0.0f);
 
         readingRepo.findReadingRecency(user.getUserId()).forEach(row -> {
             Long bookId = (Long) row[0];
@@ -131,21 +131,28 @@ public class RecommendationService {
         List<RecommendationDTO> candidates =
                 scoreMap.entrySet()
                         .stream()
-                        // 1️⃣ lọc theo độ dài
-                        .filter(entry -> {
-                            Book book = bookMap.get(entry.getKey());
-                            if (book == null || book.getTotalPages() == null) return false;
-
-                            return Math.abs(book.getTotalPages() - avgPages)
-                                   <= avgPages * 0.7;
-                        })
-                        // 2️⃣ map + cộng điểm
+                        // 2️⃣ map + cộng điểm, độ dài
                         .map(entry -> {
                             Book book = bookMap.get(entry.getKey());
-
                             float score = entry.getValue();
+
+                            // 1️⃣ cộng rating
                             if (book.getAvgRating() != null) {
                                 score += book.getAvgRating();
+                            }
+
+                            // 2️⃣ điều chỉnh score theo lịch sử đọc (KHÔNG LOẠI)
+                            if (book.getTotalPages() != null && avgPages > 0) {
+                                float diffRatio =
+                                        Math.abs(book.getTotalPages() - avgPages) / avgPages;
+
+                                if (diffRatio <= 0.7f) {
+                                    // cùng gu độ dài → bonus
+                                    score += 2.0f;
+                                } else {
+                                    // khác gu → penalty nhẹ
+                                    score -= 1.0f;
+                                }
                             }
 
                             return new AbstractMap.SimpleEntry<>(book, score);

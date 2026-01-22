@@ -76,7 +76,7 @@ public interface ReadingProgressRepository extends JpaRepository<ReadingProgress
                 WHERE rp.user.userId = :userId
                   AND rp.percentDone >= 60
             """)
-    Float findAvgBookLength(@Param("userId") Long userId);
+    Optional<Float> findAvgBookLength(@Param("userId") Long userId);
 
 
     /*Goi y sach theo lich su doc*/

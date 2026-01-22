@@ -3,6 +3,7 @@ package com.bookhup.service.impl;
 import com.bookhup.dto.request.ai.aiInteraction.AIAskRequest;
 import com.bookhup.dto.request.ai.aiInteraction.AIContext;
 import com.bookhup.dto.response.ai.aiInteraction.AIAnswerResponse;
+import com.bookhup.dto.response.ai.aiInteraction.AIChatHistoryDTO;
 import com.bookhup.model.*;
 import com.bookhup.repository.AIInteractionRepository;
 import com.bookhup.repository.BookHighlightRepository;
@@ -27,6 +28,21 @@ public class AIChatServiceImpl implements AIChatService {
     private final BookRepository bookRepo;
     private final BookSummaryAIRepository summaryRepo;
     private final BookHighlightRepository highlightRepo;
+
+    @Override
+    public List<AIChatHistoryDTO> getChatHistory(Long userId, Long bookId) {
+
+        return repo
+                .findByUser_UserIdAndBook_BookIdOrderByCreatedAtAsc(userId, bookId)
+                .stream()
+                .map(i -> AIChatHistoryDTO.builder()
+                        .interactionId(i.getInteractionId())
+                        .question(i.getQuestion())
+                        .answer(i.getAnswer())
+                        .createdAt(i.getCreatedAt())
+                        .build())
+                .toList();
+    }
 
     @Transactional
     @Override
