@@ -21,8 +21,13 @@ public class AIClientImpl implements AIClient {
     private final GroqClient groq;
 
     @Override
-    public AISummaryAIResult summarize(String content, String bookTitle, String author, String scope, String lang) {
-        return hf.summarize(content, bookTitle, author, scope, lang);
+    public String translate(String text, String sourceLang, String targetLang) {
+        return hf.translate(text, sourceLang, targetLang);
+    }
+
+    @Override
+    public AISummaryAIResult summarize(String content, String bookTitle,String bookLang, String author, String scope, String lang) {
+        return hf.summarize(content, bookTitle,bookLang, author, scope, lang);
     }
 
     @Override

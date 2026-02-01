@@ -25,5 +25,18 @@ public class RestTemplateConfig {
                 })
                 .build();
     }
+
+    @Bean
+    public RestTemplate hugRestTemplate(RestTemplateBuilder builder) {
+        return builder
+                .setConnectTimeout(Duration.ofSeconds(3))
+                .setReadTimeout(Duration.ofSeconds(5))
+                .additionalInterceptors((request, body, execution) -> {
+                    log.info("Request URI: {}", request.getURI());
+                    log.info("Request Body: {}", new String(body));
+                    return execution.execute(request, body);
+                })
+                .build();
+    }
 }
 

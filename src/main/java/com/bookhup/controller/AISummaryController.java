@@ -24,5 +24,18 @@ public class AISummaryController {
                 aiSummaryService.generateSummary(request, user)
         );
     }
+
+    // 🔹 API lấy summary theo ngôn ngữ
+    @GetMapping("/summary")
+    public ResponseEntity<AISummaryResponse> getSummary(
+            @RequestParam Long bookId,
+            @RequestParam(required = false) Long chapterId,
+            @RequestParam(defaultValue = "en") String lang
+    ) {
+        return ResponseEntity.ok(
+                aiSummaryService.getSummary(bookId, chapterId, lang)
+        );
+    }
+
 }
 

@@ -8,8 +8,9 @@ import com.bookhup.dto.response.ai.summary.AISummaryAIResult;
 import java.util.List;
 
 public interface AIClient {
+    String translate(String text, String sourceLang, String targetLang);
     // CHAPTER | BOOK
-    AISummaryAIResult summarize(String content, String bookTitle, String author, String scope, String lang);
+    AISummaryAIResult summarize(String content, String bookTitle, String bookLang, String author, String scope, String lang);
 
     AIHighlightResponse highlight(String text);
 

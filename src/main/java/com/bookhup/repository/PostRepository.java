@@ -127,6 +127,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 p.image_url AS imageUrl,
                 p.hashtags AS hashtags,
 
+                EXISTS(
+                       SELECT 1 FROM likes l
+                       WHERE l.post_id = p.post_id
+                       AND l.user_id = :userId
+                ) AS isLiked,
                 p.likes_count AS likesCount,
                 p.comments_count AS commentsCount,
                 p.shares_count AS sharesCount,
@@ -147,7 +152,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             WHERE p.post_id = :postId
             """, nativeQuery = true)
     Optional<PostFeedProjection> findOriginalPost(
-            @Param("postId") Long postId
+            @Param("postId") Long postId,
+            @Param("userId") Long userId
     );
 
 

@@ -105,10 +105,10 @@ public class PostServiceImpl implements PostService {
         }
 
         Page<PostFeedProjection> feedPage = postRepository.findFeedForUser(userId, wRecent, wFollowing, wTrending, pageable);
-        return feedPage.map(this::mapToFeedDto);
+        return feedPage.map(p -> mapToFeedDto(p, userId));
     }
 
-    private PostFeedDto mapToFeedDto(PostFeedProjection p) {
+    private PostFeedDto mapToFeedDto(PostFeedProjection p,Long userId) {
 
         PostFeedDto dto = PostFeedDto.builder()
                 .postId(p.getPostId())
@@ -134,14 +134,14 @@ public class PostServiceImpl implements PostService {
 
         // nếu là bài chia sẻ → load bài gốc
         if (p.getShareOf() != null) {
-            dto.setOriginalPost(loadOriginalPost(p.getShareOf()));
+            dto.setOriginalPost(loadOriginalPost(p.getShareOf(), userId));
         }
 
         return dto;
     }
 
-    private OriginalPostDto loadOriginalPost(Long originalPostId) {
-        return postRepository.findOriginalPost(originalPostId)
+    private OriginalPostDto loadOriginalPost(Long originalPostId, Long userId) {
+        return postRepository.findOriginalPost(originalPostId, userId)
                 .map(op -> OriginalPostDto.builder()
                         .postId(op.getPostId())
                         .userId(op.getUserId())
@@ -151,6 +151,7 @@ public class PostServiceImpl implements PostService {
                         .content(op.getContent())
                         .imageUrl(op.getImageUrl())
                         .hashtags(op.getHashtags())
+                        .isLiked(op.getIsLiked())
                         .likesCount(op.getLikesCount())
                         .commentsCount(op.getCommentsCount())
                         .sharesCount(op.getSharesCount())

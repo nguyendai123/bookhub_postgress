@@ -15,6 +15,7 @@ import com.bookhup.service.AISummaryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,19 +27,19 @@ public class AISummaryServiceImpl implements AISummaryService {
     private final BookSummaryAIRepository summaryRepo;
     private final AIClient aiClient;
 
+    @Override
     public AISummaryResponse generateSummary(AISummaryRequest req, User user) {
 
         Book book = bookRepo.findById(req.getBookId())
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
+        BookChapter chapter = null;
         String content;
         String scope;
-        BookChapter chapter = null;
 
-        if ("CHAPTER".equals(req.getType())) {
+        if ("CHAPTER".equalsIgnoreCase(req.getType())) {
             chapter = chapterRepo.findById(req.getChapterId())
                     .orElseThrow(() -> new RuntimeException("Chapter not found"));
-
             content = chapter.getTextContent();
             scope = "CHAPTER";
         } else {
@@ -46,36 +47,138 @@ public class AISummaryServiceImpl implements AISummaryService {
                     .stream()
                     .map(BookChapter::getTextContent)
                     .collect(Collectors.joining("\n"));
-
             scope = "BOOK";
         }
 
-        // 🔹 Call AI (FULL CONTEXT)
+        Long chapterId = chapter != null ? chapter.getChapterId() : null;
+        String lang = req.getLang().toLowerCase();
+
+        // ==============================
+        // 🔹 1. CHECK ĐÚNG NGÔN NGỮ TRƯỚC
+        // ==============================
+        Optional<BookSummaryAI> existing = summaryRepo
+                .findByBook_BookIdAndChapter_ChapterIdAndLang(book.getBookId(), chapterId, lang);
+
+        if (existing.isPresent()) {
+            return mapToResponse(existing.get(), 1.0f);
+        }
+
+        // ==============================
+        // 🔹 2. NẾU KHÔNG CÓ → TÌM BẢN TIẾNG ANH
+        // ==============================
+        Optional<BookSummaryAI> existingEn = summaryRepo
+                .findByBook_BookIdAndChapter_ChapterIdAndLang(book.getBookId(), chapterId, "en");
+
+        if (existingEn.isPresent()) {
+            BookSummaryAI enSummary = existingEn.get();
+
+            // 👉 Dịch sang ngôn ngữ yêu cầu
+            String translated = aiClient.translate(enSummary.getSummaryText(), "en", lang);
+
+            // 👉 Lưu bản dịch vào DB để lần sau khỏi dịch lại
+            BookSummaryAI newLangSummary = BookSummaryAI.builder()
+                    .book(book)
+                    .chapter(chapter)
+                    .lang(lang)
+                    .summaryText(translated)
+                    .keywords(enSummary.getKeywords())
+                    .topics(enSummary.getTopics())
+                    .modelVersion(enSummary.getModelVersion())
+                    .ownerId(user.getUserId())
+                    .build();
+
+            summaryRepo.save(newLangSummary);
+
+            return mapToResponse(newLangSummary, 0.95f);
+        }
+
+        // ==============================
+        // 🔹 3. KHÔNG CÓ EN → GỌI AI GENERATE
+        // ==============================
         AISummaryAIResult aiResult = aiClient.summarize(
                 content,
                 book.getTitle(),
+                book.getLanguage(),
                 book.getAuthor().getName(),
                 scope,
-                req.getLang()
+                "en"   // LUÔN generate EN làm gốc
         );
 
-        BookSummaryAI entity = new BookSummaryAI();
-        entity.setBook(book);
-        entity.setChapter(chapter);
-        entity.setSummaryText(aiResult.getSummary());
-        entity.setKeywords(aiResult.getKeywords());
-        entity.setTopics(aiResult.getTopics());
-        entity.setModelVersion(aiResult.getModelVersion());
+        String englishSummary = aiResult.getSummary();
 
-        summaryRepo.save(entity);
+        if (englishSummary == null) {
+            throw new RuntimeException("AI did not return English summary");
+        }
+
+        // 👉 Lưu bản EN
+        BookSummaryAI savedEn = BookSummaryAI.builder()
+                .book(book)
+                .chapter(chapter)
+                .lang("en")
+                .summaryText(englishSummary)
+                .keywords(aiResult.getKeywords())
+                .topics(aiResult.getTopics())
+                .modelVersion(aiResult.getModelVersion())
+                .ownerId(user.getUserId())
+                .build();
+
+        summaryRepo.save(savedEn);
+
+        // 👉 Nếu user yêu cầu EN thì trả luôn
+        if ("en".equals(lang)) {
+            return mapToResponse(savedEn, aiResult.getConfidence());
+        }
+
+        // 👉 Nếu yêu cầu ngôn ngữ khác → dịch từ EN
+        String translated = aiClient.translate(englishSummary, "en", lang);
+
+        BookSummaryAI savedTranslated = BookSummaryAI.builder()
+                .book(book)
+                .chapter(chapter)
+                .lang(lang)
+                .summaryText(translated)
+                .keywords(aiResult.getKeywords())
+                .topics(aiResult.getTopics())
+                .modelVersion(aiResult.getModelVersion())
+                .ownerId(user.getUserId())
+                .build();
+
+        summaryRepo.save(savedTranslated);
+
+        return mapToResponse(savedTranslated, aiResult.getConfidence());
+    }
+
+    private AISummaryResponse mapToResponse(BookSummaryAI s, float confidence) {
+        return AISummaryResponse.builder()
+                .summaryId(s.getSummaryId())
+                .summaryText(s.getSummaryText())
+                .keywords(s.getKeywords())
+                .topics(s.getTopics())
+                .modelVersion(s.getModelVersion())
+                .confidence(confidence)
+                .lang(s.getLang())
+                .build();
+    }
+
+
+    @Override
+    public AISummaryResponse getSummary(Long bookId, Long chapterId, String lang) {
+
+        BookSummaryAI summary = summaryRepo
+                .findByBook_BookIdAndChapter_ChapterIdAndLang(bookId, chapterId, lang)
+                .orElseGet(() ->
+                        summaryRepo.findByBook_BookIdAndChapter_ChapterIdAndLang(bookId, chapterId, "en")
+                                .orElseThrow(() -> new RuntimeException("Summary not found"))
+                );
 
         return AISummaryResponse.builder()
-                .summaryId(entity.getSummaryId())
-                .summaryText(entity.getSummaryText())
-                .keywords(entity.getKeywords())
-                .topics(entity.getTopics())
-                .modelVersion(entity.getModelVersion())
-                .confidence(aiResult.getConfidence())
+                .summaryId(summary.getSummaryId())
+                .summaryText(summary.getSummaryText())
+                .keywords(summary.getKeywords())
+                .topics(summary.getTopics())
+                .modelVersion(summary.getModelVersion())
+                .confidence(1.0f)
+                .lang(summary.getLang())
                 .build();
     }
 }

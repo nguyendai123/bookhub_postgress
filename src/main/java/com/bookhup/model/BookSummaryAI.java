@@ -39,6 +39,9 @@ public class BookSummaryAI {
     @Column(columnDefinition = "TEXT", name = "summary_text")
     private String summaryText;
 
+    @Column(name = "lang", length = 10)
+    private String lang;
+
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "json")

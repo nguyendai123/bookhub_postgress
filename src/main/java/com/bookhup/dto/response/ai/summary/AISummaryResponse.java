@@ -14,5 +14,7 @@ public class AISummaryResponse {
     private List<String> topics;
     private String modelVersion;
     private Float confidence;
+    private String lang;
 }
+
 
