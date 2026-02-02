@@ -160,10 +160,10 @@ public class HuggingFaceClientImpl implements HuggingFaceClient {
                 Đoạn gốc: 
                 %s""", finalSummary) :
                 String.format("""
-                Rewrite the following summary in a smooth, emotionally engaging narrative style, similar to a professional book blurb.
-                Keep all key events unchanged, but improve flow, coherence, and storytelling quality.
-                Avoid choppy or list-like sentences — connect the ideas naturally into a short, compelling paragraph.
-                Use a tone suitable for a novel, especially one aimed at younger readers if the story involves magic or fantasy elements.
+                Rewrite the following summary in a smooth, emotionally rich narrative style, similar to a professional book introduction.
+                Keep the main events, but improve coherence, connection, and narrative quality.
+                Avoid disjointed sentences or lists – connect ideas naturally into a concise, engaging paragraph.
+                Use a tone appropriate for a novel, especially one aimed at young adults if the story contains magical or fantasy elements. Write the summary in English.
                 
                 Original text:
                         %s""", finalSummary);
