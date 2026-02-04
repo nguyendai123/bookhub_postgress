@@ -11,9 +11,9 @@
 #    #    username: root
 #    #    password: "1232001"
 #    #    driver-class-name: org.mariadb.jdbc.Driver
-#    url: jdbc:postgresql://dpg-d61pk0ruibrs73e5o5v0-a:5432/book_hub_80yl
-#    username: root323
-#    password: sXbed2gH9  55453  PLbBw6pllDOGMLZ5KfRFSSf
+#    url: jdbc:postgresql://localhost:5432/book_hub
+#    username: postgres
+#    password: 1232001
 #
 #    hikari:
 #      maximum-pool-size: 10
@@ -24,7 +24,7 @@
 #      pool-name: HikariCP
 #
 #  jpa:
-#    database-platform: org.hibernate.dialect.MariaDBDialect
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
 #    hibernate:
 #      ddl-auto: update
 #    show-sql: true
