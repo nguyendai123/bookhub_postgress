@@ -23,13 +23,21 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             """)
     List<Post> findPostsNeedScan();
 
-    @Query("""
-            SELECT p FROM Post p
-            WHERE p.scoreDirty = true
+    @Query(value = """
+            SELECT *
+            FROM post p
+            WHERE p.score_dirty = true
             ORDER BY
-                (p.trendingScore * 2 + p.views * 0.1 +
-                GREATEST(0, 1000 - TIMESTAMPDIFF(MINUTE, p.createdAt, NOW()) * 0.5)) DESC
-            """)
+                (
+                    p.trending_score * 2 +
+                    p.views * 0.1 +
+                    GREATEST(
+                        0,
+                        1000 - EXTRACT(EPOCH FROM (NOW() - p.created_at)) / 60 * 0.5
+                    )
+                ) DESC
+            """,
+            nativeQuery = true)
     List<Post> findDirtyPostsOrderByPriority(Pageable pageable);
 
     @Query(value = """
@@ -159,10 +167,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     // 1️⃣ Query phân trang – KHÔNG FETCH
     @Query("""
-        SELECT p FROM Post p
-        WHERE p.user.userId = :userId
-        ORDER BY p.createdAt DESC
-    """)
+                SELECT p FROM Post p
+                WHERE p.user.userId = :userId
+                ORDER BY p.createdAt DESC
+            """)
     Page<Post> findUserPosts(
             @Param("userId") Long userId,
             Pageable pageable
@@ -170,21 +178,21 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     // 2️⃣ Fetch detail theo ID
     @Query("""
-        SELECT DISTINCT p FROM Post p
-        JOIN FETCH p.user
-        LEFT JOIN FETCH p.book b
-        LEFT JOIN FETCH b.readingProgresses
-        WHERE p.postId IN :postIds
-    """)
+                SELECT DISTINCT p FROM Post p
+                JOIN FETCH p.user
+                LEFT JOIN FETCH p.book b
+                LEFT JOIN FETCH b.readingProgresses
+                WHERE p.postId IN :postIds
+            """)
     List<Post> fetchPostsWithReadingProgress(
             @Param("postIds") List<Long> postIds
     );
 
     @Query("""
-        select p.ownerId
-        from Post p
-        where p.postId = :postId
-    """)
+                select p.ownerId
+                from Post p
+                where p.postId = :postId
+            """)
     Optional<Long> findOwnerId(@Param("postId") Long postId);
 
 }
