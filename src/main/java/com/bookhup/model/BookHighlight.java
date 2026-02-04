@@ -66,7 +66,7 @@ public class BookHighlight {
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private List<String> keywords; // JSON
 
     private LocalDateTime createdAt = LocalDateTime.now();

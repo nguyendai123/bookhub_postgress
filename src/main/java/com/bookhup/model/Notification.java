@@ -46,7 +46,7 @@ public class Notification {
 
     // JSON metadata (ví dụ: postId, commentId…)
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "metadata", columnDefinition = "JSON")
+    @Column(name = "metadata", columnDefinition = "jsonb")
     private Map<String, Object> metadata;
 
     @CreationTimestamp

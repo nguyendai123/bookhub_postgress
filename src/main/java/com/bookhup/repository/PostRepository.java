@@ -178,7 +178,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     // 2️⃣ Fetch detail theo ID
     @Query("""
-                SELECT DISTINCT p FROM Post p
+                SELECT p FROM Post p
                 JOIN FETCH p.user
                 LEFT JOIN FETCH p.book b
                 LEFT JOIN FETCH b.readingProgresses

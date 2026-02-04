@@ -32,7 +32,7 @@ public class BroadcastNotification {
     private Long actorUserId;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "metadata", columnDefinition = "JSON")
+    @Column(name = "metadata", columnDefinition = "jsonb")
     private Map<String, Object> metadata;   // metadata JSON (postId, bookId...)
 
     @Column(nullable = false)

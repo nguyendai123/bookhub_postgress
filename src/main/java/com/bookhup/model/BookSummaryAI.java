@@ -44,12 +44,12 @@ public class BookSummaryAI {
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private List<String> keywords;
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private List<String> topics;
 
     @Column(name = "model_version")

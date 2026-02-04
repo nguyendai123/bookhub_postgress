@@ -45,12 +45,12 @@ public class UserBehaviorLog {
 
     @JoinColumn(name = "target_userIds")
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private Set<Long> targetUserIds; // MULTI
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private Map<String, Object> metadata;
 
     @Column(length = 50)

@@ -63,7 +63,7 @@ public class User {
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private String favoriteGenres; // JSON
 
     @Column(name = "reading_pattern")
@@ -77,7 +77,7 @@ public class User {
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private String socialLinks; // JSON
 
     @ManyToMany(fetch = FetchType.LAZY)

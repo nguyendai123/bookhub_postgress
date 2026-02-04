@@ -44,7 +44,7 @@ public class Post {
 
     @Lob
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "json")
+    @Column(columnDefinition = "jsonb")
     private List<String> hashtags; // JSON array of tags
 
     @Column(name = "last_hashtag_scanned_at")
