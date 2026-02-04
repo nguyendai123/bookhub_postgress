@@ -38,7 +38,7 @@ public class BookChapter {
     private Integer endPage;
 
     @Lob
-    @Column(name = "text_content", columnDefinition = "LONGTEXT")
+    @Column(name = "text_content", columnDefinition = "TEXT")
     private String textContent;
 
     @Column(name = "audio_url", length = 255)
