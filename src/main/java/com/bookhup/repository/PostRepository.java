@@ -26,14 +26,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value = """
             SELECT *
             FROM post p
-            WHERE p.score_dirty = true
+            WHERE p.score_dirty = TRUE
             ORDER BY
                 (
-                    p.trending_score * 2 +
-                    p.views * 0.1 +
+                    (p.trending_score * 2.0) +
+                    (p.views * 0.1) +
                     GREATEST(
                         0,
-                        1000 - EXTRACT(EPOCH FROM (NOW() - p.created_at)) / 60 * 0.5
+                        1000 - (EXTRACT(EPOCH FROM (NOW() - p.created_at)) / 60.0 * 0.5)
                     )
                 ) DESC
             """,
@@ -45,9 +45,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                     SELECT
                         CAST(
                             COALESCE(
-                                JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.postId')),
-                                JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.req.targetId'))
-                            ) AS UNSIGNED
+                                    metadata ->> 'postId',
+                                    metadata -> 'req' ->> 'targetId'
+                            ) AS BIGINT
                         ) AS post_id,
                         action_type
                     FROM user_behavior_log
@@ -75,11 +75,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 
                  u.username AS userName,
                  u.avatar_url AS userAvatar,
-                EXISTS(
-                       SELECT 1 FROM likes l
-                       WHERE l.post_id = p.post_id
-                       AND l.user_id = :userId
-                ) AS isLiked,
+                CASE
+                    WHEN EXISTS(
+                        SELECT 1 FROM likes l
+                        WHERE l.post_id = p.post_id
+                        AND l.user_id = :userId
+                    ) THEN 1
+                    ELSE 0
+                END AS isLiked,
 
                 -- final_score formula
                 (
@@ -101,8 +104,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             LEFT JOIN (
                 SELECT
                     post_id,
-                    SUM(action_type = 'POST_VIEW') AS views,
-                    SUM(action_type = 'POST_LIKE') AS likes
+                    SUM(CASE WHEN action_type = 'POST_VIEW' THEN 1 ELSE 0 END) AS views,
+                    SUM(CASE WHEN action_type = 'POST_LIKE' THEN 1 ELSE 0 END) AS likes     
                 FROM user_actions
                 GROUP BY post_id
             ) ua ON ua.post_id = p.post_id
@@ -114,7 +117,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
             ORDER BY finalScore DESC
             """,
-            countQuery = "SELECT COUNT(*) FROM posts",
+            countQuery = "SELECT COUNT(*) FROM posts p",
             nativeQuery = true)
     Page<PostFeedProjection> findFeedForUser(
             @Param("userId") Long userId,
@@ -135,11 +138,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 p.image_url AS imageUrl,
                 p.hashtags AS hashtags,
 
-                EXISTS(
-                       SELECT 1 FROM likes l
-                       WHERE l.post_id = p.post_id
-                       AND l.user_id = :userId
-                ) AS isLiked,
+                CASE
+                    WHEN EXISTS(
+                        SELECT 1 FROM likes l
+                        WHERE l.post_id = p.post_id
+                        AND l.user_id = :userId
+                    ) THEN 1 ELSE 0
+                END AS isLiked,
                 p.likes_count AS likesCount,
                 p.comments_count AS commentsCount,
                 p.shares_count AS sharesCount,

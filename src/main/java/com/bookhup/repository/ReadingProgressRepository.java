@@ -49,7 +49,7 @@ public interface ReadingProgressRepository extends JpaRepository<ReadingProgress
             JOIN book_genre bg ON rp.book_id = bg.book_id
             JOIN genres g ON bg.genre_id = g.genre_id
             WHERE rp.user_id = :userId
-            GROUP BY g.name
+            GROUP BY g.genre_id, g.name
             ORDER BY COUNT(*) DESC
             LIMIT 5
             """, nativeQuery = true)

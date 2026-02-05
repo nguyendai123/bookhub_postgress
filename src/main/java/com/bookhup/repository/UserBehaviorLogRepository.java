@@ -14,11 +14,11 @@ import java.util.List;
 @Repository
 public interface UserBehaviorLogRepository extends JpaRepository<UserBehaviorLog, Long> {
     @Query(value = """
-                SELECT COUNT(*) 
-                FROM user_behavior_log l
-                WHERE l.user_id = :userId
-                  AND l.action_type = :actionType
-                  AND JSON_UNQUOTE(JSON_EXTRACT(l.metadata, '$.post_id')) = :postId
+            SELECT COUNT(*) 
+            FROM user_behavior_log l
+            WHERE l.user_id = :userId
+              AND l.action_type = :actionType
+              AND (l.metadata ->> 'post_id')::BIGINT = :postId
             """, nativeQuery = true)
     long countByUserAndActionTypeAndPostId(
             @Param("userId") Long userId,
@@ -27,14 +27,15 @@ public interface UserBehaviorLogRepository extends JpaRepository<UserBehaviorLog
     );
 
     @Query(value = """
-        SELECT 
-            CAST(JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.bookId')) AS UNSIGNED) AS bookId,
-            COUNT(*) AS count
-        FROM user_behavior_log
-        WHERE action_type IN (:actions)
-        GROUP BY bookId
-        ORDER BY count DESC
-        """,
+            SELECT 
+                (metadata ->> 'bookId')::BIGINT AS bookId,
+                COUNT(*) AS count
+            FROM user_behavior_log
+            WHERE action_type = ANY(:actions)
+              AND metadata ? 'bookId'
+            GROUP BY (metadata ->> 'bookId')::BIGINT
+            ORDER BY count DESC
+            """,
             nativeQuery = true)
     List<TrendingBookProjection> findTrendingBooks(
             @Param("actions") List<String> actions,
