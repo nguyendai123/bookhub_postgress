@@ -3,6 +3,7 @@ package com.bookhup.repository;
 import com.bookhup.dto.response.ai.bookTrending.TrendingBookProjection;
 import com.bookhup.model.ActionType;
 import com.bookhup.model.UserBehaviorLog;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,19 +28,27 @@ public interface UserBehaviorLogRepository extends JpaRepository<UserBehaviorLog
     );
 
     @Query(value = """
-            SELECT 
-                (metadata ->> 'bookId')::BIGINT AS bookId,
-                COUNT(*) AS count
-            FROM user_behavior_log
-            WHERE action_type = ANY(:actions)
-              AND metadata ? 'bookId'
-            GROUP BY (metadata ->> 'bookId')::BIGINT
-            ORDER BY count DESC
-            """,
+        SELECT 
+            (metadata ->> 'bookId')::BIGINT AS bookId,
+            COUNT(*) AS count
+        FROM user_behavior_log
+        WHERE action_type = ANY(CAST(?1 AS text[]))
+          AND jsonb_exists(metadata, 'bookId')
+        GROUP BY (metadata ->> 'bookId')::BIGINT
+        ORDER BY count DESC
+        """,
+            countQuery = """
+        SELECT COUNT(DISTINCT (metadata ->> 'bookId')::BIGINT)
+        FROM user_behavior_log
+        WHERE action_type = ANY(CAST(?1 AS text[]))
+          AND jsonb_exists(metadata, 'bookId')
+        """,
             nativeQuery = true)
-    List<TrendingBookProjection> findTrendingBooks(
-            @Param("actions") List<String> actions,
+    Page<TrendingBookProjection> findTrendingBooks(
+            List<String> actions,
             Pageable pageable
     );
+
+
 
 }

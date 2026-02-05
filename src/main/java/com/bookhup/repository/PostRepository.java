@@ -25,7 +25,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query(value = """
             SELECT *
-            FROM post p
+            FROM posts p
             WHERE p.score_dirty = TRUE
             ORDER BY
                 (
