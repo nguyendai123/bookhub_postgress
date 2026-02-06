@@ -43,7 +43,6 @@ public class BookHighlight {
     @JoinColumn(name = "chapter_id")
     private BookChapter chapter;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String text;
 
@@ -53,19 +52,16 @@ public class BookHighlight {
     @Column(name = "highlight_len")
     private Long highlightLen;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String position;
 
     @Column(name = "sentiment", length = 20)
     private String sentiment; // POSITIVE | NEGATIVE | NEUTRAL
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "ai_summary")
     private String aiSummary;
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.JSON)
+         @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> keywords; // JSON
 

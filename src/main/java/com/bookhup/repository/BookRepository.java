@@ -99,7 +99,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
                 ORDER BY COUNT(*) DESC
                 LIMIT 1
             )
-            AND b.book_id <> ALL(:historyBookIds)
+            AND b.book_id NOT IN (:historyBookIds)
             """, nativeQuery = true)
     List<Book> findBooksSameLanguage(
             @Param("userId") Long userId,

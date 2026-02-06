@@ -38,7 +38,6 @@ public class BookReview {
     @Builder.Default
     private Integer rating = 0;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String comment;
 
@@ -55,7 +54,6 @@ public class BookReview {
     @Builder.Default
     private Float aiSentimentScore = 0.0f;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "translated_text")
     private String translatedText;
 

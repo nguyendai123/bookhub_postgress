@@ -47,11 +47,9 @@ public class Comment {
     @EqualsAndHashCode.Exclude
     private Set<Like> likes = new HashSet<>();
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "translated_text")
     private String translatedText;
 

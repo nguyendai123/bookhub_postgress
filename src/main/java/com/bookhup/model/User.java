@@ -57,12 +57,10 @@ public class User {
     @Column(name = "ai_cluster_segment")
     private String aiClusterSegment;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "bio")
     private String bio;
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.JSON)
+         @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private String favoriteGenres; // JSON
 
@@ -75,8 +73,7 @@ public class User {
     @Column(name = "avg_read_time_per_day")
     private Float avgReadTimePerDay;
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.JSON)
+         @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private String socialLinks; // JSON
 

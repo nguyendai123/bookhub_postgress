@@ -28,26 +28,27 @@ public interface UserBehaviorLogRepository extends JpaRepository<UserBehaviorLog
     );
 
     @Query(value = """
-        SELECT 
-            (metadata ->> 'bookId')::BIGINT AS bookId,
-            COUNT(*) AS count
-        FROM user_behavior_log
-        WHERE action_type = ANY(CAST(?1 AS text[]))
-          AND jsonb_exists(metadata, 'bookId')
-        GROUP BY (metadata ->> 'bookId')::BIGINT
-        ORDER BY count DESC
-        """,
+    SELECT 
+        (metadata ->> 'bookId')::BIGINT AS bookId,
+        COUNT(*) AS count
+    FROM user_behavior_log
+    WHERE action_type IN (:actions)
+      AND jsonb_exists(metadata, 'bookId')
+    GROUP BY (metadata ->> 'bookId')::BIGINT
+    ORDER BY count DESC
+    """,
             countQuery = """
         SELECT COUNT(DISTINCT (metadata ->> 'bookId')::BIGINT)
         FROM user_behavior_log
-        WHERE action_type = ANY(CAST(?1 AS text[]))
+        WHERE action_type IN (:actions)
           AND jsonb_exists(metadata, 'bookId')
         """,
             nativeQuery = true)
     Page<TrendingBookProjection> findTrendingBooks(
-            List<String> actions,
+            @Param("actions") List<String> actions,
             Pageable pageable
     );
+
 
 
 

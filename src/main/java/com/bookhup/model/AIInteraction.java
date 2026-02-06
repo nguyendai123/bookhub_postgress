@@ -33,11 +33,9 @@ public class AIInteraction {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String question;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String answer;
 

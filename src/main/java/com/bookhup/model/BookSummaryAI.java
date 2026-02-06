@@ -35,27 +35,23 @@ public class BookSummaryAI {
     @JoinColumn(name = "chapter_id", nullable = true)
     private BookChapter chapter;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "summary_text")
     private String summaryText;
 
     @Column(name = "lang", length = 10)
     private String lang;
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.JSON)
+         @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> keywords;
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.JSON)
+         @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> topics;
 
     @Column(name = "model_version")
     private String modelVersion;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "embedding_vector")
     private byte[] embeddingVector;
 

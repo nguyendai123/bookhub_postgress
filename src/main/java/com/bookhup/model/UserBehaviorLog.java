@@ -48,8 +48,7 @@ public class UserBehaviorLog {
     @Column(columnDefinition = "jsonb")
     private Set<Long> targetUserIds; // MULTI
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.JSON)
+         @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> metadata;
 

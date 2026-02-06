@@ -31,19 +31,16 @@ public class Post {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "translated_text")
     private String translatedText;
 
     @Column(name = "image_url", length = 255)
     private String imageUrl;
 
-    @Lob
-    @JdbcTypeCode(SqlTypes.JSON)
+         @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> hashtags; // JSON array of tags
 

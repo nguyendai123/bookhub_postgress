@@ -23,7 +23,6 @@ public class Author {
     @Column(length = 100, nullable = false)
     private String name;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String bio;
 

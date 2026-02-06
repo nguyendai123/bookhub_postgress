@@ -24,7 +24,6 @@ public class BookQuote {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "quote_text")
     private String quoteText;
 

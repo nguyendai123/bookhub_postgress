@@ -37,7 +37,6 @@ public class BookChapter {
     @Column(name = "end_page")
     private Integer endPage;
 
-    @Lob
     @Column(name = "text_content", columnDefinition = "TEXT")
     private String textContent;
 
@@ -47,7 +46,6 @@ public class BookChapter {
     @Column(name = "duration")
     private Float duration;
 
-    @Lob
     @Column(columnDefinition = "TEXT", name = "embedding_vector")
     private byte[] embeddingVector; // BLOB for mariadb
 
