@@ -38,7 +38,7 @@ public class Role {
     @EqualsAndHashCode.Exclude
     private Set<User> users = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(name = "role_permission",
             joinColumns = @JoinColumn(name = "role_id"),

@@ -30,7 +30,7 @@ public class Permission {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "permissions", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
