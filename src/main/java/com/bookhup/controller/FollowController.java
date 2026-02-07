@@ -1,5 +1,6 @@
 package com.bookhup.controller;
 
+import com.bookhup.dto.response.follow.FollowUserDTO;
 import com.bookhup.model.Follow;
 import com.bookhup.model.User;
 import com.bookhup.service.FollowService;
@@ -30,17 +31,18 @@ public class FollowController {
         return "Unfollow thành công.";
     }
 
-    // ⭐ Lấy danh sách cac follower ( nhung nguoi dang theo doi userId)
+    // ⭐ Những người đang theo dõi user này
     @GetMapping("/{userId}/followers")
-    public List<Follow> getFollowers(@PathVariable Long userId) {
+    public List<FollowUserDTO> getFollowers(@PathVariable Long userId) {
         return followService.getFollowers(userId);
     }
 
-    // ⭐ Lấy danh sách cac following (userId dang theo doi nhung ai)
+    // ⭐ Những người user này đang theo dõi
     @GetMapping("/{userId}/following")
-    public List<Follow> getFollowing(@PathVariable Long userId) {
+    public List<FollowUserDTO> getFollowing(@PathVariable Long userId) {
         return followService.getFollowing(userId);
     }
+
 
     // ⭐ Kiểm tra follow
     @GetMapping("/check")

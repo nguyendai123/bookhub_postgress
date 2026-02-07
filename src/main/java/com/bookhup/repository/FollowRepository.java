@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -22,11 +23,9 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
 
     long countByUser(User user); // số user đang follow
 
-    // Lấy danh sách follower (ai đang follow user này)
-    List<Follow> findByFollowUser(User followUser);
+    List<Follow> findByFollowUser_UserId(Long followUserId); // followers
 
-    // Lấy danh sách following (user đang follow ai)
-    List<Follow> findByUser(User user);
+    List<Follow> findByUser_UserId(Long userId);             // following
 
     // số follower
     long countByFollowUser_UserId(Long targetUserId);

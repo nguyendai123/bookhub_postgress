@@ -1,5 +1,6 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.dto.response.follow.FollowUserDTO;
 import com.bookhup.model.Follow;
 import com.bookhup.model.User;
 import com.bookhup.repository.FollowRepository;
@@ -62,19 +63,37 @@ public class FollowServiceImpl implements FollowService {
     }
 
     @Override
-    public List<Follow> getFollowers(Long userId) {
-        User target = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User không tồn tại."));
-
-        return followRepository.findByFollowUser(target);
+    public List<FollowUserDTO> getFollowers(Long userId) {
+        // Những người FOLLOW userId  → follow_user_id = userId
+        return followRepository.findByFollowUser_UserId(userId)
+                .stream()
+                .map(f -> {
+                    User u = f.getUser(); // người theo dõi
+                    return FollowUserDTO.builder()
+                            .userId(u.getUserId())
+                            .username(u.getUsername())
+                            .avatarUrl(u.getAvatarUrl())
+                            .bio(u.getBio())
+                            .build();
+                })
+                .toList();
     }
 
     @Override
-    public List<Follow> getFollowing(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User không tồn tại."));
-
-        return followRepository.findByUser(user);
+    public List<FollowUserDTO> getFollowing(Long userId) {
+        // userId đang FOLLOW ai → user_id = userId
+        return followRepository.findByUser_UserId(userId)
+                .stream()
+                .map(f -> {
+                    User u = f.getFollowUser(); // người được follow
+                    return FollowUserDTO.builder()
+                            .userId(u.getUserId())
+                            .username(u.getUsername())
+                            .avatarUrl(u.getAvatarUrl())
+                            .bio(u.getBio())
+                            .build();
+                })
+                .toList();
     }
 
     @Override
