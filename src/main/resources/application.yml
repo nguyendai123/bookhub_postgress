@@ -7,14 +7,13 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   datasource:
-#    url: jdbc:mariadb://localhost:3306/book_hub?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Ho_Chi_Minh
-#    username: root
-#    password: "1232001"
-#    driver-class-name: org.mariadb.jdbc.Driver
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: org.postgresql.Driver
+    #    url: jdbc:mariadb://localhost:3306/book_hub?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Ho_Chi_Minh
+    #    username: root
+    #    password: "1232001"
+    #    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:postgresql://localhost:5432/book_hub
+    username: postgres
+    password: 1232001
 
     hikari:
       maximum-pool-size: 10
@@ -41,8 +40,7 @@ spring:
 
   webflux:
     cors:
-#      allowed-origins: "https://taupe-licorice-bae4fb.netlify.app"
-      allowed-origins: ${CORS_ORIGIN:https://taupe-licorice-bae4fb.netlify.app}
+      allowed-origins: "https://taupe-licorice-bae4fb.netlify.app"
 
   jackson:
     serialization:
@@ -51,10 +49,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-#    username: bookhub2526@gmail.com
-#    password: "ofqk deao wcae qgni"
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
+    username: bookhub2526@gmail.com
+    password: "ofqk deao wcae qgni"
     properties:
       mail:
         smtp:
@@ -83,8 +79,7 @@ security:
 
 bookhub:
   app:
-    jwtSecret: ${JWT_SECRET}
-#    jwtSecret: "======================bookHub=Spring==========================="
+    jwtSecret: "======================bookHub=Spring==========================="
     jwtExpirationMs: 86400000
 
   recommendation:
@@ -154,15 +149,20 @@ notification:
 
 
 upload:
-  base-dir: ${UPLOAD_BASE_DIR:/tmp/uploads/}
+  #  base-dir: ${UPLOAD_BASE_DIR:file:/uploads/}
+  base-dir: ${UPLOAD_BASE_DIR:${user.dir}/uploads/}
 
   posts-dir: ${UPLOAD_POSTS_DIR:${upload.base-dir}posts/}
   avatars-dir: ${UPLOAD_AVATARS_DIR:${upload.base-dir}avatars/}
   book-covers-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}books/covers/}
-  reviews-dir: ${UPLOAD_REVIEWS_DIR:${upload.base-dir}reviews/}
-  book-pdf-dir: ${UPLOAD_BOOK_PDF_DIR:${upload.base-dir}books/pdf/}
+  reviews-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}reviews/}
+  book-pdf-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}books/pdf/}
 
 # AI
+openai:
+  api:
+    key: ''
+    url: http://localhost:8000
 
 huggingface:
   token: ${HF_TOKEN}
