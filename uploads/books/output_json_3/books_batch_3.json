@@ -2,14 +2,14 @@
   {
     "isbn": "9780000000021",
     "title": "Harry Potter va Hon da phu thuy - J.K.Rowling",
-    "authorId": 65,
+    "authorId": 88,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Hon_da_phu_thuy_-_JKRowling.jpg",
-    "avgRating": 4.28,
+    "coverUrl": "books/covers/Harry_Potter_va_Hon_da_phu_thuy_-_JKRowling.jpg",
+    "avgRating": 4.46,
     "totalPages": 184,
     "genreIds": [
-      23
+      5
     ],
     "chapters": [
       {
@@ -24,7 +24,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Hon da phu thuy - J.K.Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Hon da phu thuy - J.K.Rowling.pdf",
         "type": "pdf"
       }
     ]
@@ -32,14 +32,14 @@
   {
     "isbn": "9780000000022",
     "title": "Harry Potter va Mat lenh Phuong Hoang- J.K.Rowling",
-    "authorId": 90,
+    "authorId": 89,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Mat_lenh_Phuong_Hoang-_JKRowling.jpg",
-    "avgRating": 3.29,
+    "coverUrl": "books/covers/Harry_Potter_va_Mat_lenh_Phuong_Hoang-_JKRowling.jpg",
+    "avgRating": 3.25,
     "totalPages": 627,
     "genreIds": [
-      11
+      36
     ],
     "chapters": [
       {
@@ -54,7 +54,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Mat lenh Phuong Hoang- J.K.Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Mat lenh Phuong Hoang- J.K.Rowling.pdf",
         "type": "pdf"
       }
     ]
@@ -62,13 +62,14 @@
   {
     "isbn": "9780000000023",
     "title": "Harry Potter va Phong chua bi mat- J.K.Rowling",
-    "authorId": 45,
+    "authorId": 9,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Phong_chua_bi_mat-_JKRowling.jpg",
-    "avgRating": 4.34,
+    "coverUrl": "books/covers/Harry_Potter_va_Phong_chua_bi_mat-_JKRowling.jpg",
+    "avgRating": 3.19,
     "totalPages": 280,
     "genreIds": [
+      20,
       26
     ],
     "chapters": [
@@ -84,7 +85,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Phong chua bi mat- J.K.Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Phong chua bi mat- J.K.Rowling.pdf",
         "type": "pdf"
       }
     ]
@@ -92,15 +93,16 @@
   {
     "isbn": "9780000000024",
     "title": "Harry Potter va Ten tu nhan nguc Azkaban - J.K.Rowling",
-    "authorId": 33,
+    "authorId": 22,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Ten_tu_nhan_nguc_Azkaban_-_JKRowling.jpg",
-    "avgRating": 3.15,
+    "coverUrl": "books/covers/Harry_Potter_va_Ten_tu_nhan_nguc_Azkaban_-_JKRowling.jpg",
+    "avgRating": 3.65,
     "totalPages": 351,
     "genreIds": [
-      6,
-      17
+      36,
+      7,
+      8
     ],
     "chapters": [
       {
@@ -115,7 +117,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Ten tu nhan nguc Azkaban - J.K.Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Ten tu nhan nguc Azkaban - J.K.Rowling.pdf",
         "type": "pdf"
       }
     ]
@@ -123,14 +125,16 @@
   {
     "isbn": "9780000000025",
     "title": "Kẻ Chủ Mưu - Shari Lapena & Orkid (dịch)",
-    "authorId": 19,
+    "authorId": 9,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Kẻ_Chủ_Mưu_-_Shari_Lapena_Orkid.jpg",
-    "avgRating": 4.84,
+    "coverUrl": "books/covers/Kẻ_Chủ_Mưu_-_Shari_Lapena_Orkid.jpg",
+    "avgRating": 4.33,
     "totalPages": 370,
     "genreIds": [
-      33
+      13,
+      49,
+      14
     ],
     "chapters": [
       {
@@ -145,7 +149,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Kẻ Chủ Mưu - Shari Lapena & Orkid (dịch).pdf",
+        "fileUrl": "books/pdf/Kẻ Chủ Mưu - Shari Lapena & Orkid (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -153,14 +157,14 @@
   {
     "isbn": "9780000000026",
     "title": "Kỳ Án Săn Ma - Gerald Brittle",
-    "authorId": 94,
+    "authorId": 21,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Kỳ_Án_Săn_Ma_-_Gerald_Brittle.jpg",
-    "avgRating": 4.98,
+    "coverUrl": "books/covers/Kỳ_Án_Săn_Ma_-_Gerald_Brittle.jpg",
+    "avgRating": 3.15,
     "totalPages": 163,
     "genreIds": [
-      32
+      7
     ],
     "chapters": [
       {
@@ -175,7 +179,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Kỳ Án Săn Ma - Gerald Brittle.pdf",
+        "fileUrl": "books/pdf/Kỳ Án Săn Ma - Gerald Brittle.pdf",
         "type": "pdf"
       }
     ]
@@ -183,16 +187,14 @@
   {
     "isbn": "9780000000027",
     "title": "Logic Của Tâm Trí - Michael Lewis",
-    "authorId": 3,
+    "authorId": 12,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Logic_Của_Tâm_Trí_-_Michael_Lewis.jpg",
-    "avgRating": 3.01,
+    "coverUrl": "books/covers/Logic_Của_Tâm_Trí_-_Michael_Lewis.jpg",
+    "avgRating": 3.47,
     "totalPages": 371,
     "genreIds": [
-      4,
-      46,
-      12
+      35
     ],
     "chapters": [
       {
@@ -207,7 +209,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Logic Của Tâm Trí - Michael Lewis.pdf",
+        "fileUrl": "books/pdf/Logic Của Tâm Trí - Michael Lewis.pdf",
         "type": "pdf"
       }
     ]
@@ -215,16 +217,15 @@
   {
     "isbn": "9780000000028",
     "title": "Lời Nói Dối Hoa Mỹ - Kim Ryoe Ryeong & Dương Thanh Hoài , Lee Jung Sook (dịch)",
-    "authorId": 60,
+    "authorId": 97,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Lời_Nói_Dối_Hoa_Mỹ_-_Kim_Ryoe_Ryeong_Dương_Thanh_Hoài_Lee_Jung_Sook.jpg",
-    "avgRating": 4.43,
+    "coverUrl": "books/covers/Lời_Nói_Dối_Hoa_Mỹ_-_Kim_Ryoe_Ryeong_Dương_Thanh_Hoài_Lee_Jung_Sook.jpg",
+    "avgRating": 4.75,
     "totalPages": 263,
     "genreIds": [
-      32,
-      1,
-      9
+      28,
+      13
     ],
     "chapters": [
       {
@@ -239,7 +240,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Lời Nói Dối Hoa Mỹ - Kim Ryoe Ryeong & Dương Thanh Hoài , Lee Jung Sook (dịch).pdf",
+        "fileUrl": "books/pdf/Lời Nói Dối Hoa Mỹ - Kim Ryoe Ryeong & Dương Thanh Hoài , Lee Jung Sook (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -247,15 +248,15 @@
   {
     "isbn": "9780000000029",
     "title": "Ma Thuật Yêu Brida - Paulo Coelho & Hoàng Việt Anh (dịch)",
-    "authorId": 12,
+    "authorId": 56,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Ma_Thuật_Yêu_Brida_-_Paulo_Coelho_Hoàng_Việt_Anh.jpg",
-    "avgRating": 4.69,
+    "coverUrl": "books/covers/Ma_Thuật_Yêu_Brida_-_Paulo_Coelho_Hoàng_Việt_Anh.jpg",
+    "avgRating": 3.84,
     "totalPages": 272,
     "genreIds": [
-      1,
-      46
+      42,
+      45
     ],
     "chapters": [
       {
@@ -270,7 +271,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Ma Thuật Yêu Brida - Paulo Coelho & Hoàng Việt Anh (dịch).pdf",
+        "fileUrl": "books/pdf/Ma Thuật Yêu Brida - Paulo Coelho & Hoàng Việt Anh (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -278,15 +279,15 @@
   {
     "isbn": "9780000000030",
     "title": "Máy Tính Sát Thủ - Christian Grenier & Hoàng Anh (dịch)",
-    "authorId": 19,
+    "authorId": 8,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Máy_Tính_Sát_Thủ_-_Christian_Grenier_Hoàng_Anh.jpg",
-    "avgRating": 4.71,
+    "coverUrl": "books/covers/Máy_Tính_Sát_Thủ_-_Christian_Grenier_Hoàng_Anh.jpg",
+    "avgRating": 3.9,
     "totalPages": 171,
     "genreIds": [
-      19,
-      41
+      46,
+      40
     ],
     "chapters": [
       {
@@ -301,7 +302,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Máy Tính Sát Thủ - Christian Grenier & Hoàng Anh (dịch).pdf",
+        "fileUrl": "books/pdf/Máy Tính Sát Thủ - Christian Grenier & Hoàng Anh (dịch).pdf",
         "type": "pdf"
       }
     ]

@@ -2,15 +2,16 @@
   {
     "isbn": "9780000000041",
     "title": "Quan Tri Nhan Su Thong Minh Bang Du Lieu - Bernard Marr",
-    "authorId": 66,
+    "authorId": 9,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Quan_Tri_Nhan_Su_Thong_Minh_Bang_Du_Lieu_-_Bernard_Marr.jpg",
-    "avgRating": 4.91,
+    "coverUrl": "books/covers/Quan_Tri_Nhan_Su_Thong_Minh_Bang_Du_Lieu_-_Bernard_Marr.jpg",
+    "avgRating": 3.64,
     "totalPages": 317,
     "genreIds": [
-      35,
-      23
+      41,
+      14,
+      10
     ],
     "chapters": [
       {
@@ -106,7 +107,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Quan Tri Nhan Su Thong Minh Bang Du Lieu - Bernard Marr.pdf",
+        "fileUrl": "books/pdf/Quan Tri Nhan Su Thong Minh Bang Du Lieu - Bernard Marr.pdf",
         "type": "pdf"
       }
     ]
@@ -114,16 +115,16 @@
   {
     "isbn": "9780000000042",
     "title": "SachMoi.Net-Thanh-Cat-Tu-Han",
-    "authorId": 8,
+    "authorId": 81,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/SachMoiNet-Thanh-Cat-Tu-Han.jpg",
-    "avgRating": 4.45,
+    "coverUrl": "books/covers/SachMoiNet-Thanh-Cat-Tu-Han.jpg",
+    "avgRating": 4.55,
     "totalPages": 145,
     "genreIds": [
-      14,
-      5,
-      7
+      21,
+      24,
+      34
     ],
     "chapters": [
       {
@@ -138,7 +139,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/SachMoi.Net-Thanh-Cat-Tu-Han.pdf",
+        "fileUrl": "books/pdf/SachMoi.Net-Thanh-Cat-Tu-Han.pdf",
         "type": "pdf"
       }
     ]
@@ -146,15 +147,16 @@
   {
     "isbn": "9780000000043",
     "title": "Súng và Sô Cô La - Otsuichi & Gen-Kun (dịch)",
-    "authorId": 65,
+    "authorId": 18,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Súng_và_Sô_Cô_La_-_Otsuichi_Gen-Kun.jpg",
-    "avgRating": 4.47,
+    "coverUrl": "books/covers/Súng_và_Sô_Cô_La_-_Otsuichi_Gen-Kun.jpg",
+    "avgRating": 4.42,
     "totalPages": 201,
     "genreIds": [
-      9,
-      6
+      48,
+      13,
+      47
     ],
     "chapters": [
       {
@@ -196,7 +198,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Súng và Sô Cô La - Otsuichi & Gen-Kun (dịch).pdf",
+        "fileUrl": "books/pdf/Súng và Sô Cô La - Otsuichi & Gen-Kun (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -204,16 +206,16 @@
   {
     "isbn": "9780000000044",
     "title": "Sống Nhanh 300 Lần - Sever Gansovsky",
-    "authorId": 69,
+    "authorId": 60,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Sống_Nhanh_300_Lần_-_Sever_Gansovsky.jpg",
-    "avgRating": 3.64,
+    "coverUrl": "books/covers/Sống_Nhanh_300_Lần_-_Sever_Gansovsky.jpg",
+    "avgRating": 3.22,
     "totalPages": 76,
     "genreIds": [
-      10,
-      12,
-      40
+      23,
+      50,
+      39
     ],
     "chapters": [
       {
@@ -228,7 +230,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Sống Nhanh 300 Lần - Sever Gansovsky.pdf",
+        "fileUrl": "books/pdf/Sống Nhanh 300 Lần - Sever Gansovsky.pdf",
         "type": "pdf"
       }
     ]
@@ -239,11 +241,11 @@
     "authorId": 82,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Sự_Trung_Thực_Của_Xác_Chết_-_Ghi_Chép_Của_Một_Nhà_Pháp_Y_-_Hajime_Nishio_Như_Nữ.jpg",
-    "avgRating": 3.75,
+    "coverUrl": "books/covers/Sự_Trung_Thực_Của_Xác_Chết_-_Ghi_Chép_Của_Một_Nhà_Pháp_Y_-_Hajime_Nishio_Như_Nữ.jpg",
+    "avgRating": 4.73,
     "totalPages": 200,
     "genreIds": [
-      21
+      39
     ],
     "chapters": [
       {
@@ -312,7 +314,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Sự Trung Thực Của Xác Chết - Ghi Chép Của Một Nhà Pháp Y - Hajime Nishio & Như Nữ (dịch).pdf",
+        "fileUrl": "books/pdf/Sự Trung Thực Của Xác Chết - Ghi Chép Của Một Nhà Pháp Y - Hajime Nishio & Như Nữ (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -320,16 +322,15 @@
   {
     "isbn": "9780000000046",
     "title": "Thao Túng Về Tiền - Shannon Thomas & Trương Anh Tuấn (dịch)",
-    "authorId": 38,
+    "authorId": 84,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Thao_Túng_Về_Tiền_-_Shannon_Thomas_Trương_Anh_Tuấn.jpg",
-    "avgRating": 3.04,
+    "coverUrl": "books/covers/Thao_Túng_Về_Tiền_-_Shannon_Thomas_Trương_Anh_Tuấn.jpg",
+    "avgRating": 4.74,
     "totalPages": 143,
     "genreIds": [
-      45,
-      9,
-      11
+      24,
+      16
     ],
     "chapters": [
       {
@@ -344,7 +345,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Thao Túng Về Tiền - Shannon Thomas & Trương Anh Tuấn (dịch).pdf",
+        "fileUrl": "books/pdf/Thao Túng Về Tiền - Shannon Thomas & Trương Anh Tuấn (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -352,15 +353,15 @@
   {
     "isbn": "9780000000047",
     "title": "The Jungle Book",
-    "authorId": 38,
+    "authorId": 49,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/The_Jungle_Book.jpg",
-    "avgRating": 3.86,
+    "coverUrl": "books/covers/The_Jungle_Book.jpg",
+    "avgRating": 4.09,
     "totalPages": 159,
     "genreIds": [
-      7,
-      44
+      14,
+      31
     ],
     "chapters": [
       {
@@ -375,7 +376,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/The Jungle Book.pdf",
+        "fileUrl": "books/pdf/The Jungle Book.pdf",
         "type": "pdf"
       }
     ]
@@ -383,14 +384,16 @@
   {
     "isbn": "9780000000048",
     "title": "Thành Cát Tư Hãn Là Ai_ - Nico Medina & Andrew Thomson",
-    "authorId": 39,
+    "authorId": 55,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Thành_Cát_Tư_Hãn_Là_Ai__-_Nico_Medina_Andrew_Thomson.jpg",
-    "avgRating": 4.1,
+    "coverUrl": "books/covers/Thành_Cát_Tư_Hãn_Là_Ai__-_Nico_Medina_Andrew_Thomson.jpg",
+    "avgRating": 3.72,
     "totalPages": 77,
     "genreIds": [
-      21
+      41,
+      43,
+      13
     ],
     "chapters": [
       {
@@ -486,7 +489,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Thành Cát Tư Hãn Là Ai_ - Nico Medina & Andrew Thomson.pdf",
+        "fileUrl": "books/pdf/Thành Cát Tư Hãn Là Ai_ - Nico Medina & Andrew Thomson.pdf",
         "type": "pdf"
       }
     ]
@@ -494,16 +497,16 @@
   {
     "isbn": "9780000000049",
     "title": "Tiểu Sử Các Quốc Gia Qua Góc Nhìn Lầy Lội - Sai Lei & Thủy Tiên (dịch)",
-    "authorId": 54,
+    "authorId": 27,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Tiểu_Sử_Các_Quốc_Gia_Qua_Góc_Nhìn_Lầy_Lội_-_Sai_Lei_Thủy_Tiên.jpg",
-    "avgRating": 3.04,
+    "coverUrl": "books/covers/Tiểu_Sử_Các_Quốc_Gia_Qua_Góc_Nhìn_Lầy_Lội_-_Sai_Lei_Thủy_Tiên.jpg",
+    "avgRating": 3.35,
     "totalPages": 283,
     "genreIds": [
-      29,
-      16,
-      1
+      50,
+      40,
+      9
     ],
     "chapters": [
       {
@@ -518,7 +521,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Tiểu Sử Các Quốc Gia Qua Góc Nhìn Lầy Lội - Sai Lei & Thủy Tiên (dịch).pdf",
+        "fileUrl": "books/pdf/Tiểu Sử Các Quốc Gia Qua Góc Nhìn Lầy Lội - Sai Lei & Thủy Tiên (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -526,15 +529,16 @@
   {
     "isbn": "9780000000050",
     "title": "Tiểu Sử Elon Musk - Walter Isaacson",
-    "authorId": 99,
+    "authorId": 71,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Tiểu_Sử_Elon_Musk_-_Walter_Isaacson.jpg",
-    "avgRating": 4.23,
+    "coverUrl": "books/covers/Tiểu_Sử_Elon_Musk_-_Walter_Isaacson.jpg",
+    "avgRating": 3.91,
     "totalPages": 757,
     "genreIds": [
-      35,
-      49
+      5,
+      39,
+      11
     ],
     "chapters": [
       {
@@ -549,7 +553,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Tiểu Sử Elon Musk - Walter Isaacson.pdf",
+        "fileUrl": "books/pdf/Tiểu Sử Elon Musk - Walter Isaacson.pdf",
         "type": "pdf"
       }
     ]

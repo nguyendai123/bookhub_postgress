@@ -2,14 +2,15 @@
   {
     "isbn": "9780000000001",
     "title": "Anh Chàng Mộ Bên - Katarina Mazetti",
-    "authorId": 30,
+    "authorId": 74,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Anh_Chàng_Mộ_Bên_-_Katarina_Mazetti.jpg",
-    "avgRating": 4.83,
+    "coverUrl": "books/covers/Anh_Chàng_Mộ_Bên_-_Katarina_Mazetti.jpg",
+    "avgRating": 3.45,
     "totalPages": 213,
     "genreIds": [
-      36
+      19,
+      39
     ],
     "chapters": [
       {
@@ -105,7 +106,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Anh Chàng Mộ Bên - Katarina Mazetti.pdf",
+        "fileUrl": "books/pdf/Anh Chàng Mộ Bên - Katarina Mazetti.pdf",
         "type": "pdf"
       }
     ]
@@ -113,16 +114,14 @@
   {
     "isbn": "9780000000002",
     "title": "Bi An Cua Nao Phai - Makoto Shichida",
-    "authorId": 89,
+    "authorId": 94,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Bi_An_Cua_Nao_Phai_-_Makoto_Shichida.jpg",
-    "avgRating": 4.25,
+    "coverUrl": "books/covers/Bi_An_Cua_Nao_Phai_-_Makoto_Shichida.jpg",
+    "avgRating": 4.07,
     "totalPages": 187,
     "genreIds": [
-      36,
-      50,
-      31
+      37
     ],
     "chapters": [
       {
@@ -209,7 +208,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Bi An Cua Nao Phai - Makoto Shichida.pdf",
+        "fileUrl": "books/pdf/Bi An Cua Nao Phai - Makoto Shichida.pdf",
         "type": "pdf"
       }
     ]
@@ -217,14 +216,14 @@
   {
     "isbn": "9780000000003",
     "title": "Bi Quyet Tro Thanh Nha Quan Ly Tai Ba - Julie Zhuo",
-    "authorId": 77,
+    "authorId": 53,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Bi_Quyet_Tro_Thanh_Nha_Quan_Ly_Tai_Ba_-_Julie_Zhuo.jpg",
-    "avgRating": 4.21,
+    "coverUrl": "books/covers/Bi_Quyet_Tro_Thanh_Nha_Quan_Ly_Tai_Ba_-_Julie_Zhuo.jpg",
+    "avgRating": 4.54,
     "totalPages": 278,
     "genreIds": [
-      40
+      37
     ],
     "chapters": [
       {
@@ -320,7 +319,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Bi Quyet Tro Thanh Nha Quan Ly Tai Ba - Julie Zhuo.pdf",
+        "fileUrl": "books/pdf/Bi Quyet Tro Thanh Nha Quan Ly Tai Ba - Julie Zhuo.pdf",
         "type": "pdf"
       }
     ]
@@ -331,11 +330,11 @@
     "authorId": 66,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Bàn_Tròn_Trí_Mạng_Bộ_2_Tập_-_Tiếu_Thanh_Tranh.jpg",
-    "avgRating": 3.15,
+    "coverUrl": "books/covers/Bàn_Tròn_Trí_Mạng_Bộ_2_Tập_-_Tiếu_Thanh_Tranh.jpg",
+    "avgRating": 3.06,
     "totalPages": 527,
     "genreIds": [
-      40
+      35
     ],
     "chapters": [
       {
@@ -350,7 +349,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Bàn Tròn Trí Mạng (Bộ 2 Tập) - Tiếu Thanh Tranh.pdf",
+        "fileUrl": "books/pdf/Bàn Tròn Trí Mạng (Bộ 2 Tập) - Tiếu Thanh Tranh.pdf",
         "type": "pdf"
       }
     ]
@@ -358,14 +357,15 @@
   {
     "isbn": "9780000000005",
     "title": "Bàn Về Ham Muốn - William B. Irvine",
-    "authorId": 59,
+    "authorId": 16,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Bàn_Về_Ham_Muốn_-_William_B_Irvine.jpg",
+    "coverUrl": "books/covers/Bàn_Về_Ham_Muốn_-_William_B_Irvine.jpg",
     "avgRating": 4.3,
     "totalPages": 229,
     "genreIds": [
-      10
+      5,
+      26
     ],
     "chapters": [
       {
@@ -389,7 +389,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Bàn Về Ham Muốn - William B. Irvine.pdf",
+        "fileUrl": "books/pdf/Bàn Về Ham Muốn - William B. Irvine.pdf",
         "type": "pdf"
       }
     ]
@@ -397,14 +397,13 @@
   {
     "isbn": "9780000000006",
     "title": "Bên Bờ Sông Piedra Tôi Ngồi Khóc - Paulo Coelho & Lê Chu Cầu (dịch)",
-    "authorId": 98,
+    "authorId": 44,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Bên_Bờ_Sông_Piedra_Tôi_Ngồi_Khóc_-_Paulo_Coelho_Lê_Chu_Cầu.jpg",
-    "avgRating": 3.04,
+    "coverUrl": "books/covers/Bên_Bờ_Sông_Piedra_Tôi_Ngồi_Khóc_-_Paulo_Coelho_Lê_Chu_Cầu.jpg",
+    "avgRating": 3.77,
     "totalPages": 225,
     "genreIds": [
-      42,
       43
     ],
     "chapters": [
@@ -420,7 +419,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Bên Bờ Sông Piedra Tôi Ngồi Khóc - Paulo Coelho & Lê Chu Cầu (dịch).pdf",
+        "fileUrl": "books/pdf/Bên Bờ Sông Piedra Tôi Ngồi Khóc - Paulo Coelho & Lê Chu Cầu (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -428,16 +427,16 @@
   {
     "isbn": "9780000000007",
     "title": "Chuyện Buồn Nhỏ Mang Tên Yêu Thầm - Mạnh Chi Vãn",
-    "authorId": 72,
+    "authorId": 22,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Chuyện_Buồn_Nhỏ_Mang_Tên_Yêu_Thầm_-_Mạnh_Chi_Vãn.jpg",
-    "avgRating": 4.89,
+    "coverUrl": "books/covers/Chuyện_Buồn_Nhỏ_Mang_Tên_Yêu_Thầm_-_Mạnh_Chi_Vãn.jpg",
+    "avgRating": 4.88,
     "totalPages": 218,
     "genreIds": [
-      24,
-      29,
-      49
+      38,
+      7,
+      44
     ],
     "chapters": [
       {
@@ -533,7 +532,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Chuyện Buồn Nhỏ Mang Tên Yêu Thầm - Mạnh Chi Vãn.pdf",
+        "fileUrl": "books/pdf/Chuyện Buồn Nhỏ Mang Tên Yêu Thầm - Mạnh Chi Vãn.pdf",
         "type": "pdf"
       }
     ]
@@ -541,14 +540,16 @@
   {
     "isbn": "9780000000008",
     "title": "Chó Săn Miền Bom Đạn - Adrian Tchaikovsky & Nguyễn Thành Long (dịch)",
-    "authorId": 25,
+    "authorId": 99,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Chó_Săn_Miền_Bom_Đạn_-_Adrian_Tchaikovsky_Nguyễn_Thành_Long.jpg",
-    "avgRating": 4.34,
+    "coverUrl": "books/covers/Chó_Săn_Miền_Bom_Đạn_-_Adrian_Tchaikovsky_Nguyễn_Thành_Long.jpg",
+    "avgRating": 4.32,
     "totalPages": 303,
     "genreIds": [
-      19
+      41,
+      2,
+      10
     ],
     "chapters": [
       {
@@ -563,7 +564,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Chó Săn Miền Bom Đạn - Adrian Tchaikovsky & Nguyễn Thành Long (dịch).pdf",
+        "fileUrl": "books/pdf/Chó Săn Miền Bom Đạn - Adrian Tchaikovsky & Nguyễn Thành Long (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -571,15 +572,14 @@
   {
     "isbn": "9780000000009",
     "title": "Chất xơ diệu kỳ - BS. Will Bulsiewicz",
-    "authorId": 79,
+    "authorId": 46,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Chất_xơ_diệu_kỳ_-_BS_Will_Bulsiewicz.jpg",
-    "avgRating": 4.05,
+    "coverUrl": "books/covers/Chất_xơ_diệu_kỳ_-_BS_Will_Bulsiewicz.jpg",
+    "avgRating": 4.73,
     "totalPages": 418,
     "genreIds": [
-      9,
-      45
+      12
     ],
     "chapters": [
       {
@@ -630,7 +630,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Chất xơ diệu kỳ - BS. Will Bulsiewicz.pdf",
+        "fileUrl": "books/pdf/Chất xơ diệu kỳ - BS. Will Bulsiewicz.pdf",
         "type": "pdf"
       }
     ]
@@ -638,15 +638,16 @@
   {
     "isbn": "9780000000010",
     "title": "Content Và Nghệ Thuật Storytelling - Bát Nhã",
-    "authorId": 40,
+    "authorId": 50,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Content_Và_Nghệ_Thuật_Storytelling_-_Bát_Nhã.jpg",
-    "avgRating": 4.34,
+    "coverUrl": "books/covers/Content_Và_Nghệ_Thuật_Storytelling_-_Bát_Nhã.jpg",
+    "avgRating": 3.44,
     "totalPages": 342,
     "genreIds": [
-      13,
-      34
+      15,
+      45,
+      7
     ],
     "chapters": [
       {
@@ -661,7 +662,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Content Và Nghệ Thuật Storytelling - Bát Nhã.pdf",
+        "fileUrl": "books/pdf/Content Và Nghệ Thuật Storytelling - Bát Nhã.pdf",
         "type": "pdf"
       }
     ]

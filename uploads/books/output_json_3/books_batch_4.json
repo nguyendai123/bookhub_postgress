@@ -2,15 +2,16 @@
   {
     "isbn": "9780000000031",
     "title": "Mùa Thu Của Mèo Holmes - Akagawa Jiro & Hải Đường (dịch)",
-    "authorId": 39,
+    "authorId": 51,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Mùa_Thu_Của_Mèo_Holmes_-_Akagawa_Jiro_Hải_Đường.jpg",
-    "avgRating": 4.0,
+    "coverUrl": "books/covers/Mùa_Thu_Của_Mèo_Holmes_-_Akagawa_Jiro_Hải_Đường.jpg",
+    "avgRating": 3.51,
     "totalPages": 189,
     "genreIds": [
       34,
-      46
+      25,
+      4
     ],
     "chapters": [
       {
@@ -25,7 +26,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Mùa Thu Của Mèo Holmes - Akagawa Jiro & Hải Đường (dịch).pdf",
+        "fileUrl": "books/pdf/Mùa Thu Của Mèo Holmes - Akagawa Jiro & Hải Đường (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -33,15 +34,14 @@
   {
     "isbn": "9780000000032",
     "title": "Ngày Yêu Thầm Kết Thúc - Bổn La Bắc",
-    "authorId": 7,
+    "authorId": 52,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Ngày_Yêu_Thầm_Kết_Thúc_-_Bổn_La_Bắc.jpg",
-    "avgRating": 3.49,
+    "coverUrl": "books/covers/Ngày_Yêu_Thầm_Kết_Thúc_-_Bổn_La_Bắc.jpg",
+    "avgRating": 3.87,
     "totalPages": 869,
     "genreIds": [
-      20,
-      31
+      8
     ],
     "chapters": [
       {
@@ -137,7 +137,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Ngày Yêu Thầm Kết Thúc - Bổn La Bắc.pdf",
+        "fileUrl": "books/pdf/Ngày Yêu Thầm Kết Thúc - Bổn La Bắc.pdf",
         "type": "pdf"
       }
     ]
@@ -145,16 +145,16 @@
   {
     "isbn": "9780000000033",
     "title": "Ngôi Nhà Số 11 - Sophie Hannah & Nguyễn Việt Dũng (dịch)",
-    "authorId": 73,
+    "authorId": 17,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Ngôi_Nhà_Số_11_-_Sophie_Hannah_Nguyễn_Việt_Dũng.jpg",
-    "avgRating": 4.3,
+    "coverUrl": "books/covers/Ngôi_Nhà_Số_11_-_Sophie_Hannah_Nguyễn_Việt_Dũng.jpg",
+    "avgRating": 4.27,
     "totalPages": 445,
     "genreIds": [
-      29,
-      10,
-      37
+      8,
+      37,
+      11
     ],
     "chapters": [
       {
@@ -169,7 +169,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Ngôi Nhà Số 11 - Sophie Hannah & Nguyễn Việt Dũng (dịch).pdf",
+        "fileUrl": "books/pdf/Ngôi Nhà Số 11 - Sophie Hannah & Nguyễn Việt Dũng (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -177,15 +177,16 @@
   {
     "isbn": "9780000000034",
     "title": "Người Chơi Hệ Siêu Cấp Trà Xanh Xuyên Thành Công Chúa Nhỏ Đáng Thương - Xuân Đao Hàn",
-    "authorId": 42,
+    "authorId": 79,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Người_Chơi_Hệ_Siêu_Cấp_Trà_Xanh_Xuyên_Thành_Công_Chúa_Nhỏ_Đáng_Thương_-_Xuân_Đao.jpg",
-    "avgRating": 3.57,
+    "coverUrl": "books/covers/Người_Chơi_Hệ_Siêu_Cấp_Trà_Xanh_Xuyên_Thành_Công_Chúa_Nhỏ_Đáng_Thương_-_Xuân_Đao.jpg",
+    "avgRating": 4.4,
     "totalPages": 1035,
     "genreIds": [
-      27,
-      2
+      22,
+      44,
+      19
     ],
     "chapters": [
       {
@@ -281,7 +282,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Người Chơi Hệ Siêu Cấp Trà Xanh Xuyên Thành Công Chúa Nhỏ Đáng Thương - Xuân Đao Hàn.pdf",
+        "fileUrl": "books/pdf/Người Chơi Hệ Siêu Cấp Trà Xanh Xuyên Thành Công Chúa Nhỏ Đáng Thương - Xuân Đao Hàn.pdf",
         "type": "pdf"
       }
     ]
@@ -289,14 +290,14 @@
   {
     "isbn": "9780000000035",
     "title": "Nhà Tù Shawshank - Stephen King & Đỗ Phan Thu Hà (dịch)",
-    "authorId": 7,
+    "authorId": 10,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Nhà_Tù_Shawshank_-_Stephen_King_Đỗ_Phan_Thu_Hà.jpg",
-    "avgRating": 3.92,
+    "coverUrl": "books/covers/Nhà_Tù_Shawshank_-_Stephen_King_Đỗ_Phan_Thu_Hà.jpg",
+    "avgRating": 3.48,
     "totalPages": 839,
     "genreIds": [
-      40
+      30
     ],
     "chapters": [
       {
@@ -311,7 +312,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Nhà Tù Shawshank - Stephen King & Đỗ Phan Thu Hà (dịch).pdf",
+        "fileUrl": "books/pdf/Nhà Tù Shawshank - Stephen King & Đỗ Phan Thu Hà (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -319,16 +320,16 @@
   {
     "isbn": "9780000000036",
     "title": "Những Chuyện Lạ Ở Tokyo - Haruki Murakami & Vương Hải Yến (dịch)",
-    "authorId": 60,
+    "authorId": 44,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Những_Chuyện_Lạ_Ở_Tokyo_-_Haruki_Murakami_Vương_Hải_Yến.jpg",
-    "avgRating": 3.52,
+    "coverUrl": "books/covers/Những_Chuyện_Lạ_Ở_Tokyo_-_Haruki_Murakami_Vương_Hải_Yến.jpg",
+    "avgRating": 3.75,
     "totalPages": 167,
     "genreIds": [
-      45,
-      4,
-      28
+      46,
+      42,
+      10
     ],
     "chapters": [
       {
@@ -343,7 +344,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Những Chuyện Lạ Ở Tokyo - Haruki Murakami & Vương Hải Yến (dịch).pdf",
+        "fileUrl": "books/pdf/Những Chuyện Lạ Ở Tokyo - Haruki Murakami & Vương Hải Yến (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -351,15 +352,16 @@
   {
     "isbn": "9780000000037",
     "title": "Những Chàng Trai Baltimore - Joël Dicker & La Phương Thủy (dịch) & Chu Thanh Thủy (dịch)",
-    "authorId": 24,
+    "authorId": 7,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Những_Chàng_Trai_Baltimore_-_Joël_Dicker_La_Phương_Thủy_Chu_Thanh_Thủy.jpg",
-    "avgRating": 4.36,
+    "coverUrl": "books/covers/Những_Chàng_Trai_Baltimore_-_Joël_Dicker_La_Phương_Thủy_Chu_Thanh_Thủy.jpg",
+    "avgRating": 4.02,
     "totalPages": 441,
     "genreIds": [
-      46,
-      50
+      21,
+      2,
+      3
     ],
     "chapters": [
       {
@@ -374,7 +376,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Những Chàng Trai Baltimore - Joël Dicker & La Phương Thủy (dịch) & Chu Thanh Thủy (dịch).pdf",
+        "fileUrl": "books/pdf/Những Chàng Trai Baltimore - Joël Dicker & La Phương Thủy (dịch) & Chu Thanh Thủy (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -382,16 +384,15 @@
   {
     "isbn": "9780000000038",
     "title": "Những Ngày Mai Của Nhân Loại - Roger Tatoud & AI (dịch)",
-    "authorId": 42,
+    "authorId": 34,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Những_Ngày_Mai_Của_Nhân_Loại_-_Roger_Tatoud_AI.jpg",
-    "avgRating": 4.12,
+    "coverUrl": "books/covers/Những_Ngày_Mai_Của_Nhân_Loại_-_Roger_Tatoud_AI.jpg",
+    "avgRating": 4.39,
     "totalPages": 135,
     "genreIds": [
-      26,
-      4,
-      2
+      49,
+      27
     ],
     "chapters": [
       {
@@ -406,7 +407,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Những Ngày Mai Của Nhân Loại - Roger Tatoud & AI (dịch).pdf",
+        "fileUrl": "books/pdf/Những Ngày Mai Của Nhân Loại - Roger Tatoud & AI (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -414,14 +415,16 @@
   {
     "isbn": "9780000000039",
     "title": "Niem Tin Thong Minh - Stephen R. Covey",
-    "authorId": 88,
+    "authorId": 70,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Niem_Tin_Thong_Minh_-_Stephen_R_Covey.jpg",
-    "avgRating": 3.29,
+    "coverUrl": "books/covers/Niem_Tin_Thong_Minh_-_Stephen_R_Covey.jpg",
+    "avgRating": 3.45,
     "totalPages": 315,
     "genreIds": [
-      29
+      18,
+      26,
+      13
     ],
     "chapters": [
       {
@@ -508,7 +511,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Niem Tin Thong Minh - Stephen R. Covey.pdf",
+        "fileUrl": "books/pdf/Niem Tin Thong Minh - Stephen R. Covey.pdf",
         "type": "pdf"
       }
     ]
@@ -516,14 +519,14 @@
   {
     "isbn": "9780000000040",
     "title": "Phá Tan Sự Ngụy Biện - Kỹ Năng Phân Tích Lập Luận Và Đặt Câu Hỏi Phản Biện - M. Neil Browne & Stuart M. Keeley",
-    "authorId": 32,
+    "authorId": 100,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Phá_Tan_Sự_Ngụy_Biện_-_Kỹ_Năng_Phân_Tích_Lập_Luận_Và_Đặt_Câu_Hỏi_Phản_Biện_-_M_N.jpg",
-    "avgRating": 3.79,
+    "coverUrl": "books/covers/Phá_Tan_Sự_Ngụy_Biện_-_Kỹ_Năng_Phân_Tích_Lập_Luận_Và_Đặt_Câu_Hỏi_Phản_Biện_-_M_N.jpg",
+    "avgRating": 4.45,
     "totalPages": 384,
     "genreIds": [
-      14
+      48
     ],
     "chapters": [
       {
@@ -538,7 +541,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Phá Tan Sự Ngụy Biện - Kỹ Năng Phân Tích Lập Luận Và Đặt Câu Hỏi Phản Biện - M. Neil Browne & Stuart M. Keeley.pdf",
+        "fileUrl": "books/pdf/Phá Tan Sự Ngụy Biện - Kỹ Năng Phân Tích Lập Luận Và Đặt Câu Hỏi Phản Biện - M. Neil Browne & Stuart M. Keeley.pdf",
         "type": "pdf"
       }
     ]

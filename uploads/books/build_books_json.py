@@ -22,7 +22,7 @@ def build_cover_list():
     covers = []
     for f in sorted(os.listdir(COVER_DIR)):
         if f.lower().endswith((".jpg", ".png", ".jpeg", ".webp")):
-            covers.append(os.path.join("books/covers", f).replace("\\", "/"))
+            covers.append(os.path.join("/books/covers", f).replace("\\", "/"))
     return covers
 
 
@@ -205,7 +205,7 @@ def process_book(pdf_file, cover_url, book_id):
         ],
         "mediaAssets": [
             {
-                "fileUrl": f"books/pdf/{pdf_file}",
+                "fileUrl": f"/books/pdf/{pdf_file}",
                 "type": "pdf"
             }
         ]
@@ -227,7 +227,7 @@ def main():
     book_id = 1
 
     for i, pdf_file in enumerate(pdf_files):
-        cover_url = cover_list[i] if i < len(cover_list) else "books/covers/default.jpg"
+        cover_url = cover_list[i] if i < len(cover_list) else "/books/covers/default.jpg"
         print(f"📖 Processing {pdf_file}")
         book_json = process_book(pdf_file, cover_url, book_id)
         batch_books.append(book_json)

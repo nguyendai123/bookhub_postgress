@@ -2,14 +2,14 @@
   {
     "isbn": "9780000000051",
     "title": "Tiệm Tạp Hoá Âm Dương - Ô Lãng Lãng",
-    "authorId": 22,
+    "authorId": 18,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Tiệm_Tạp_Hoá_Âm_Dương_-_Ô_Lãng_Lãng.jpg",
-    "avgRating": 4.29,
+    "coverUrl": "books/covers/Tiệm_Tạp_Hoá_Âm_Dương_-_Ô_Lãng_Lãng.jpg",
+    "avgRating": 3.28,
     "totalPages": 1174,
     "genreIds": [
-      11
+      44
     ],
     "chapters": [
       {
@@ -105,7 +105,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Tiệm Tạp Hoá Âm Dương - Ô Lãng Lãng.pdf",
+        "fileUrl": "books/pdf/Tiệm Tạp Hoá Âm Dương - Ô Lãng Lãng.pdf",
         "type": "pdf"
       }
     ]
@@ -113,15 +113,15 @@
   {
     "isbn": "9780000000052",
     "title": "Treasure Island",
-    "authorId": 75,
+    "authorId": 83,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Treasure_Island.jpg",
-    "avgRating": 3.39,
+    "coverUrl": "books/covers/Treasure_Island.jpg",
+    "avgRating": 4.85,
     "totalPages": 142,
     "genreIds": [
-      30,
-      8
+      1,
+      9
     ],
     "chapters": [
       {
@@ -136,7 +136,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Treasure Island.pdf",
+        "fileUrl": "books/pdf/Treasure Island.pdf",
         "type": "pdf"
       }
     ]
@@ -144,14 +144,15 @@
   {
     "isbn": "9780000000053",
     "title": "Tâm Trí Tội Phạm - Sam Kean",
-    "authorId": 96,
+    "authorId": 40,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Tâm_Trí_Tội_Phạm_-_Sam_Kean.jpg",
-    "avgRating": 4.7,
+    "coverUrl": "books/covers/Tâm_Trí_Tội_Phạm_-_Sam_Kean.jpg",
+    "avgRating": 4.96,
     "totalPages": 486,
     "genreIds": [
-      16
+      33,
+      15
     ],
     "chapters": [
       {
@@ -166,7 +167,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Tâm Trí Tội Phạm - Sam Kean.pdf",
+        "fileUrl": "books/pdf/Tâm Trí Tội Phạm - Sam Kean.pdf",
         "type": "pdf"
       }
     ]
@@ -174,15 +175,15 @@
   {
     "isbn": "9780000000054",
     "title": "Vũ Điệu Quỷ Satan - Krasznahorkai Laszlo & Giáp Văn Chung (dịch)",
-    "authorId": 51,
+    "authorId": 6,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Vũ_Điệu_Quỷ_Satan_-_Krasznahorkai_Laszlo_Giáp_Văn_Chung.jpg",
-    "avgRating": 3.51,
+    "coverUrl": "books/covers/Vũ_Điệu_Quỷ_Satan_-_Krasznahorkai_Laszlo_Giáp_Văn_Chung.jpg",
+    "avgRating": 4.59,
     "totalPages": 307,
     "genreIds": [
-      18,
-      35
+      19,
+      6
     ],
     "chapters": [
       {
@@ -197,7 +198,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Vũ Điệu Quỷ Satan - Krasznahorkai Laszlo & Giáp Văn Chung (dịch).pdf",
+        "fileUrl": "books/pdf/Vũ Điệu Quỷ Satan - Krasznahorkai Laszlo & Giáp Văn Chung (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -205,16 +206,15 @@
   {
     "isbn": "9780000000055",
     "title": "Xứ Sở Những Cô Gái Đi Xe Máy Mặc Áo Khoác Hoa - Juli Zeh & Đinh Bá Anh (dịch)",
-    "authorId": 10,
+    "authorId": 5,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Xứ_Sở_Những_Cô_Gái_Đi_Xe_Máy_Mặc_Áo_Khoác_Hoa_-_Juli_Zeh_Đinh_Bá_Anh.jpg",
-    "avgRating": 4.0,
+    "coverUrl": "books/covers/Xứ_Sở_Những_Cô_Gái_Đi_Xe_Máy_Mặc_Áo_Khoác_Hoa_-_Juli_Zeh_Đinh_Bá_Anh.jpg",
+    "avgRating": 4.98,
     "totalPages": 82,
     "genreIds": [
-      40,
-      41,
-      15
+      22,
+      17
     ],
     "chapters": [
       {
@@ -229,7 +229,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Xứ Sở Những Cô Gái Đi Xe Máy Mặc Áo Khoác Hoa - Juli Zeh & Đinh Bá Anh (dịch).pdf",
+        "fileUrl": "books/pdf/Xứ Sở Những Cô Gái Đi Xe Máy Mặc Áo Khoác Hoa - Juli Zeh & Đinh Bá Anh (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -237,15 +237,14 @@
   {
     "isbn": "9780000000056",
     "title": "nhasachmienphi-khu-vuon-bi-mat",
-    "authorId": 100,
+    "authorId": 98,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/nhasachmienphi-khu-vuon-bi-mat.jpg",
-    "avgRating": 4.78,
+    "coverUrl": "books/covers/nhasachmienphi-khu-vuon-bi-mat.jpg",
+    "avgRating": 3.63,
     "totalPages": 176,
     "genreIds": [
-      9,
-      25
+      32
     ],
     "chapters": [
       {
@@ -341,7 +340,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/nhasachmienphi-khu-vuon-bi-mat.pdf",
+        "fileUrl": "books/pdf/nhasachmienphi-khu-vuon-bi-mat.pdf",
         "type": "pdf"
       }
     ]
@@ -349,15 +348,14 @@
   {
     "isbn": "9780000000057",
     "title": "onggiadongkl9801",
-    "authorId": 84,
+    "authorId": 96,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/onggiadongkl9801.jpg",
-    "avgRating": 4.47,
+    "coverUrl": "books/covers/onggiadongkl9801.jpg",
+    "avgRating": 3.12,
     "totalPages": 100,
     "genreIds": [
-      38,
-      2
+      42
     ],
     "chapters": [
       {
@@ -372,7 +370,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/onggiadongkl9801.pdf",
+        "fileUrl": "books/pdf/onggiadongkl9801.pdf",
         "type": "pdf"
       }
     ]
@@ -380,15 +378,16 @@
   {
     "isbn": "9780000000058",
     "title": "shining",
-    "authorId": 38,
+    "authorId": 51,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/shining.jpg",
-    "avgRating": 3.23,
+    "coverUrl": "books/covers/shining.jpg",
+    "avgRating": 3.72,
     "totalPages": 307,
     "genreIds": [
-      26,
-      29
+      9,
+      19,
+      34
     ],
     "chapters": [
       {
@@ -403,7 +402,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/shining.pdf",
+        "fileUrl": "books/pdf/shining.pdf",
         "type": "pdf"
       }
     ]
@@ -411,14 +410,15 @@
   {
     "isbn": "9780000000059",
     "title": "Đường Hầm - So Jae Won & Hồng Hà (dịch)",
-    "authorId": 98,
+    "authorId": 61,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Đường_Hầm_-_So_Jae_Won_Hồng_Hà.jpg",
-    "avgRating": 4.89,
+    "coverUrl": "books/covers/Đường_Hầm_-_So_Jae_Won_Hồng_Hà.jpg",
+    "avgRating": 3.35,
     "totalPages": 179,
     "genreIds": [
-      6
+      10,
+      11
     ],
     "chapters": [
       {
@@ -433,7 +433,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Đường Hầm - So Jae Won & Hồng Hà (dịch).pdf",
+        "fileUrl": "books/pdf/Đường Hầm - So Jae Won & Hồng Hà (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -441,14 +441,15 @@
   {
     "isbn": "9780000000060",
     "title": "Đầu Voi - Shirai Tomoyuki & AI (dịch)",
-    "authorId": 86,
+    "authorId": 23,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Đầu_Voi_-_Shirai_Tomoyuki_AI.jpg",
-    "avgRating": 3.73,
+    "coverUrl": "books/covers/Đầu_Voi_-_Shirai_Tomoyuki_AI.jpg",
+    "avgRating": 4.75,
     "totalPages": 402,
     "genreIds": [
-      42
+      47,
+      29
     ],
     "chapters": [
       {
@@ -463,7 +464,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Đầu Voi - Shirai Tomoyuki & AI (dịch).pdf",
+        "fileUrl": "books/pdf/Đầu Voi - Shirai Tomoyuki & AI (dịch).pdf",
         "type": "pdf"
       }
     ]
