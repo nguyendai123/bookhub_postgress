@@ -12,7 +12,7 @@ spring:
     #    password: "1232001"
     #    driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:postgresql://localhost:5432/book_hub
-    username: postgres
+    username: bookhub_user
     password: 1232001
 
     hikari:
