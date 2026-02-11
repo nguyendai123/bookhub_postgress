@@ -37,10 +37,10 @@ public class PostServiceImpl implements PostService {
     private final LikeRepository likeRepository;
     private final ReadingService readingService;
 
-    @Scheduled(fixedRate = 600000) // chạy mỗi phút
+    @Scheduled(fixedRate = 6000) // chạy mỗi phút
     public void processTrendingUpdates() {
 
-        List<Post> dirtyPosts = postRepository.findDirtyPostsOrderByPriority(PageRequest.of(0, 10));
+        List<Post> dirtyPosts = postRepository.findDirtyPostsOrderByPriority(PageRequest.of(0, 400));
 
         for (Post p : dirtyPosts) {
 

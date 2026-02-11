@@ -33,6 +33,9 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Asia/Ho_Chi_Minh
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
 
   main:
     allow-circular-references: true

@@ -2,15 +2,15 @@
   {
     "isbn": "9780000000011",
     "title": "Cuộc Viếng Thăm Của Vị Khách Bí Ẩn - R. Austin Freeman & Trân (dịch)",
-    "authorId": 74,
+    "authorId": 14,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Cuộc_Viếng_Thăm_Của_Vị_Khách_Bí_Ẩn_-_R_Austin_Freeman_Trân.jpg",
-    "avgRating": 3.45,
+    "coverUrl": "books/covers/Cuộc_Viếng_Thăm_Của_Vị_Khách_Bí_Ẩn_-_R_Austin_Freeman_Trân.jpg",
+    "avgRating": 3.32,
     "totalPages": 232,
     "genreIds": [
-      26,
-      9
+      23,
+      1
     ],
     "chapters": [
       {
@@ -25,7 +25,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Cuộc Viếng Thăm Của Vị Khách Bí Ẩn - R. Austin Freeman & Trân (dịch).pdf",
+        "fileUrl": "books/pdf/Cuộc Viếng Thăm Của Vị Khách Bí Ẩn - R. Austin Freeman & Trân (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -33,15 +33,15 @@
   {
     "isbn": "9780000000012",
     "title": "Danh Sách Mua Sắm Của Kẻ Sát Nhân - Jiyong Kang & Lê Thùy Dung (dịch) & Kyoyeon (dịch)",
-    "authorId": 96,
+    "authorId": 16,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Danh_Sách_Mua_Sắm_Của_Kẻ_Sát_Nhân_-_Jiyong_Kang_Lê_Thùy_Dung_Kyoyeon.jpg",
-    "avgRating": 4.0,
+    "coverUrl": "books/covers/Danh_Sách_Mua_Sắm_Của_Kẻ_Sát_Nhân_-_Jiyong_Kang_Lê_Thùy_Dung_Kyoyeon.jpg",
+    "avgRating": 4.63,
     "totalPages": 268,
     "genreIds": [
-      50,
-      4
+      14,
+      12
     ],
     "chapters": [
       {
@@ -56,7 +56,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Danh Sách Mua Sắm Của Kẻ Sát Nhân - Jiyong Kang & Lê Thùy Dung (dịch) & Kyoyeon (dịch).pdf",
+        "fileUrl": "books/pdf/Danh Sách Mua Sắm Của Kẻ Sát Nhân - Jiyong Kang & Lê Thùy Dung (dịch) & Kyoyeon (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -64,14 +64,15 @@
   {
     "isbn": "9780000000013",
     "title": "Detox. Low Carb. Thực Phẩm Hữu Cơ. Tin Đồn và Suy Thật. (scan) - Dr Robert J. David",
-    "authorId": 19,
+    "authorId": 98,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Detox_Low_Carb_Thực_Phẩm_Hữu_Cơ_Tin_Đồn_và_Suy_Thật_scan_-_Dr_Robert_J_David.jpg",
-    "avgRating": 3.95,
+    "coverUrl": "books/covers/Detox_Low_Carb_Thực_Phẩm_Hữu_Cơ_Tin_Đồn_và_Suy_Thật_scan_-_Dr_Robert_J_David.jpg",
+    "avgRating": 3.74,
     "totalPages": 230,
     "genreIds": [
-      13
+      24,
+      33
     ],
     "chapters": [
       {
@@ -86,7 +87,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Detox. Low Carb. Thực Phẩm Hữu Cơ. Tin Đồn và Suy Thật. (scan) - Dr Robert J. David.pdf",
+        "fileUrl": "books/pdf/Detox. Low Carb. Thực Phẩm Hữu Cơ. Tin Đồn và Suy Thật. (scan) - Dr Robert J. David.pdf",
         "type": "pdf"
       }
     ]
@@ -94,14 +95,16 @@
   {
     "isbn": "9780000000014",
     "title": "Dù Ngủ Dù Thức - Tomoka Shibasaki & Trần Anh Ly (dịch)",
-    "authorId": 42,
+    "authorId": 85,
     "language": "en",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Dù_Ngủ_Dù_Thức_-_Tomoka_Shibasaki_Trần_Anh_Ly.jpg",
-    "avgRating": 3.16,
+    "coverUrl": "books/covers/Dù_Ngủ_Dù_Thức_-_Tomoka_Shibasaki_Trần_Anh_Ly.jpg",
+    "avgRating": 4.47,
     "totalPages": 332,
     "genreIds": [
-      37
+      8,
+      38,
+      24
     ],
     "chapters": [
       {
@@ -116,7 +119,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Dù Ngủ Dù Thức - Tomoka Shibasaki & Trần Anh Ly (dịch).pdf",
+        "fileUrl": "books/pdf/Dù Ngủ Dù Thức - Tomoka Shibasaki & Trần Anh Ly (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -124,14 +127,15 @@
   {
     "isbn": "9780000000015",
     "title": "Dệt Áng Mây Trời - Ibuki Yuki & Bảo Lam Anh (dịch)",
-    "authorId": 66,
+    "authorId": 80,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Dệt_Áng_Mây_Trời_-_Ibuki_Yuki_Bảo_Lam_Anh.jpg",
-    "avgRating": 4.98,
+    "coverUrl": "books/covers/Dệt_Áng_Mây_Trời_-_Ibuki_Yuki_Bảo_Lam_Anh.jpg",
+    "avgRating": 4.24,
     "totalPages": 421,
     "genreIds": [
-      43
+      3,
+      26
     ],
     "chapters": [
       {
@@ -200,7 +204,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Dệt Áng Mây Trời - Ibuki Yuki & Bảo Lam Anh (dịch).pdf",
+        "fileUrl": "books/pdf/Dệt Áng Mây Trời - Ibuki Yuki & Bảo Lam Anh (dịch).pdf",
         "type": "pdf"
       }
     ]
@@ -208,14 +212,15 @@
   {
     "isbn": "9780000000016",
     "title": "Giải Mật Ngoại Hạng Anh - Joshua Robinson & Jonathan Clegg",
-    "authorId": 92,
+    "authorId": 8,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Giải_Mật_Ngoại_Hạng_Anh_-_Joshua_Robinson_Jonathan_Clegg.jpg",
-    "avgRating": 3.69,
+    "coverUrl": "books/covers/Giải_Mật_Ngoại_Hạng_Anh_-_Joshua_Robinson_Jonathan_Clegg.jpg",
+    "avgRating": 3.46,
     "totalPages": 458,
     "genreIds": [
-      11
+      28,
+      40
     ],
     "chapters": [
       {
@@ -230,7 +235,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Giải Mật Ngoại Hạng Anh - Joshua Robinson & Jonathan Clegg.pdf",
+        "fileUrl": "books/pdf/Giải Mật Ngoại Hạng Anh - Joshua Robinson & Jonathan Clegg.pdf",
         "type": "pdf"
       }
     ]
@@ -238,15 +243,16 @@
   {
     "isbn": "9780000000017",
     "title": "Harry Potter va Bao boi Tu than - J.K. Rowling",
-    "authorId": 51,
+    "authorId": 73,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Bao_boi_Tu_than_-_JK_Rowling.jpg",
-    "avgRating": 3.07,
+    "coverUrl": "books/covers/Harry_Potter_va_Bao_boi_Tu_than_-_JK_Rowling.jpg",
+    "avgRating": 4.38,
     "totalPages": 222,
     "genreIds": [
-      24,
-      44
+      42,
+      30,
+      34
     ],
     "chapters": [
       {
@@ -261,7 +267,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Bao boi Tu than - J.K. Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Bao boi Tu than - J.K. Rowling.pdf",
         "type": "pdf"
       }
     ]
@@ -269,15 +275,16 @@
   {
     "isbn": "9780000000018",
     "title": "Harry Potter va Chiec coc lua - - J.K.Rowling",
-    "authorId": 89,
+    "authorId": 38,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Chiec_coc_lua_-_-_JKRowling.jpg",
-    "avgRating": 4.39,
+    "coverUrl": "books/covers/Harry_Potter_va_Chiec_coc_lua_-_-_JKRowling.jpg",
+    "avgRating": 4.92,
     "totalPages": 568,
     "genreIds": [
-      48,
-      25
+      36,
+      16,
+      7
     ],
     "chapters": [
       {
@@ -292,7 +299,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Chiec coc lua - - J.K.Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Chiec coc lua - - J.K.Rowling.pdf",
         "type": "pdf"
       }
     ]
@@ -300,15 +307,16 @@
   {
     "isbn": "9780000000019",
     "title": "Harry Potter va Dua tre bi nguy - J. K. Rowling",
-    "authorId": 35,
+    "authorId": 27,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Dua_tre_bi_nguy_-_J_K_Rowling.jpg",
-    "avgRating": 4.53,
+    "coverUrl": "books/covers/Harry_Potter_va_Dua_tre_bi_nguy_-_J_K_Rowling.jpg",
+    "avgRating": 3.16,
     "totalPages": 266,
     "genreIds": [
-      35,
-      6
+      14,
+      9,
+      15
     ],
     "chapters": [
       {
@@ -323,7 +331,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Dua tre bi nguy - J. K. Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Dua tre bi nguy - J. K. Rowling.pdf",
         "type": "pdf"
       }
     ]
@@ -331,14 +339,15 @@
   {
     "isbn": "9780000000020",
     "title": "Harry Potter va Hoang tu lai - - J.K.Rowling",
-    "authorId": 61,
+    "authorId": 41,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Harry_Potter_va_Hoang_tu_lai_-_-_JKRowling.jpg",
-    "avgRating": 3.69,
+    "coverUrl": "books/covers/Harry_Potter_va_Hoang_tu_lai_-_-_JKRowling.jpg",
+    "avgRating": 4.87,
     "totalPages": 383,
     "genreIds": [
-      50
+      29,
+      34
     ],
     "chapters": [
       {
@@ -353,7 +362,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Harry Potter va Hoang tu lai - - J.K.Rowling.pdf",
+        "fileUrl": "books/pdf/Harry Potter va Hoang tu lai - - J.K.Rowling.pdf",
         "type": "pdf"
       }
     ]

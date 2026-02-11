@@ -2,15 +2,15 @@
   {
     "isbn": "9780000000061",
     "title": "Để Ăn Không Băn Khoăn (Bộ 2 Tập) - Vũ Thế Thành",
-    "authorId": 63,
+    "authorId": 40,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Để_Ăn_Không_Băn_Khoăn_Bộ_2_Tập_-_Vũ_Thế_Thành.jpg",
-    "avgRating": 3.87,
+    "coverUrl": "books/covers/Để_Ăn_Không_Băn_Khoăn_Bộ_2_Tập_-_Vũ_Thế_Thành.jpg",
+    "avgRating": 4.94,
     "totalPages": 330,
     "genreIds": [
-      44,
-      40
+      11,
+      15
     ],
     "chapters": [
       {
@@ -25,7 +25,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Để Ăn Không Băn Khoăn (Bộ 2 Tập) - Vũ Thế Thành.pdf",
+        "fileUrl": "books/pdf/Để Ăn Không Băn Khoăn (Bộ 2 Tập) - Vũ Thế Thành.pdf",
         "type": "pdf"
       }
     ]
@@ -33,14 +33,15 @@
   {
     "isbn": "9780000000062",
     "title": "Đời Ngắn Lắm, Đừng Làm Việc Vô Nghĩa! - David Graeber",
-    "authorId": 81,
+    "authorId": 10,
     "language": "vi",
     "description": "Không có mô tả",
-    "coverUrl": "/books/covers/Đời_Ngắn_Lắm_Đừng_Làm_Việc_Vô_Nghĩa_-_David_Graeber.jpg",
-    "avgRating": 4.91,
+    "coverUrl": "books/covers/Đời_Ngắn_Lắm_Đừng_Làm_Việc_Vô_Nghĩa_-_David_Graeber.jpg",
+    "avgRating": 4.27,
     "totalPages": 362,
     "genreIds": [
-      32
+      12,
+      29
     ],
     "chapters": [
       {
@@ -100,7 +101,7 @@
     ],
     "mediaAssets": [
       {
-        "fileUrl": "/books/pdf/Đời Ngắn Lắm, Đừng Làm Việc Vô Nghĩa! - David Graeber.pdf",
+        "fileUrl": "books/pdf/Đời Ngắn Lắm, Đừng Làm Việc Vô Nghĩa! - David Graeber.pdf",
         "type": "pdf"
       }
     ]
