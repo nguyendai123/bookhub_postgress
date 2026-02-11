@@ -160,6 +160,9 @@ def split_chapters_by_content(full_text):
         }]
 
     return chapters
+def get_total_pages(pdf_path):
+    with fitz.open(pdf_path) as doc:
+        return len(doc)
 
 
 # ================== PROCESS ONE BOOK ==================
@@ -174,6 +177,10 @@ def process_book(pdf_file, cover_url, book_id):
     description = extract_description(first_pages)
     full_text = extract_pdf_text(pdf_path)
     chapters = split_chapters_by_content(full_text)
+    
+    total_pages = get_total_pages(pdf_path)
+    num_chapters = len(chapters)
+    pages_per_chapter = max(1, total_pages // max(1, num_chapters))
 
     return {
         "isbn": str(9780000000000 + book_id),
@@ -182,15 +189,19 @@ def process_book(pdf_file, cover_url, book_id):
         "language": language,
         "description": description,
         "coverUrl": cover_url,
-        "genreIds": random.sample(range(1, 51), k=random.randint(1, 3)),  # 🎲 1-3 genre
+        "avgRating": round(random.uniform(3.0, 5.0), 2),  # ⭐ rating giả lập
+        "totalPages": total_pages,
+        "genreIds": random.sample(range(1, 51), k=random.randint(1, 3)),
         "chapters": [
             {
                 "chapterTitle": c["chapterTitle"],
                 "chapterOrder": c["chapterOrder"],
                 "textContent": c["textContent"],
                 "audioUrl": None,
-                "duration": None
-            } for c in chapters
+                "duration": None,
+                "startPage": (idx * pages_per_chapter) + 1,
+                "endPage": min(total_pages, (idx + 1) * pages_per_chapter)
+            } for idx, c in enumerate(chapters)
         ],
         "mediaAssets": [
             {

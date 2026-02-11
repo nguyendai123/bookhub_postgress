@@ -58,6 +58,7 @@ public class BookServiceImpl implements BookService {
         return toDetailDTO(bookRepository.findDetailByBookId(id)
                 .orElseThrow(() -> new RuntimeException("Book not found")));
     }
+
     @Override
     public BulkBookCreateResponse createBooksPartial(List<BookCreateRequest> requests) {
         List<Book> success = new ArrayList<>();
@@ -102,7 +103,8 @@ public class BookServiceImpl implements BookService {
                 .language(req.getLanguage())
                 .description(req.getDescription())
                 .coverUrl(req.getCoverUrl())
-                .avgRating(0f)
+                .totalPages(req.getTotalPages())
+                .avgRating(req.getAvgRating() != null ? req.getAvgRating() : 0f)
                 .totalReviews(0)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -126,7 +128,9 @@ public class BookServiceImpl implements BookService {
                 BookChapter chapter = BookChapter.builder()
                         .book(book)
                         .chapterTitle(c.getChapterTitle())
-                        .chapterOrder(c.getChapterOrder())
+                        .chapterOrder(c.getChapterOrder() != null ? c.getChapterOrder() : 1)
+                        .startPage(c.getStartPage())
+                        .endPage(c.getEndPage())
                         .textContent(c.getTextContent())
                         .audioUrl(c.getAudioUrl())
                         .duration(c.getDuration())
