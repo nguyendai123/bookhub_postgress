@@ -41,6 +41,7 @@ public class DevPostService {
     private final ReadingService readingService;
     private final LikeService likeService;
     private final CommentService commentService;
+    private final ShareRepository shareRepo;
 
 
     private final Random random = new Random();
@@ -1894,7 +1895,8 @@ public class DevPostService {
     }
 
     // ================= SHARE POST =================
-    private Post createSharePost(User user) {
+    @Transactional
+    protected Post createSharePost(User user) {
 
         Post original = getRandomExistingPost();
         String newContent = generateShareContent(original);
@@ -1935,7 +1937,18 @@ public class DevPostService {
         postRepository.save(sharePost);
 
         // 🔥 TĂNG SHARE CHO BÀI GỐC
+        // 2️⃣ Ghi record Share
+        Share share = Share.builder()
+                .user(user)
+                .post(original)
+                .sharedAt(LocalDateTime.now())
+                .build();
+
+        shareRepo.save(share);
+
+        // 3️⃣ Tăng share cho bài gốc
         original.setSharesCount(original.getSharesCount() + 1);
+        original.setScoreDirty(true);
         postRepository.save(original);
 
         return sharePost;

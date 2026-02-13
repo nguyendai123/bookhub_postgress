@@ -16,7 +16,14 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "posts")
+@Table(name = "posts",
+        indexes = {
+                @Index(
+                        name = "idx_dirty_trending",
+                        columnList = "score_dirty, trending_score DESC"
+                )
+        }
+)
 public class Post {
 
     @Id
@@ -40,7 +47,7 @@ public class Post {
     @Column(name = "image_url", length = 255)
     private String imageUrl;
 
-         @JdbcTypeCode(SqlTypes.JSON)
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> hashtags; // JSON array of tags
 

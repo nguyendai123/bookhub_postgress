@@ -8,14 +8,27 @@ import com.bookhup.repository.RoleRepository;
 import com.bookhup.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.text.Normalizer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
 @Service
@@ -26,6 +39,9 @@ public class DevUserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
+    private final ExecutorService imageExecutor =
+            Executors.newFixedThreadPool(8); // giới hạn 5 luồng
+
 
     private final Random random = new Random();
 
@@ -105,11 +121,21 @@ public class DevUserService {
 
         for (int i = 0; i < count; i++) {
 
-            String fullName = randomHoTen();
-            String baseUsername = taoUsernameTuTen(fullName);
-
             String username = generateUniqueUsername(usedUsernames);
             String email = generateUniqueEmail(username, usedEmails);
+
+            String avatarFileName = "avatar_" + username + ".jpg";
+
+            // 🔥 Tạo keyword avatar random
+            String keyword = randomAvatarKeyword();
+
+            imageExecutor.submit(() -> {
+                try {
+                    downloadImageFromBing(keyword, avatarFileName, "avatars");
+                } catch (Exception e) {
+                    System.err.println("Download image failed: " + e.getMessage());
+                }
+            });
 
             User user = User.builder()
                     .username(username)
@@ -121,7 +147,7 @@ public class DevUserService {
                     .xpPoints(random.nextInt(5000))
                     .level(random.nextInt(20) + 1)
                     .bio(randomBio())
-                    .avatarUrl("avatar_" + (i + 1))
+                    .avatarUrl("/avatars/" + avatarFileName)
                     .favoriteGenres(randomGenresJson())
                     .readingPattern(randomKieuDoc())
                     .preferredLanguage("vi")
@@ -140,6 +166,113 @@ public class DevUserService {
         userRepository.saveAll(users);
         users.forEach(u -> eventPublisher.publishEvent(new UserRegisteredEvent(u)));
     }
+    private final Set<String> usedAvatarKeywords = new HashSet<>();
+
+    private String randomAvatarKeyword() {
+
+        String[] genders = {
+                "man", "woman",
+                "male", "female",
+                "guy", "lady",
+                "person"
+        };
+
+        String[] ages = {
+                "teen", "young", "young adult",
+                "adult", "middle aged",
+                "mature", "senior"
+        };
+
+        String[] styles = {
+                "profile photo",
+                "profile picture",
+                "professional headshot",
+                "studio portrait",
+                "linkedin profile photo",
+                "facebook profile picture",
+                "instagram profile photo",
+                "passport style photo",
+                "corporate headshot",
+                "natural light portrait"
+        };
+
+        String[] ethnicities = {
+                "asian", "east asian", "southeast asian",
+                "european", "white",
+                "african", "black",
+                "latino", "hispanic",
+                "middle eastern",
+                "indian", "korean", "japanese", "chinese"
+        };
+
+        String[] moods = {
+                "smiling",
+                "serious",
+                "neutral expression",
+                "natural look",
+                "friendly face",
+                "confident look",
+                "casual look",
+                "relaxed expression"
+        };
+        String[] qualities = {
+                "high resolution",
+                "4k",
+                "HD",
+                "sharp focus",
+                "detailed face",
+                "professional photography",
+                "DSLR photo"
+        };
+
+
+        String keyword;
+
+        do {
+            keyword =
+                    ages[random.nextInt(ages.length)] + " " +
+                    ethnicities[random.nextInt(ethnicities.length)] + " " +
+                    genders[random.nextInt(genders.length)] + " " +
+                    moods[random.nextInt(moods.length)] + " " +
+                    styles[random.nextInt(styles.length)] + " " +
+                    qualities[random.nextInt(qualities.length)] + " portrait photo " +
+                    random.nextInt(10000);
+        }
+        while (!usedAvatarKeywords.add(keyword)); // tránh trùng hoàn toàn
+
+        return keyword;
+    }
+
+
+
+    public void downloadImageFromBing(String keyword,
+                                      String fileName,
+                                      String folder) {
+        try {
+            String searchUrl = "https://www.bing.com/images/search?q=" +
+                               URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+
+            Document doc = Jsoup.connect(searchUrl).userAgent("Mozilla/5.0").get();
+            Element img = doc.select("img.mimg").first();
+            if (img == null) return;
+
+            String imgUrl = img.attr("src");
+
+            InputStream in = new URL(imgUrl).openStream();
+
+            Path uploadDir = Paths.get("uploads", folder);
+            Files.createDirectories(uploadDir);
+
+            Path savePath = uploadDir.resolve(fileName);
+            Files.copy(in, savePath, StandardCopyOption.REPLACE_EXISTING);
+
+            in.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private String taoUsernameTuTen(String fullName) {
         String khongDau = boDau(fullName).toLowerCase();
         return khongDau.replaceAll("\\s+", "");
