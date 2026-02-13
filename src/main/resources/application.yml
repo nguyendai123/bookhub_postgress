@@ -92,6 +92,7 @@ bookhub:
 scheduler:
   hashtag:
     rate: 900000  # 15 minutes
+  trending-updates: 60000
 
 behavior-log:
   workers: 1
