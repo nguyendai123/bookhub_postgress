@@ -3,7 +3,6 @@ package com.bookhup.service.impl;
 import com.bookhup.dto.response.post.OriginalPostDto;
 import com.bookhup.dto.response.post.PostFeedDto;
 import com.bookhup.dto.response.post.PostFeedProjection;
-import com.bookhup.dto.response.user.PostOfUserResponse;
 import com.bookhup.model.*;
 import com.bookhup.repository.*;
 import com.bookhup.dto.request.post.PostRequest;
@@ -37,10 +36,10 @@ public class PostServiceImpl implements PostService {
     private final LikeRepository likeRepository;
     private final ReadingService readingService;
 
-    @Scheduled(fixedRate = 600000) // chạy mỗi phút
+    @Scheduled(fixedRateString = "${scheduler.trending-updates}")
     public void processTrendingUpdates() {
 
-        List<Post> dirtyPosts = postRepository.findDirtyPostsOrderByPriority(PageRequest.of(0, 10));
+        List<Post> dirtyPosts = postRepository.findDirtyPostsOrderByPriority(PageRequest.of(0, 400));
 
         for (Post p : dirtyPosts) {
 
@@ -176,6 +175,16 @@ public class PostServiceImpl implements PostService {
     public Post getPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
+    @Override
+    public PostFeedDto getPostIncluOrigin(Long postId, Long userId) {
+
+        PostFeedProjection p = postRepository
+                .findPostDetail(postId, userId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        return mapToFeedDto(p, userId);
     }
 
     @Override

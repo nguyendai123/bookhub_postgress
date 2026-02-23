@@ -1,5 +1,6 @@
 package com.bookhup.service.impl;
 
+import com.bookhup.controller.dto.BulkBookCreateResponse;
 import com.bookhup.dto.request.book.BookCreateRequest;
 import com.bookhup.dto.response.ai.bookTrending.BookTrendingDTO;
 import com.bookhup.dto.response.book.*;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,6 +59,24 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new RuntimeException("Book not found")));
     }
 
+    @Override
+    public BulkBookCreateResponse createBooksPartial(List<BookCreateRequest> requests) {
+        List<Book> success = new ArrayList<>();
+        List<String> errors = new ArrayList<>();
+
+        for (BookCreateRequest req : requests) {
+            try {
+                Book book = createBook(req);
+                success.add(book);
+            } catch (Exception e) {
+                errors.add("ISBN " + req.getIsbn() + " lỗi: " + e.getMessage());
+            }
+        }
+
+        return new BulkBookCreateResponse(success, errors);
+    }
+
+
     @Transactional
     @Override
     public Book createBook(BookCreateRequest req) {
@@ -83,7 +103,8 @@ public class BookServiceImpl implements BookService {
                 .language(req.getLanguage())
                 .description(req.getDescription())
                 .coverUrl(req.getCoverUrl())
-                .avgRating(0f)
+                .totalPages(req.getTotalPages())
+                .avgRating(req.getAvgRating() != null ? req.getAvgRating() : 0f)
                 .totalReviews(0)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -107,7 +128,9 @@ public class BookServiceImpl implements BookService {
                 BookChapter chapter = BookChapter.builder()
                         .book(book)
                         .chapterTitle(c.getChapterTitle())
-                        .chapterOrder(c.getChapterOrder())
+                        .chapterOrder(c.getChapterOrder() != null ? c.getChapterOrder() : 1)
+                        .startPage(c.getStartPage())
+                        .endPage(c.getEndPage())
                         .textContent(c.getTextContent())
                         .audioUrl(c.getAudioUrl())
                         .duration(c.getDuration())

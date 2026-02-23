@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -38,9 +37,9 @@ public interface FollowRepository extends JpaRepository<Follow, Long> {
      * ai đang follow userId này
      */
     @Query("""
-        select f.user.userId
-        from Follow f
-        where f.followUser.userId = :userId
-    """)
+                select f.user.userId
+                from Follow f
+                where f.followUser.userId = :userId
+            """)
     Set<Long> findFollowerIds(@Param("userId") Long userId);
 }

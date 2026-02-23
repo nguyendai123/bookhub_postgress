@@ -45,8 +45,11 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public Post getPost(@RequestAttribute("currentUser") User user, @PathVariable Long postId) {
-        return postService.getPost(postId);
+    public PostFeedDto getPost(
+            @RequestAttribute("currentUser") User user,
+            @PathVariable Long postId) {
+
+        return postService.getPostIncluOrigin(postId, user.getUserId());
     }
 
     @PreAuthorize("hasAuthority('POST_UPDATE')")

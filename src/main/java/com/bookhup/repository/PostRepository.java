@@ -5,9 +5,11 @@ import com.bookhup.model.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -200,4 +202,66 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             """)
     Optional<Long> findOwnerId(@Param("postId") Long postId);
 
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Transactional
+    @Query("""
+UPDATE Post p 
+SET p.likesCount = p.likesCount + :likeInc,
+    p.commentsCount = p.commentsCount + :commentInc,
+    p.scoreDirty = true
+WHERE p.postId = :postId
+""")
+    void updateCounters(
+            @Param("postId") Long postId,
+            @Param("likeInc") int likeInc,
+            @Param("commentInc") int commentInc
+    );
+
+
+    @Query(value = """
+        SELECT 
+            p.post_id AS postId,
+            p.book_id AS bookId,
+            p.user_id AS userId,
+            p.content,
+            p.image_url AS imageUrl,
+            p.likes_count AS likesCount,
+            p.comments_count AS commentsCount,
+            p.shares_count AS sharesCount,
+            p.share_of AS shareOf,
+            p.views AS views,
+            p.updated_at AS updatedAt,
+            p.hashtags AS hashtags,
+            
+            rp.reading_status AS readingStatus,
+            rp.current_page AS currentPage,
+            rp.total_pages AS totalPages,
+            rp.percent_done AS percentDone,
+            
+            u.username AS userName,
+            u.avatar_url AS userAvatar,
+
+            CASE
+                WHEN EXISTS(
+                    SELECT 1 FROM likes l
+                    WHERE l.post_id = p.post_id
+                    AND l.user_id = :userId
+                ) THEN 1
+                ELSE 0
+            END AS isLiked
+
+        FROM posts p
+        LEFT JOIN reading_progress rp
+            ON rp.book_id = p.book_id
+            AND rp.user_id = p.user_id
+        LEFT JOIN users u 
+            ON u.user_id = p.user_id
+
+        WHERE p.post_id = :postId
+        """,
+            nativeQuery = true)
+    Optional<PostFeedProjection> findPostDetail(
+            @Param("postId") Long postId,
+            @Param("userId") Long userId
+    );
 }

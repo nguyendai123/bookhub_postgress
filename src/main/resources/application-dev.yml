@@ -7,13 +7,9 @@
 #      max-file-size: 10MB
 #      max-request-size: 10MB
 #  datasource:
-#    #    url: jdbc:mariadb://localhost:3306/book_hub?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Ho_Chi_Minh
-#    #    username: root
-#    #    password: "1232001"
-#    #    driver-class-name: org.mariadb.jdbc.Driver
-#    url: jdbc:postgresql://localhost:5432/book_hub
-#    username: postgres
-#    password: 1232001
+#    url: ${DB_URL}
+#    username: ${DB_USERNAME}
+#    password: ${DB_PASSWORD}
 #
 #    hikari:
 #      maximum-pool-size: 10
@@ -33,6 +29,9 @@
 #        format_sql: true
 #        jdbc:
 #          time_zone: Asia/Ho_Chi_Minh
+#          batch_size: 100
+#        order_inserts: true
+#        order_updates: true
 #
 #  main:
 #    allow-circular-references: true
@@ -40,7 +39,7 @@
 #
 #  webflux:
 #    cors:
-#      allowed-origins: "https://taupe-licorice-bae4fb.netlify.app"
+#      allowed-origins: ${CORS_ORIGIN:https://bookhub.io.vn}
 #
 #  jackson:
 #    serialization:
@@ -49,8 +48,8 @@
 #  mail:
 #    host: smtp.gmail.com
 #    port: 587
-#    username: bookhub2526@gmail.com
-#    password: "ofqk deao wcae qgni"
+#    username: ${MAIL_USERNAME}
+#    password: ${MAIL_PASSWORD}
 #    properties:
 #      mail:
 #        smtp:
@@ -79,7 +78,7 @@
 #
 #bookhub:
 #  app:
-#    jwtSecret: "======================bookHub=Spring==========================="
+#    jwtSecret: ${JWT_SECRET}
 #    jwtExpirationMs: 86400000
 #
 #  recommendation:
@@ -93,6 +92,7 @@
 #scheduler:
 #  hashtag:
 #    rate: 900000  # 15 minutes
+#  trending-updates: 60000
 #
 #behavior-log:
 #  workers: 1
@@ -149,26 +149,20 @@
 #
 #
 #upload:
-#  #  base-dir: ${UPLOAD_BASE_DIR:file:/uploads/}
 #  base-dir: ${UPLOAD_BASE_DIR:${user.dir}/uploads/}
 #
 #  posts-dir: ${UPLOAD_POSTS_DIR:${upload.base-dir}posts/}
 #  avatars-dir: ${UPLOAD_AVATARS_DIR:${upload.base-dir}avatars/}
 #  book-covers-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}books/covers/}
-#  reviews-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}reviews/}
-#  book-pdf-dir: ${UPLOAD_BOOK_COVERS_DIR:${upload.base-dir}books/pdf/}
+#  reviews-dir: ${UPLOAD_REVIEWS_DIR:${upload.base-dir}reviews/}
+#  book-pdf-dir: ${UPLOAD_BOOK_PDF_DIR:${upload.base-dir}books/pdf/}
 #
 ## AI
-#openai:
-#  api:
-#    key: ''
-#    url: http://localhost:8000
 #
 #huggingface:
 #  token: ${HF_TOKEN}
 #groq:
 #  api-key: ${GROQ_API_KEY}
-#
 #
 #
 #

@@ -13,6 +13,8 @@ public class BookCreateRequest {
     private String language;
     private String description;
     private String coverUrl;
+    private Float avgRating;
+    private Integer totalPages;
 
     private List<Long> genreIds;
 
@@ -24,6 +26,8 @@ public class BookCreateRequest {
     public static class ChapterRequest {
         private String chapterTitle;
         private Integer chapterOrder;
+        private Integer startPage;
+        private Integer endPage;
         private String textContent;
         private String audioUrl;
         private Float duration;
