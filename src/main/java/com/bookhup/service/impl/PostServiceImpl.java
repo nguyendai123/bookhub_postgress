@@ -3,7 +3,6 @@ package com.bookhup.service.impl;
 import com.bookhup.dto.response.post.OriginalPostDto;
 import com.bookhup.dto.response.post.PostFeedDto;
 import com.bookhup.dto.response.post.PostFeedProjection;
-import com.bookhup.dto.response.user.PostOfUserResponse;
 import com.bookhup.model.*;
 import com.bookhup.repository.*;
 import com.bookhup.dto.request.post.PostRequest;
@@ -176,6 +175,16 @@ public class PostServiceImpl implements PostService {
     public Post getPost(Long postId) {
         return postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
+    @Override
+    public PostFeedDto getPostIncluOrigin(Long postId, Long userId) {
+
+        PostFeedProjection p = postRepository
+                .findPostDetail(postId, userId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        return mapToFeedDto(p, userId);
     }
 
     @Override

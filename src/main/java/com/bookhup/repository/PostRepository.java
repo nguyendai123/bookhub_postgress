@@ -218,4 +218,50 @@ WHERE p.postId = :postId
     );
 
 
+    @Query(value = """
+        SELECT 
+            p.post_id AS postId,
+            p.book_id AS bookId,
+            p.user_id AS userId,
+            p.content,
+            p.image_url AS imageUrl,
+            p.likes_count AS likesCount,
+            p.comments_count AS commentsCount,
+            p.shares_count AS sharesCount,
+            p.share_of AS shareOf,
+            p.views AS views,
+            p.updated_at AS updatedAt,
+            p.hashtags AS hashtags,
+            
+            rp.reading_status AS readingStatus,
+            rp.current_page AS currentPage,
+            rp.total_pages AS totalPages,
+            rp.percent_done AS percentDone,
+            
+            u.username AS userName,
+            u.avatar_url AS userAvatar,
+
+            CASE
+                WHEN EXISTS(
+                    SELECT 1 FROM likes l
+                    WHERE l.post_id = p.post_id
+                    AND l.user_id = :userId
+                ) THEN 1
+                ELSE 0
+            END AS isLiked
+
+        FROM posts p
+        LEFT JOIN reading_progress rp
+            ON rp.book_id = p.book_id
+            AND rp.user_id = p.user_id
+        LEFT JOIN users u 
+            ON u.user_id = p.user_id
+
+        WHERE p.post_id = :postId
+        """,
+            nativeQuery = true)
+    Optional<PostFeedProjection> findPostDetail(
+            @Param("postId") Long postId,
+            @Param("userId") Long userId
+    );
 }

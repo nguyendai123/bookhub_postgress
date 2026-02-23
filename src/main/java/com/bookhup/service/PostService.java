@@ -18,6 +18,8 @@ public interface PostService {
 
     List<Post> getAllPosts();
 
+    PostFeedDto getPostIncluOrigin(Long postId, Long userId);
+
     Post updatePost(Long postId, PostRequest post, User user);
 
     void deletePost(Long postId, User user);
